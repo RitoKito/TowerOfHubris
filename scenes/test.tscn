@@ -1,0 +1,61 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6uqidn550wus"]
+
+[ext_resource type="PackedScene" uid="uid://csnmdiepwidj2" path="res://resources/prefabs/player_placeholder.tscn" id="1_qcvje"]
+[ext_resource type="Script" path="res://resources/source/CombatPhase/CamGimbal.cs" id="2_vlnwf"]
+[ext_resource type="PackedScene" uid="uid://bqvhoxx0dnrtf" path="res://resources/prefabs/placeholder_character.tscn" id="3_tug6k"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="enemy1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.693589, -0.00666484, -0.219506)
+
+[node name="player_placeholder" parent="enemy1" instance=ExtResource("1_qcvje")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+flip_h = true
+modulate = Color(1, 0.298342, 0.347513, 1)
+pixel_size = 0.0004
+
+[node name="cam_gimbal" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0.28)
+script = ExtResource("2_vlnwf")
+
+[node name="Camera3D" type="Camera3D" parent="cam_gimbal"]
+fov = 94.9
+size = 0.1
+near = 0.001
+
+[node name="GroundPlaceholder" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.495, -0.32)
+size = Vector3(6.72, 1, 2.87)
+
+[node name="player_characters" type="Node3D" parent="."]
+
+[node name="character_pos1" type="Node3D" parent="player_characters"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.496834, -0.00664747, -0.123961)
+
+[node name="character" parent="player_characters/character_pos1" instance=ExtResource("3_tug6k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.000371732)
+
+[node name="character_pos2" type="Node3D" parent="player_characters"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.550611, 0, -0.298645)
+
+[node name="character" parent="player_characters/character_pos2" instance=ExtResource("3_tug6k")]
+
+[node name="character_pos3" type="Node3D" parent="player_characters"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.267564, 0, -0.217048)
+
+[node name="character" parent="player_characters/character_pos3" instance=ExtResource("3_tug6k")]
+
+[node name="character_pos4" type="Node3D" parent="player_characters"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.857956, -0.0132949, -0.216989)
+
+[node name="character" parent="player_characters/character_pos4" instance=ExtResource("3_tug6k")]
+
+[node name="CombatUI" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[editable path="enemy1/player_placeholder"]

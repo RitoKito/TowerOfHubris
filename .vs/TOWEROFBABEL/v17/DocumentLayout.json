@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\TowerOfBabelGodot\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofbabelgodot\\combatphase\\playercharacter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:combatphase\\playercharacter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PlayerCharacter.cs",
+              "DocumentMoniker": "E:\\TowerOfBabelGodot\\CombatPhase\\PlayerCharacter.cs",
+              "RelativeDocumentMoniker": "CombatPhase\\PlayerCharacter.cs",
+              "ToolTip": "E:\\TowerOfBabelGodot\\CombatPhase\\PlayerCharacter.cs",
+              "RelativeToolTip": "CombatPhase\\PlayerCharacter.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAtAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-13T09:49:42.515Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
