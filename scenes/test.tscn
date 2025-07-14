@@ -1,22 +1,59 @@
-[gd_scene load_steps=4 format=3 uid="uid://c6uqidn550wus"]
+[gd_scene load_steps=11 format=3 uid="uid://c6uqidn550wus"]
 
-[ext_resource type="PackedScene" uid="uid://csnmdiepwidj2" path="res://resources/prefabs/player_placeholder.tscn" id="1_qcvje"]
+[ext_resource type="Script" path="res://scenes/SceneManager.cs" id="1_kuo8a"]
 [ext_resource type="Script" path="res://resources/source/CombatPhase/CamGimbal.cs" id="2_vlnwf"]
-[ext_resource type="PackedScene" uid="uid://bqvhoxx0dnrtf" path="res://resources/prefabs/placeholder_character.tscn" id="3_tug6k"]
+[ext_resource type="Script" path="res://resources/source/CombatPhase/UnitDetails.cs" id="5_63epg"]
+[ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/A1_Separate.png" id="6_ocsu6"]
+[ext_resource type="Texture2D" uid="uid://5y3ndtfj5o62" path="res://resources/sprites/A1_Separate_Selection.png" id="6_t1gfu"]
+[ext_resource type="PackedScene" uid="uid://o57m7h1ehfmr" path="res://resources/prefabs/hp_details_label.tscn" id="7_ucgjn"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rqfqc"]
+size = Vector3(0.0546031, 0.200378, 0.001)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ro4j2"]
+orientation = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x0u1w"]
+cull_mode = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3xrok"]
+size = Vector3(1.9807, 1.98279, 1)
 
 [node name="Node3D" type="Node3D"]
 
-[node name="enemy1" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.693589, -0.00666484, -0.219506)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.624275, 0.781205, 0, -0.781205, 0.624275, 0, 0.641662, 0)
 
-[node name="player_placeholder" parent="enemy1" instance=ExtResource("1_qcvje")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
-flip_h = true
-modulate = Color(1, 0.298342, 0.347513, 1)
-pixel_size = 0.0004
+[node name="CombatUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 12.0
+
+[node name="DebugInfo" type="MarginContainer" parent="CombatUI"]
+custom_minimum_size = Vector2(200, 35)
+layout_mode = 1
+offset_right = 200.0
+offset_bottom = 74.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CombatUI/DebugInfo"]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+
+[node name="CombatSelection" type="TextEdit" parent="CombatUI/DebugInfo/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+placeholder_text = "Player: Alpha"
+
+[node name="CombatSelection2" type="TextEdit" parent="CombatUI/DebugInfo/VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+placeholder_text = "Enemy: Proton"
+
+[node name="SceneManager" type="Node3D" parent="."]
+script = ExtResource("1_kuo8a")
 
 [node name="cam_gimbal" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0.28)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0.205)
 script = ExtResource("2_vlnwf")
 
 [node name="Camera3D" type="Camera3D" parent="cam_gimbal"]
@@ -24,38 +61,129 @@ fov = 94.9
 size = 0.1
 near = 0.001
 
+[node name="RayCast3D" type="RayCast3D" parent="cam_gimbal/Camera3D"]
+
 [node name="GroundPlaceholder" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.495, -0.32)
 size = Vector3(6.72, 1, 2.87)
 
+[node name="enemy_0" type="Node3D" parent="." groups=["EnemyUnit"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.56206, 0, -0.217048)
+script = ExtResource("5_63epg")
+unitName = "Proton_1"
+maxHp = 150
+
+[node name="char_sprite" type="Sprite3D" parent="enemy_0"]
+offset = Vector2(81, 265)
+flip_h = true
+modulate = Color(0.146433, 0.128954, 0.0735778, 1)
+pixel_size = 0.0004
+texture_filter = 0
+texture = ExtResource("6_ocsu6")
+
+[node name="char_select_spr" type="Sprite3D" parent="enemy_0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00128113)
+offset = Vector2(81, 265)
+flip_h = true
+modulate = Color(0.890196, 0, 0, 1)
+pixel_size = 0.0004
+texture_filter = 0
+render_priority = -1
+texture = ExtResource("6_t1gfu")
+
+[node name="unit_col_bdy" type="StaticBody3D" parent="enemy_0" groups=["PlayerUnit"]]
+
+[node name="unit_col_shape" type="CollisionShape3D" parent="enemy_0/unit_col_bdy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0657507, 0.106868, -0.00194509)
+shape = SubResource("BoxShape3D_rqfqc")
+
+[node name="hp_label" parent="enemy_0" instance=ExtResource("7_ucgjn")]
+transform = Transform3D(0.292696, 0, 0, 0, 0.381532, 0, 0, 0, 1.00378, 0, 0.028, 0.0119177)
+pixel_size = 0.003
+billboard = 0
+font_size = 17
+
+[node name="attack_btn" type="CSGMesh3D" parent="enemy_0"]
+transform = Transform3D(0.0306899, 0, 0, 0, 0.0267443, 0, 0, 0, 0.13635, -0.00981814, 0.285301, 0)
+mesh = SubResource("PlaneMesh_ro4j2")
+material = SubResource("StandardMaterial3D_x0u1w")
+
+[node name="Label3D" type="Label3D" parent="enemy_0/attack_btn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00558233)
+text = "Attack"
+font_size = 117
+
+[node name="StaticBody3D" type="StaticBody3D" parent="enemy_0/attack_btn"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="enemy_0/attack_btn/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0087347, -0.032896, 0.0554594)
+shape = SubResource("BoxShape3D_3xrok")
+
 [node name="player_characters" type="Node3D" parent="."]
 
 [node name="character_pos1" type="Node3D" parent="player_characters"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.496834, -0.00664747, -0.123961)
-
-[node name="character" parent="player_characters/character_pos1" instance=ExtResource("3_tug6k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.000371732)
-
-[node name="character_pos2" type="Node3D" parent="player_characters"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.550611, 0, -0.298645)
-
-[node name="character" parent="player_characters/character_pos2" instance=ExtResource("3_tug6k")]
-
-[node name="character_pos3" type="Node3D" parent="player_characters"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.267564, 0, -0.217048)
 
-[node name="character" parent="player_characters/character_pos3" instance=ExtResource("3_tug6k")]
+[node name="player_delta" type="Node3D" parent="player_characters/character_pos1" groups=["PlayerUnit"]]
+script = ExtResource("5_63epg")
+unitName = "Delta"
+maxHp = 100
+
+[node name="char_sprite" type="Sprite3D" parent="player_characters/character_pos1/player_delta"]
+offset = Vector2(81, 265)
+pixel_size = 0.0004
+texture_filter = 0
+texture = ExtResource("6_ocsu6")
+
+[node name="char_select_spr" type="Sprite3D" parent="player_characters/character_pos1/player_delta"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00128113)
+offset = Vector2(81, 265)
+pixel_size = 0.0004
+texture_filter = 0
+render_priority = -1
+texture = ExtResource("6_t1gfu")
+
+[node name="unit_col_bdy" type="StaticBody3D" parent="player_characters/character_pos1/player_delta" groups=["PlayerUnit"]]
+
+[node name="unit_col_shape" type="CollisionShape3D" parent="player_characters/character_pos1/player_delta/unit_col_bdy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0017724, 0.106868, -0.00194509)
+shape = SubResource("BoxShape3D_rqfqc")
+
+[node name="hp_label" parent="player_characters/character_pos1/player_delta" instance=ExtResource("7_ucgjn")]
+transform = Transform3D(0.292696, 0, 0, 0, 0.381532, 0, 0, 0, 1.00378, 0, 0.028, 0.0119177)
+pixel_size = 0.003
+billboard = 0
+font_size = 17
+
+[node name="attack_btn" type="CSGMesh3D" parent="player_characters/character_pos1/player_delta"]
+transform = Transform3D(0.0306899, 0, 0, 0, 0.0267443, 0, 0, 0, 0.13635, -0.00981814, 0.285301, 0)
+mesh = SubResource("PlaneMesh_ro4j2")
+material = SubResource("StandardMaterial3D_x0u1w")
+
+[node name="Label3D" type="Label3D" parent="player_characters/character_pos1/player_delta/attack_btn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00558233)
+text = "Attack"
+font_size = 117
+
+[node name="StaticBody3D" type="StaticBody3D" parent="player_characters/character_pos1/player_delta/attack_btn"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="player_characters/character_pos1/player_delta/attack_btn/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0087347, -0.032896, 0.0554594)
+shape = SubResource("BoxShape3D_3xrok")
+
+[node name="character_pos2" type="Node3D" parent="player_characters"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.496834, -0.00664747, -0.123961)
+
+[node name="character_pos3" type="Node3D" parent="player_characters"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.550611, 0, -0.298645)
 
 [node name="character_pos4" type="Node3D" parent="player_characters"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.857956, -0.0132949, -0.216989)
 
-[node name="character" parent="player_characters/character_pos4" instance=ExtResource("3_tug6k")]
+[connection signal="mouse_entered" from="enemy_0/unit_col_bdy" to="enemy_0" method="_on_static_body_3d_mouse_entered"]
+[connection signal="mouse_exited" from="enemy_0/unit_col_bdy" to="enemy_0" method="_on_static_body_3d_mouse_exited"]
+[connection signal="mouse_entered" from="player_characters/character_pos1/player_delta/unit_col_bdy" to="player_characters/character_pos1/player_delta" method="_on_static_body_3d_mouse_entered"]
+[connection signal="mouse_exited" from="player_characters/character_pos1/player_delta/unit_col_bdy" to="player_characters/character_pos1/player_delta" method="_on_static_body_3d_mouse_exited"]
 
-[node name="CombatUI" type="Control" parent="."]
-visible = false
-layout_mode = 3
-anchors_preset = 0
-offset_right = 1152.0
-offset_bottom = 648.0
-
-[editable path="enemy1/player_placeholder"]
+[editable path="enemy_0/hp_label"]
+[editable path="player_characters/character_pos1/player_delta/hp_label"]

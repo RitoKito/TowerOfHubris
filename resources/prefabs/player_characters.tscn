@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://dccg8xdi2a1t7"]
+
+[ext_resource type="PackedScene" uid="uid://bqvhoxx0dnrtf" path="res://resources/prefabs/placeholder_character.tscn" id="1_0esu8"]
+
+[node name="player_characters" type="Node3D"]
+
+[node name="character_pos1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.496834, -0.00664747, -0.123961)
+
+[node name="character" parent="character_pos1" instance=ExtResource("1_0esu8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.000371732)
+
+[node name="character_pos2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.550611, 0, -0.298645)
+
+[node name="character" parent="character_pos2" instance=ExtResource("1_0esu8")]
+
+[node name="character_pos3" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.267564, 0, -0.217048)
+
+[node name="character" parent="character_pos3" instance=ExtResource("1_0esu8")]
+
+[node name="character_pos4" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.857956, -0.0132949, -0.216989)
+
+[node name="character" parent="character_pos4" instance=ExtResource("1_0esu8")]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://bqvhoxx0dnrtf"]
 
-[ext_resource type="Script" path="res://resources/source/CombatPhase/PlayerCharacter.cs" id="1_wad13"]
+[ext_resource type="Script" path="res://resources/source/CombatPhase/UnitDetails.cs" id="1_wad13"]
 [ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/A1_Separate.png" id="2_7vskm"]
 [ext_resource type="PackedScene" uid="uid://o57m7h1ehfmr" path="res://resources/prefabs/hp_details_label.tscn" id="3_jis5x"]
 
