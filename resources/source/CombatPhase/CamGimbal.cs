@@ -3,7 +3,9 @@ using System;
 
 public partial class CamGimbal : Node3D
 {
-	[Export] private float _rotationSpeed = 0.05f;
+    Camera3D _cameraObj;
+
+    [Export] private float _rotationSpeed = 0.05f;
 	private float _mouseMotionY = 0;
 	private float _mouseMotionX = 0;
 	private float _currentRotationX = 0;
@@ -15,48 +17,25 @@ public partial class CamGimbal : Node3D
 
 	private float _maxCamAngle = Mathf.DegToRad(-20f);
 
-    RayCast3D rayCast;
-	Camera3D cam;
-    Vector2 mousePos;
-	bool rayCollision = false;
+	// Boolean set by checking if the player clicked on an object
+	private bool _clickedOnCollider = false;
 
 
     public override void _UnhandledInput(InputEvent @event)
+    {
+        if (@event is InputEventMouseMotion mouseMotion)
+        {
+            _mouseMotionY = mouseMotion.Relative.Y;
+            _mouseMotionX = mouseMotion.Relative.X;
+        }
+
+        CheckClickedObject(@event);
+    }
+
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
 	{
-		if(@event is InputEventMouseMotion mouseMotion)
-		{
-			_mouseMotionY = mouseMotion.Relative.Y;
-			_mouseMotionX = mouseMotion.Relative.X;
-		}
-
-		// Shoot raycast on mouse click
-		// If no collision - allow movement
-		// If collision - block cam movement until left button is released
-		if(@event is InputEventMouseButton mouseButton)
-		{
-			if(mouseButton.ButtonIndex == MouseButton.Left && mouseButton.Pressed)
-			{
-				if (isRayCollision()){
-					rayCollision = true;
-				}
-				else
-				{
-					rayCollision = false;
-				}
-			}
-
-			if(mouseButton.ButtonIndex == MouseButton.Left && mouseButton.IsReleased())
-			{
-				rayCollision = false;
-			}
-		}
-	}
-
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-		cam = GetNode<Camera3D>("Camera3D");
-		rayCast = GetNode<RayCast3D>("Camera3D/RayCast3D");
+		_cameraObj = GetViewport().GetCamera3D();
     }
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -64,12 +43,13 @@ public partial class CamGimbal : Node3D
 	{
 
 		// Move camera only if user didn't click on interactable object
-        if (Input.IsMouseButtonPressed(MouseButton.Left) && !rayCollision)
+		// The boolean here prevents the camera movement until left mouse button is released
+        if (Input.IsMouseButtonPressed(MouseButton.Left) && !_clickedOnCollider)
 		{
 			MoveCamera(delta);
         }
 
-        if (Position.Y >= 0.45f)
+        if (Position.Y >= 2.5f)
         {
             RotateCamera(delta, _maxCamAngle);
         }
@@ -84,48 +64,67 @@ public partial class CamGimbal : Node3D
 	private void MoveCamera(double delta)
 	{
 		if(_mouseMotionY != 0)
-		{
-			// Removes magnitude of mouse motion
-			// Only moveDirV decides speed of camera movement
-			var moveDirV = 0;
+        {
+            // Removes magnitude of mouse motion
+            // Only moveDirV decides speed of camera movement
+            Vector2 moveDirV = mouseMoveDir();
 
-			if(_mouseMotionY > 0)
-			{
-				moveDirV = 1;
-			}
-			else
-			{
-				moveDirV = -1;
-			}
+            _targetPositionV += moveDirV[1] * 1f;
+            _targetPositionV = Math.Clamp(_targetPositionV, 1.5f, 3.5f);
+            Vector3 targetVector = new Vector3(Position.X, _targetPositionV, Position.Z);
+            GlobalPosition = GlobalPosition.Lerp(targetVector, 1.5f * (float)delta);
 
-			_targetPositionH += moveDirV * 1f;
-			_targetPositionH = Math.Clamp(_targetPositionH, 0.3f, 0.5f);
-			Vector3 targetVector = new Vector3(Position.X, _targetPositionH, Position.Z);
-			GlobalPosition = GlobalPosition.Lerp(targetVector, 3f * (float)delta);
-
-			_mouseMotionY = 0;
-		}
+            _mouseMotionY = 0;
+        }
     }
 
-	// Rotate camera angle when camera reaches Y pos -0.45
-	private void RotateCamera(double delta, float targetAngle)
+    private Vector2 mouseMoveDir()
+    {
+        var moveDirV = new Vector2(0, 0);
+
+        if (_mouseMotionY > 0)
+        {
+			moveDirV[1] = 1;
+        }
+        else
+        {
+			moveDirV[1] = -1;
+        }
+
+        return moveDirV;
+    }
+
+    // Rotate camera angle when camera reaches Y pos -0.45
+    private void RotateCamera(double delta, float targetAngle)
 	{
 		var currentAngle = Rotation.X;
 		Rotation = new Vector3(Mathf.Lerp(currentAngle, targetAngle, 1f*(float)delta), 0, 0);
 	}
 
-	// Shoot raycast from cam to check for interactable objects on left mouse click
-	private bool isRayCollision()
-	{
-        mousePos = GetViewport().GetMousePosition();
-        rayCast.TargetPosition = cam.ProjectLocalRayNormal(mousePos) * 100.0f;
-        rayCast.ForceRaycastUpdate();
+    // Shoot raycast on mouse click
+    // If no collision - allow camera movement
+    // If collision - block cam movement until left button is released
+    private void CheckClickedObject(InputEvent @event)
+    {
 
-        if (rayCast.IsColliding())
+        if (@event is InputEventMouseButton mouseButton)
         {
-            rayCollision = true;
-        }
+            if (mouseButton.ButtonIndex == MouseButton.Left && mouseButton.Pressed)
+            {
+                if (CombatUtils.ShootRayCast(_cameraObj) != null)
+                {
+                    _clickedOnCollider = true;
+                }
+                else
+                {
+                    _clickedOnCollider = false;
+                }
+            }
 
-		return rayCast.IsColliding();
+            if (mouseButton.ButtonIndex == MouseButton.Left && mouseButton.IsReleased())
+            {
+                _clickedOnCollider = false;
+            }
+        }
     }
 }

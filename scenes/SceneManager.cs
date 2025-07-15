@@ -3,15 +3,15 @@ using System;
 
 public partial class SceneManager : Node3D
 {
-	TextEdit debugInfo;
-	TextEdit debugInfo2;
+	public static SceneManager Instance { get; private set; }
 
-	Vector2 mousePos;
-	Camera3D cam;
-	RayCast3D rayCast;
+	TextEdit _debugInfo;
+	TextEdit _debugInfo2;
 
-	UnitDetails playerUnit;
-	UnitDetails enemyUnit;
+	Camera3D _cameraObj;
+
+	private UnitDetails _selectedPlayerUnit;
+
 
 
 	public override void _UnhandledInput(InputEvent @event)
@@ -20,51 +20,46 @@ public partial class SceneManager : Node3D
 		{
 			if (mouseButton.Pressed)
 			{
-				var collider = ShootRayCast().GetCollider() as StaticBody3D;
+				var rayCastResult = CombatUtils.ShootRayCast(_cameraObj);
 
-				if(collider != null)
+				if(rayCastResult != null)
 				{
-					var colliderParent = collider.GetParent() as Node3D;
-					if (colliderParent.GetGroups().Contains("PlayerUnit")){
-						playerUnit = (UnitDetails)colliderParent;
+					var collider = (Node)rayCastResult["collider"];
+					if (collider.GetGroups().Contains("PlayerUnit"))
+					{
+						var unitCollider = (UnitColliderBody)collider;
+						var playerUnit = unitCollider.getParentUnitDetails();
+						_selectedPlayerUnit = playerUnit;
+
+
+						if(_selectedPlayerUnit.GetEnemyTarget() != null)
+						{
+							_selectedPlayerUnit.RemoveEnemyTarget();
+						}
+
+						_debugInfo.Text = playerUnit.GetUnitName();
 					}
 				}
 			}
 
-			if(mouseButton.Pressed && playerUnit != null)
+			if(mouseButton.IsReleased())
 			{
-				debugInfo.Text = $"Player: {playerUnit.getUnitName()}";
-				debugInfo2.Text = $"Enemy: None";
-			}
-			else if(mouseButton.IsReleased())
-			{
-				var collider = ShootRayCast().GetCollider() as StaticBody3D;
-
-				if (collider != null)
+                var rayCastResult = CombatUtils.ShootRayCast(_cameraObj);
+				
+				if (rayCastResult != null && _selectedPlayerUnit != null)
 				{
-					var colliderParent = collider.GetParent() as Node3D;
-					if (colliderParent.GetGroups().Contains("EnemyUnit"))
+					var collider = (Node)rayCastResult["collider"];
+					
+					if (collider.GetGroups().Contains("EnemyUnit"))
 					{
-						enemyUnit = (UnitDetails)colliderParent;
-						debugInfo2.Text = $"Enemy: {enemyUnit.getUnitName()}";
-						enemyUnit = null;
-					}
-					else
-					{
-						debugInfo.Text = $"Player: None";
-						debugInfo2.Text = $"Enemy: None";
-						playerUnit = null;
-						enemyUnit = null;
+						var unitCollider = (UnitColliderBody)collider;
+						var enemyUnit = unitCollider.getParentUnitDetails();
+
+						_selectedPlayerUnit.SetEnemeyTarget(enemyUnit);
 					}
 				}
-				else
-				{
 
-					debugInfo.Text = $"Player: None";
-					debugInfo2.Text = $"Enemy: None";
-					playerUnit = null;
-					enemyUnit = null;
-				}
+				_selectedPlayerUnit = null;
 			}
 		}
 	}
@@ -72,11 +67,12 @@ public partial class SceneManager : Node3D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		debugInfo = GetNode<TextEdit>("../CombatUI/DebugInfo/VBoxContainer/CombatSelection");
-		debugInfo2 = GetNode<TextEdit>("../CombatUI/DebugInfo/VBoxContainer/CombatSelection2");
+		Instance = this;
 
-		cam = GetViewport().GetCamera3D();
-		rayCast = cam.GetNode<RayCast3D>("RayCast3D");
+		_debugInfo = GetNode<TextEdit>("../CombatUI/DebugInfo/VBoxContainer/CombatSelection");
+		_debugInfo2 = GetNode<TextEdit>("../CombatUI/DebugInfo/VBoxContainer/CombatSelection2");
+
+		_cameraObj = GetViewport().GetCamera3D();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -87,18 +83,20 @@ public partial class SceneManager : Node3D
 		//	GD.Print(rayCast.GetCollider());
 		//}
 
-		if (Input.IsMouseButtonPressed(MouseButton.Left) && playerUnit != null)
-		{
-		}
+		//if (Input.IsMouseButtonPressed(MouseButton.Left) && playerUnit != null)
+		//{
+		//}
 	}
 
 	private RayCast3D ShootRayCast()
 	{
-		mousePos = GetViewport().GetMousePosition();
-		rayCast.TargetPosition = cam.ProjectLocalRayNormal(mousePos) * 100.0f;
-		rayCast.ForceRaycastUpdate();
+		//mousePos = GetViewport().GetMousePosition();
+		//rayCast.TargetPosition = cam.ProjectLocalRayNormal(mousePos) * 100.0f;
+		//rayCast.ForceRaycastUpdate();
 
 
-		return rayCast;
+		//return rayCast;
+
+		return null;
 	}
 }
