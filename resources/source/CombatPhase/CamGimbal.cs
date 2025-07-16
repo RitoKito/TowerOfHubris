@@ -3,7 +3,7 @@ using System;
 
 public partial class CamGimbal : Node3D
 {
-    Camera3D _cameraObj;
+    private Camera3D _cameraObj;
 
     [Export] private float _rotationSpeed = 0.05f;
 	private float _mouseMotionY = 0;

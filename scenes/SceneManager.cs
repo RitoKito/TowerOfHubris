@@ -1,5 +1,12 @@
 using Godot;
 using System;
+using System.Collections;
+
+enum PlayerTurnState
+{
+	Idle,
+	SelectedUnit
+}
 
 public partial class SceneManager : Node3D
 {
@@ -9,7 +16,9 @@ public partial class SceneManager : Node3D
 	TextEdit _debugInfo2;
 
 	Camera3D _cameraObj;
+	PlayerTurnState _playerState = PlayerTurnState.Idle;
 
+	private ArrayList _playerUnits = new ArrayList();
 	private UnitDetails _selectedPlayerUnit;
 
 
@@ -28,7 +37,7 @@ public partial class SceneManager : Node3D
 					if (collider.GetGroups().Contains("PlayerUnit"))
 					{
 						var unitCollider = (UnitColliderBody)collider;
-						var playerUnit = unitCollider.getParentUnitDetails();
+						var playerUnit = unitCollider.GetParentUnitDetails();
 						_selectedPlayerUnit = playerUnit;
 
 
@@ -37,29 +46,42 @@ public partial class SceneManager : Node3D
 							_selectedPlayerUnit.RemoveEnemyTarget();
 						}
 
+						_selectedPlayerUnit.Select();
+						_playerState = PlayerTurnState.SelectedUnit;
 						_debugInfo.Text = playerUnit.GetUnitName();
+						GD.Print(_selectedPlayerUnit.GetUnitName());
 					}
 				}
 			}
 
 			if(mouseButton.IsReleased())
 			{
-                var rayCastResult = CombatUtils.ShootRayCast(_cameraObj);
+				var rayCastResult = CombatUtils.ShootRayCast(_cameraObj);
 				
-				if (rayCastResult != null && _selectedPlayerUnit != null)
+				if (_selectedPlayerUnit != null)
 				{
-					var collider = (Node)rayCastResult["collider"];
-					
-					if (collider.GetGroups().Contains("EnemyUnit"))
+					if(rayCastResult != null)
 					{
-						var unitCollider = (UnitColliderBody)collider;
-						var enemyUnit = unitCollider.getParentUnitDetails();
+						var collider = (Node)rayCastResult["collider"];
 
-						_selectedPlayerUnit.SetEnemeyTarget(enemyUnit);
+						if (collider.GetGroups().Contains("EnemyUnit"))
+						{
+							// TODO Refactor as part of target selection in the UNIT DETAILS
+							var unitCollider = (UnitColliderBody)collider;
+							var enemyUnit = unitCollider.GetParentUnitDetails();
+
+							_selectedPlayerUnit.SetEnemeyTarget(enemyUnit);
+						}
 					}
-				}
+					else
+					{
+						_selectedPlayerUnit.Deselect();
 
-				_selectedPlayerUnit = null;
+					}
+
+					_selectedPlayerUnit = null;
+					_playerState = PlayerTurnState.Idle;
+				}
 			}
 		}
 	}
@@ -73,30 +95,23 @@ public partial class SceneManager : Node3D
 		_debugInfo2 = GetNode<TextEdit>("../CombatUI/DebugInfo/VBoxContainer/CombatSelection2");
 
 		_cameraObj = GetViewport().GetCamera3D();
+
+		//TODO MAKE PROPER INIT
+		_playerUnits.Add(GetNode<UnitDetails>("../player_characters/character_pos1/player_delta"));
+		GD.Print(_playerUnits[0]);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		//if (isRayCollision())
-		//{
-		//	GD.Print(rayCast.GetCollider());
-		//}
 
-		//if (Input.IsMouseButtonPressed(MouseButton.Left) && playerUnit != null)
-		//{
-		//}
 	}
 
-	private RayCast3D ShootRayCast()
+	private void _on_button_pressed()
 	{
-		//mousePos = GetViewport().GetMousePosition();
-		//rayCast.TargetPosition = cam.ProjectLocalRayNormal(mousePos) * 100.0f;
-		//rayCast.ForceRaycastUpdate();
-
-
-		//return rayCast;
-
-		return null;
+		foreach(UnitDetails unit in _playerUnits)
+		{
+			unit.UseSkill();
+		}
 	}
 }

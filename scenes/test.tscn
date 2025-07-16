@@ -1,7 +1,8 @@
-[gd_scene load_steps=17 format=3 uid="uid://c6uqidn550wus"]
+[gd_scene load_steps=19 format=3 uid="uid://c6uqidn550wus"]
 
 [ext_resource type="Script" path="res://scenes/SceneManager.cs" id="1_kuo8a"]
 [ext_resource type="Script" path="res://resources/source/CombatPhase/CamGimbal.cs" id="2_vlnwf"]
+[ext_resource type="Script" path="res://scenes/MouseCollider.cs" id="3_caqmw"]
 [ext_resource type="Script" path="res://resources/source/CombatPhase/UnitDetails.cs" id="5_63epg"]
 [ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/A1_Separate.png" id="6_ocsu6"]
 [ext_resource type="Texture2D" uid="uid://5y3ndtfj5o62" path="res://resources/sprites/A1_Separate_Selection.png" id="6_t1gfu"]
@@ -31,6 +32,9 @@ cull_mode = 2
 albedo_texture = ExtResource("10_45cns")
 texture_filter = 0
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_crgnk"]
+size = Vector3(100, 100, 1)
+
 [node name="Node3D" type="Node3D"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -38,8 +42,11 @@ transform = Transform3D(1, 0, 0, 0, 0.624275, 0.781205, 0, -0.781205, 0.624275, 
 
 [node name="CombatUI" type="Control" parent="."]
 layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 1
 
 [node name="DebugInfo" type="MarginContainer" parent="CombatUI"]
@@ -96,32 +103,15 @@ layout_mode = 2
 [node name="SceneManager" type="Node3D" parent="."]
 script = ExtResource("1_kuo8a")
 
-[node name="cam_gimbal" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.97237, 0.233445, 0, -0.233445, 0.97237, 0, 1.815, 5.815)
-script = ExtResource("2_vlnwf")
-_rotationSpeed = 0.005
-
-[node name="Camera3D" type="Camera3D" parent="cam_gimbal"]
-fov = 120.0
-size = 0.1
-near = 0.001
-
-[node name="GroundPlaceholder" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.495, -0.32)
-size = Vector3(20, 1, 20)
-
-[node name="CSGBox3D" type="CSGBox3D" parent="GroundPlaceholder"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00482, 0)
-
 [node name="enemy" type="Node3D" parent="." groups=["PlayerUnit"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.776, 0, 2.5)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.44727, 0, 2.5)
 script = ExtResource("5_63epg")
-_unitName = "Enemy1"
+_unitName = "Dark Delta"
 
 [node name="char_sprite" type="Sprite3D" parent="enemy"]
 offset = Vector2(81, 265)
 flip_h = true
-modulate = Color(0.230315, 0.230315, 0.230315, 1)
+modulate = Color(0.237539, 0.237539, 0.237539, 1)
 pixel_size = 0.004
 texture_filter = 0
 texture = ExtResource("6_ocsu6")
@@ -130,27 +120,28 @@ texture = ExtResource("6_ocsu6")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00128113)
 offset = Vector2(81, 265)
 flip_h = true
-modulate = Color(0.898275, 2.59906e-06, 1.2514e-06, 1)
+modulate = Color(0.780694, 4.54836e-06, 4.81307e-07, 1)
 pixel_size = 0.004
 texture_filter = 0
 render_priority = -1
 texture = ExtResource("6_t1gfu")
 
 [node name="unit_col_bdy" type="StaticBody3D" parent="enemy" groups=["EnemyUnit"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.736096, 0, 0)
 script = ExtResource("7_uph72")
 
 [node name="unit_col_shape" type="CollisionShape3D" parent="enemy/unit_col_bdy"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.697074, 1.07914, -0.0441498)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0447506, 1.07914, -0.0441498)
 shape = SubResource("BoxShape3D_rqfqc")
 
 [node name="hp_label" parent="enemy" instance=ExtResource("7_ucgjn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.742428, 0.275239, 0.0119177)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.641037, 0.275239, 0.0119176)
 pixel_size = 0.003
 billboard = 0
 font_size = 82
 
 [node name="attack_btn" type="CSGMesh3D" parent="enemy"]
-transform = Transform3D(0.428517, 0, 0, 0, 0.332149, 0, 0, 0, 1, 0.717224, 2.54458, 0)
+transform = Transform3D(0.428517, 0, 0, 0, 0.332149, 0, 0, 0, 1, 0.631219, 2.54458, 0)
 mesh = SubResource("PlaneMesh_ro4j2")
 material = SubResource("StandardMaterial3D_x0u1w")
 
@@ -165,6 +156,52 @@ font_size = 117
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0087347, -0.032896, 0.0554594)
 shape = SubResource("BoxShape3D_3xrok")
 
+[node name="debug_target" type="Label3D" parent="enemy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.637067, 3.13366, 0)
+text = "Target: Enemy"
+font_size = 52
+script = ExtResource("8_3x5vk")
+
+[node name="target_arrow" type="Path3D" parent="enemy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.911944, 1.13846, 0)
+curve = SubResource("Curve3D_qgumi")
+script = ExtResource("9_id0xr")
+
+[node name="CSGPolygon3D" type="CSGPolygon3D" parent="enemy/target_arrow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.243843, 4.76837e-07, 0.133884)
+polygon = PackedVector2Array(0, 0.075, 0, 0, 0, 0)
+mode = 2
+path_node = NodePath("..")
+path_interval_type = 0
+path_interval = 0.1
+path_simplify_angle = 0.1
+path_rotation = 2
+path_local = true
+path_continuous_u = true
+path_u_distance = 1.56
+path_joined = false
+material = SubResource("StandardMaterial3D_w7lpv")
+
+[node name="target_curve" type="Node3D" parent="enemy/target_arrow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.292731, 2.18043, 0)
+
+[node name="cam_gimbal" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.97237, 0.233445, 0, -0.233445, 0.97237, 0, 1.815, 5.81)
+script = ExtResource("2_vlnwf")
+_rotationSpeed = 0.005
+
+[node name="player_camera" type="Camera3D" parent="cam_gimbal"]
+fov = 120.0
+size = 0.1
+near = 0.001
+
+[node name="GroundPlaceholder" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.495, -0.32)
+size = Vector3(20, 1, 20)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="GroundPlaceholder"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00482, 0)
+
 [node name="player_characters" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.2545, 0, 2.5)
 
@@ -173,6 +210,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.794, 0, 0)
 
 [node name="player_delta" type="Node3D" parent="player_characters/character_pos1" groups=["PlayerUnit"]]
 script = ExtResource("5_63epg")
+_unitName = "Delta"
 
 [node name="char_sprite" type="Sprite3D" parent="player_characters/character_pos1/player_delta"]
 offset = Vector2(81, 265)
@@ -223,6 +261,29 @@ text = "Target: Enemy"
 font_size = 52
 script = ExtResource("8_3x5vk")
 
+[node name="target_arrow" type="Path3D" parent="player_characters/character_pos1/player_delta"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.270907, 1.13846, 0)
+curve = SubResource("Curve3D_qgumi")
+script = ExtResource("9_id0xr")
+
+[node name="curve_polygon" type="CSGPolygon3D" parent="player_characters/character_pos1/player_delta/target_arrow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.243843, 4.76837e-07, 0.133884)
+polygon = PackedVector2Array(0, 0.075, 0, 0, 0, 0)
+mode = 2
+path_node = NodePath("..")
+path_interval_type = 0
+path_interval = 0.1
+path_simplify_angle = 0.1
+path_rotation = 2
+path_local = true
+path_continuous_u = true
+path_u_distance = 1.56
+path_joined = false
+material = SubResource("StandardMaterial3D_w7lpv")
+
+[node name="target_curve" type="Node3D" parent="player_characters/character_pos1/player_delta/target_arrow"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.238168, 2.18043, 0)
+
 [node name="character_pos2" type="Node3D" parent="player_characters"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.496834, -0.00664747, -0.123961)
 
@@ -232,28 +293,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.550611, 0, -0.298645)
 [node name="character_pos4" type="Node3D" parent="player_characters"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.857956, -0.0132949, -0.216989)
 
-[node name="Path3D" type="Path3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.041, 3.3, 2.305)
-curve = SubResource("Curve3D_qgumi")
-script = ExtResource("9_id0xr")
-destinationX = 5.805
-destinationY = 0.095
+[node name="background_mouse_collider" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.07561)
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("3_caqmw")
 
-[node name="CSGPolygon3D" type="CSGPolygon3D" parent="Path3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0158839, 4.76837e-07, -0.325133)
-polygon = PackedVector2Array(0, 0.155, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-mode = 2
-path_node = NodePath("..")
-path_interval_type = 0
-path_interval = 0.1
-path_simplify_angle = 0.1
-path_rotation = 2
-path_local = true
-path_continuous_u = true
-path_u_distance = 5.0
-path_joined = false
-material = SubResource("StandardMaterial3D_w7lpv")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="background_mouse_collider"]
+shape = SubResource("BoxShape3D_crgnk")
 
+[connection signal="pressed" from="CombatUI/resolve_round_btn/VBoxContainer/MarginContainer/Button" to="SceneManager" method="_on_button_pressed"]
 [connection signal="mouse_entered" from="enemy/unit_col_bdy" to="enemy" method="_on_static_body_3d_mouse_entered"]
 [connection signal="mouse_exited" from="enemy/unit_col_bdy" to="enemy" method="_on_static_body_3d_mouse_exited"]
 [connection signal="mouse_entered" from="player_characters/character_pos1/player_delta/unit_col_bdy" to="player_characters/character_pos1/player_delta" method="_on_static_body_3d_mouse_entered"]
