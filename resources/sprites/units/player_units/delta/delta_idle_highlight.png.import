@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bb4k6b2edrnj7"
-path.s3tc="res://.godot/imported/dotted_line.png-248c2e02398150f318aceef2228dc007.s3tc.ctex"
+uid="uid://5y3ndtfj5o62"
+path.s3tc="res://.godot/imported/delta_idle_highlight.png-7d622d36982ddaf2553105ec8195757e.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://resources/sprites/dotted_line.png"
-dest_files=["res://.godot/imported/dotted_line.png-248c2e02398150f318aceef2228dc007.s3tc.ctex"]
+source_file="res://resources/sprites/units/player_units/delta/delta_idle_highlight.png"
+dest_files=["res://.godot/imported/delta_idle_highlight.png-7d622d36982ddaf2553105ec8195757e.s3tc.ctex"]
 
 [params]
 

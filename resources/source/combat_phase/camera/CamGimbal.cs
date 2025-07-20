@@ -3,6 +3,8 @@ using System;
 
 public partial class CamGimbal : Node3D
 {
+    public static CamGimbal Instance { get; private set; }
+
     private Camera3D _cameraObj;
 
     [Export] private float _rotationSpeed = 0.05f;
@@ -15,6 +17,9 @@ public partial class CamGimbal : Node3D
 	private float _targetPositionH = 0;
 	private float _targetPositionV = 0;
 
+    private float _cameraMoveSpeed = 1f;
+    private float _cameraMinY = 1.5f;
+    private float _cameraMaxY = 3.5f;
 	private float _maxCamAngle = Mathf.DegToRad(-20f);
 
 	// Boolean set by checking if the player clicked on an object
@@ -35,6 +40,7 @@ public partial class CamGimbal : Node3D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
+        Instance = this;
 		_cameraObj = GetViewport().GetCamera3D();
     }
 
@@ -65,14 +71,12 @@ public partial class CamGimbal : Node3D
 	{
 		if(_mouseMotionY != 0)
         {
-            // Removes magnitude of mouse motion
-            // Only moveDirV decides speed of camera movement
             Vector2 moveDirV = mouseMoveDir();
 
             _targetPositionV += moveDirV[1] * 1f;
-            _targetPositionV = Math.Clamp(_targetPositionV, 1.5f, 3.5f);
+            _targetPositionV = Math.Clamp(_targetPositionV, _cameraMinY, _cameraMaxY);
             Vector3 targetVector = new Vector3(Position.X, _targetPositionV, Position.Z);
-            GlobalPosition = GlobalPosition.Lerp(targetVector, 1.5f * (float)delta);
+            GlobalPosition = GlobalPosition.Lerp(targetVector, _cameraMoveSpeed * (float)delta);
 
             _mouseMotionY = 0;
         }
@@ -82,6 +86,7 @@ public partial class CamGimbal : Node3D
     {
         var moveDirV = new Vector2(0, 0);
 
+        // Removes magnitude from mouse movement
         if (_mouseMotionY > 0)
         {
 			moveDirV[1] = 1;

@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://csnmdiepwidj2"]
 
-[ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/A1_Separate.png" id="1_y42q5"]
+[ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/units/player_units/delta/delta_idle.png" id="1_y42q5"]
 [ext_resource type="PackedScene" uid="uid://o57m7h1ehfmr" path="res://resources/prefabs/hp_details_label.tscn" id="3_7jwhk"]
 
 [node name="player_placeholder" type="Sprite3D"]

@@ -1,17 +1,24 @@
 using Godot;
 using System;
+using static SceneManager;
 
-public partial class MouseToViewportCam : Camera3D
+public partial class Action : Node
 {
-	public static MouseToViewportCam Instance { get; private set; }
+    public virtual string Name {  get; set; }
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Instance = this;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+	}
+
+	public virtual void Execute(ActionDelegate actionDelegate)
+	{
+		GD.Print($"Task {Name} Completed");
+		actionDelegate.Invoke();
 	}
 }

@@ -1,0 +1,43 @@
+<units>
+  <delta>
+    <id>0</id>
+    <name>Delta</name>
+    <field_pos>1</field_pos>
+    <stats>
+      <max_hp>125</max_hp>
+    </stats>
+    <abilities>
+      <ability_0>
+        <ability_id>0</ability_id>
+        <ability_tier>1</ability_tier>
+        <ability_name>Sword Slash</ability_name>
+        <ability_damage>25</ability_damage>
+        <crit_chance>10</crit_chance>
+        <crit_mult>1</crit_mult>
+        <animation>WIP</animation>
+      </ability_0>
+      <ability_1>
+        <ability_id>1</ability_id>
+        <ability_tier>2</ability_tier>
+        <ability_name>Flying Strike</ability_name>
+        <ability_damage>50</ability_damage>
+        <crit_chance>25</crit_chance>
+        <crit_mult>1</crit_mult>
+        <animation>WIP</animation>
+      </ability_1>
+      <ability_2>
+        <ability_id>3</ability_id>
+        <ability_tier>3</ability_tier>
+        <ability_name>Falling Heaven</ability_name>
+        <ability_damage>150</ability_damage>
+        <crit_chance>50</crit_chance>
+        <crit_mult>1.5</crit_mult>
+        <animation>WIP</animation>
+      </ability_2>
+    </abilities>
+    <sprites>
+      <idle>res://resources/sprites/units/player_units/delta/delta_idle.png</idle>
+      <idle_highlight>res://resources/sprites/units/player_units/delta/delta_idle_highlight.png</idle_highlight>
+    </sprites>
+  </delta>
+</units>

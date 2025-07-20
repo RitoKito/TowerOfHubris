@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cp82mehcmy7b"
-path.s3tc="res://.godot/imported/A1_Separate.png-eb2189bc9e691d665007a76db8e3f7a5.s3tc.ctex"
+uid="uid://byg5tuodni1xh"
+path.s3tc="res://.godot/imported/arrowhead.png-9ecc65c4ea461a6a2c578a1a82829bc3.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://resources/sprites/A1_Separate.png"
-dest_files=["res://.godot/imported/A1_Separate.png-eb2189bc9e691d665007a76db8e3f7a5.s3tc.ctex"]
+source_file="res://resources/sprites/targetting_arrow/arrowhead.png"
+dest_files=["res://.godot/imported/arrowhead.png-9ecc65c4ea461a6a2c578a1a82829bc3.s3tc.ctex"]
 
 [params]
 
