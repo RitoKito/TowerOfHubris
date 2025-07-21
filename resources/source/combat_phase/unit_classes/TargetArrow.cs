@@ -14,7 +14,7 @@ public partial class TargetArrow : Path3D
 	private Vector2 _mousePos;
 	private float _curveStrenght = 1;
 	private uint _collisionLayer = 2;
-	private float _vertexHeight = 1;
+	private float _vertexHeight = 0.2f;
 
 	public override void _Ready()
 	{
@@ -44,7 +44,9 @@ public partial class TargetArrow : Path3D
 
 		Curve.AddPoint(ToLocal(origin));
 		Curve.AddPoint(ToLocal(destination));
-		Curve.SetPointIn(1, ToLocal(new Vector3(origin.X - destination.X, midpoint.Y + _vertexHeight, midpoint.Z) * _curveStrenght));
+
+		float _vertexHeightPerDistance = _vertexHeight + GlobalPosition.DistanceTo(destination / 10);
+        Curve.SetPointIn(1, ToLocal(new Vector3(origin.X - destination.X, _vertexHeightPerDistance, midpoint.Z) * _curveStrenght));
 	}
 
 	public void DrawTargetArrow()
@@ -68,8 +70,6 @@ public partial class TargetArrow : Path3D
 			_curveDuplicate.AddPoint(ToLocal(origin));
 			_curveDuplicate.AddPoint(ToLocal(destination));
 
-
-			Vector3 lastPoint = _curveDuplicate.GetPointPosition(_curveDuplicate.PointCount - 1);
 			_arrowSprite.GlobalPosition = destination;
 			Vector3 dir = (destination - origin);
 			float angle = Mathf.Atan2(dir.Y, dir.X);
