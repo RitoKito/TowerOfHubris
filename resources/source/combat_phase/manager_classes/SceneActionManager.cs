@@ -15,12 +15,12 @@ public partial class SceneActionManager : Node3D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-        if (Instance == null)
-            Instance = this;
-        else
-            Free();
+		if (Instance == null)
+			Instance = this;
+		else
+			Free();
 
-        _messenger = Messenger.Instance;
+		_messenger = Messenger.Instance;
 		_sceneManager = SceneManager.Instance;
 
 		_messenger.OnResolveRound += QueueUnitActions;

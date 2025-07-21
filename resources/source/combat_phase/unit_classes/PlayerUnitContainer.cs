@@ -9,8 +9,8 @@ public partial class PlayerUnitContainer : Node3D
 	public Unit[] UnitArray {  get { return _unitArray; } }
 
 
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
 	{
 		for(int i = 0; i < 4; i++)
 		{
