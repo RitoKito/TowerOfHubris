@@ -41,8 +41,8 @@ public partial class Root : Node3D
 		var unitPos = $"unit_pos_{pos}";
 		playerContainerInstance.GetNode(unitPos).AddChild(deltaInstance);
 
-        var deltaScript = (Unit)deltaInstance;
-        deltaScript.Id = playerUnitDataXML.SelectSingleNode("units/delta/id").InnerText.ToInt();
+		var deltaScript = (Unit)deltaInstance;
+		deltaScript.Id = playerUnitDataXML.SelectSingleNode("units/delta/id").InnerText.ToInt();
 		deltaScript.UnitName = playerUnitDataXML.SelectSingleNode("units/delta/name").InnerText;
 
 		var idle_texture = (Texture2D) GD.Load(playerUnitDataXML.SelectSingleNode("units/delta/sprites/idle").InnerText);
@@ -51,17 +51,17 @@ public partial class Root : Node3D
 		deltaScript.UnitTextures.Add("idle", idle_texture);
 		deltaScript.UnitTextures.Add("idle_highlight", idle_highlight_texture);
 
-        //deltaScript.GetNode<Sprite3D>("unit_spr").Texture = idle_texture;
+		//deltaScript.GetNode<Sprite3D>("unit_spr").Texture = idle_texture;
 
 
-        deltaScript.MaxHp = playerUnitDataXML.SelectSingleNode("units/delta/stats/max_hp").InnerText.ToInt();
+		deltaScript.MaxHp = playerUnitDataXML.SelectSingleNode("units/delta/stats/max_hp").InnerText.ToInt();
 
 		Ability[] abilityList = ImportAbilities("delta");
 		deltaScript.AbilityList = abilityList;
 
 		deltaScript._Ready();
 
-        SceneManager.Instance.appendPlayerUnit(deltaScript);
+		SceneManager.Instance.appendPlayerUnit(deltaScript);
 	}
 
 	private Ability[] ImportAbilities(string unit)
@@ -82,15 +82,15 @@ public partial class Root : Node3D
 						.SetCritMult(abilityData.SelectSingleNode("crit_mult").InnerText.ToFloat())
 						.Build();
 
-                abilityList[i] = ability;
-            }
-            catch (Exception ex)
+				abilityList[i] = ability;
+			}
+			catch (Exception ex)
 			{
 				GD.Print(ex);
 			}
 
-        }
+		}
 
-        return abilityList;
-    }
+		return abilityList;
+	}
 }

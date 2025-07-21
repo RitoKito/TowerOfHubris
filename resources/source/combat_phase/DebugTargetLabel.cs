@@ -15,12 +15,19 @@ public partial class DebugTargetLabel : Label3D
 	{
 		if(unit.GetEnemyTarget() != null)
 		{
-            Text = $"Target: {unit.GetEnemyTarget().UnitName}";
-        }
+
+			
+			
+			
+			
+			
+			
+			Text = $"Target: {unit.GetEnemyTarget().UnitName}";
+		}
 		else
 		{
 			Text = "Target: No Target";
 		}
 
-    }
+	}
 }

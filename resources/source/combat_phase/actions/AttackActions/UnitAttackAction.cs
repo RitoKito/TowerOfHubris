@@ -32,7 +32,7 @@ public partial class UnitAttackAction : Action
 	{
 		Name = $"{unit.UnitName} Attack";
 
-        _unit = unit;
+		_unit = unit;
 		_homePosition = unit.GlobalPosition;
 		_enemyTargetPosition = unit.GetEnemyTarget().GlobalPosition;
 		_targetPosition = _enemyTargetPosition - _offset;
@@ -64,14 +64,15 @@ public partial class UnitAttackAction : Action
 		{
 			// Arbitrary wait
 			// To be replaced with animations
-            await Task.Delay(100);
-            _unit.UseAbility();
-            await Task.Delay(100);
-            _state = State.MovingHome;
-        }
 
-        if (_state == State.MovingHome)
-        {
+			await Task.Delay(100);
+			_unit.UseAbility();
+			await Task.Delay(100);
+			_state = State.MovingHome;
+		}
+
+		if (_state == State.MovingHome)
+		{
 			_unit.GlobalPosition = _unit.GlobalPosition.Lerp(_homePosition, _moveSpeed * (float)delta);
 
 			if( _unit.GlobalPosition <= _homePosition + destinationThreshold)
@@ -79,22 +80,22 @@ public partial class UnitAttackAction : Action
 				_unit.GlobalPosition = _homePosition;
 				_state = State.Completed;
 			}
-        }
+		}
 
 		if(_state == State.Completed)
 		{
 			// The node is queued for safe deletion
 			// Until then it will remain in an idle state
-            _state = State.Idle;
+			_state = State.Idle;
 			base.Execute(_actionDelegate);
-            QueueFree();
-        }
-    }
+			QueueFree();
+		}
+	}
 
 
-    public override void Execute(ActionDelegate actionDelegate)
-    {
+	public override void Execute(ActionDelegate actionDelegate)
+	{
 		_actionDelegate = actionDelegate; 
 		_state = State.MovingToEnemy;
-    }
+	}
 }

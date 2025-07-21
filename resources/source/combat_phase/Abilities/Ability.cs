@@ -36,37 +36,40 @@ public partial class Ability : Node
 			return this;
 		}
 
-        public AbilityBuilder SetName(string name)
-        {
-            _ability.AbilityName= name;
-            return this;
-        }
-        public AbilityBuilder SetTier(int tier)
-        {
-            _ability.AbilityTier = tier;
-            return this;
-        }
-        public AbilityBuilder SetDamage(float damage)
-        {
-            _ability.AbilityDamage = damage;
-            return this;
-        }
-        public AbilityBuilder SetCritChance(float critChance)
-        {
-            _ability.CritChance = critChance;
-            return this;
-        }
-        public AbilityBuilder SetCritMult(float critMult)
-        {
-            _ability.AbilityCritMult = critMult;
-            return this;
-        }
+
+		
+		
+		public AbilityBuilder SetName(string name)
+		{
+			_ability.AbilityName= name;
+			return this;
+		}
+		public AbilityBuilder SetTier(int tier)
+		{
+			_ability.AbilityTier = tier;
+			return this;
+		}
+		public AbilityBuilder SetDamage(float damage)
+		{
+			_ability.AbilityDamage = damage;
+			return this;
+		}
+		public AbilityBuilder SetCritChance(float critChance)
+		{
+			_ability.CritChance = critChance;
+			return this;
+		}
+		public AbilityBuilder SetCritMult(float critMult)
+		{
+			_ability.AbilityCritMult = critMult;
+			return this;
+		}
 
 		public Ability Build()
 		{
 			return _ability;
 		}
-    }
+	}
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()

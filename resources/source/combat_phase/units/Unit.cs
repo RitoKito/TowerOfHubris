@@ -5,9 +5,9 @@ public partial class Unit : Node3D
 {
 	private Sprite3D _spriteHighlight = null;
 	private HpDetails _hpLabel = null;
-    private TargetArrow _targetArrow = null;
+	private TargetArrow _targetArrow = null;
 	public TargetArrow TargetArrow { get { return _targetArrow; } }
-    private Unit _enemyTarget = null;
+	private Unit _enemyTarget = null;
 
 	private int _id = -1;
 	public int Id { get { return _id; } set { _id = value; } }
@@ -39,9 +39,9 @@ public partial class Unit : Node3D
 	public Unit GetEnemyTarget() { return _enemyTarget; }
 	public void SetEnemeyTarget(Unit target) {
 		_enemyTarget = target;
-        _drawTargetArrow = false;
-        _targetArrow.HideTargettingUI();
-        DrawTargettingCurve();
+		_drawTargetArrow = false;
+		_targetArrow.HideTargettingUI();
+		DrawTargettingCurve();
 	}
 	public void RemoveEnemyTarget() { _enemyTarget = null; }
 
@@ -50,14 +50,14 @@ public partial class Unit : Node3D
 	{
 		_targetArrow = GetNode<TargetArrow>("target_arrow");
 		_spriteHighlight = GetNode<Sprite3D>("unit_select_spr");
-        _hpLabel = GetNode<HpDetails>("hp_label");
+		_hpLabel = GetNode<HpDetails>("hp_label");
 
 		_currentHp = _maxHp;
 
-        _hpLabel.updateHpLabel($"{_currentHp}/{_maxHp}");
+		_hpLabel.updateHpLabel($"{_currentHp}/{_maxHp}");
 
 
-        showSpriteHighlight(false);
+		showSpriteHighlight(false);
 		_currentAbility = _abilityList[2];
 	}
 
@@ -66,9 +66,16 @@ public partial class Unit : Node3D
 	{
 		if (_drawTargetArrow)
 		{
-            _targetArrow.DrawTargetArrow();
-        }
-    }
+
+			
+			
+			
+			
+			
+			
+			_targetArrow.DrawTargetArrow();
+		}
+	}
 
 	public void showSpriteHighlight(bool state)
 	{
@@ -86,10 +93,10 @@ public partial class Unit : Node3D
 	{
 		if(_enemyTarget != null)
 		{
-            _enemyTarget.TakeDamage(CurrentAbility.AbilityDamage);
+			_enemyTarget.TakeDamage(CurrentAbility.AbilityDamage);
 			GD.Print(_currentAbility.AbilityDamage);
-            _enemyTarget = null;
-        }
+			_enemyTarget = null;
+		}
 
 		_targetArrow.HideTargettingUI();
 	}
@@ -114,9 +121,9 @@ public partial class Unit : Node3D
 
 	public void HideTargettingUI()
 	{
-        _drawTargetArrow = false;
+		_drawTargetArrow = false;
 		_targetArrow.HideTargettingUI();
-    }
+	}
 
 	public void DrawTargettingCurve() {
 		_targetArrow.DrawTargetCurve(_enemyTarget.TargetArrow.TargetCurvePos);
@@ -126,11 +133,11 @@ public partial class Unit : Node3D
 	//TODO Implement C# signals
 	private void _on_static_body_3d_mouse_entered()
 	{
-        showSpriteHighlight(true);
+		showSpriteHighlight(true);
 	}
 
 	private void _on_static_body_3d_mouse_exited()
 	{
-        showSpriteHighlight(false);
+		showSpriteHighlight(false);
 	}
 }
