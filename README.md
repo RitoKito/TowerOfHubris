@@ -1,2 +1,3 @@
-# TowerOfHubris
-Rogue Like Game Demo
+# Tower Of Hubris
+
+This is WIP repository for a rogue-like video game demo.
