@@ -1,6 +1,4 @@
 using Godot;
-using Godot.Collections;
-using System.Collections;
 using System.Collections.Generic;
 
 public partial class SceneManager : Node3D
@@ -11,7 +9,6 @@ public partial class SceneManager : Node3D
 	private readonly List<Node> _playerUnits = new List<Node>();
 	public List<Node> PlayerUnits { get{ return _playerUnits; } }
 
-	public delegate void ActionDelegate();
 	private bool _processingTask = false;
 
 	public void AppendPlayerUnit(Node unit)

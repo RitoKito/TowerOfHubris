@@ -1,12 +1,10 @@
 using Godot;
-using static SceneManager;
+using static SceneActionManager;
 
 
 //Action base class
 public partial class GameAction : Node
 {
-	public virtual string Name {  get; set; }
-
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{

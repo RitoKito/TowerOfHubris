@@ -1,14 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://c6uqidn550wus"]
+[gd_scene load_steps=11 format=3 uid="uid://c6uqidn550wus"]
 
-[ext_resource type="Script" path="res://resources/source/combat_phase/Root.cs" id="1_3w7s4"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/SceneManager.cs" id="1_kuo8a"]
-[ext_resource type="Script" path="res://scenes/HeadManager.cs" id="2_tlw64"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/camera/CamGimbal.cs" id="2_vlnwf"]
-[ext_resource type="Script" path="res://scenes/InputHandler.cs" id="3_6qbw3"]
-[ext_resource type="Script" path="res://scenes/UnitSelectionManager.cs" id="4_74sud"]
+[ext_resource type="Script" path="res://resources/source/manager_classes/Root.cs" id="1_3w7s4"]
+[ext_resource type="Script" path="res://resources/source/manager_classes/SceneManager.cs" id="1_kuo8a"]
+[ext_resource type="Script" path="res://resources/source/camera/CamGimbal.cs" id="2_vlnwf"]
+[ext_resource type="Script" path="res://resources/source/manager_classes/InputHandler.cs" id="3_6qbw3"]
+[ext_resource type="Script" path="res://resources/source/manager_classes/UnitSelectionManager.cs" id="4_74sud"]
 [ext_resource type="PackedScene" uid="uid://cgmak1mnjcwky" path="res://resources/prefabs/enemy_unit_container.tscn" id="4_pvupf"]
-[ext_resource type="Script" path="res://scenes/SceneActionManager.cs" id="6_ug1ii"]
-[ext_resource type="Script" path="res://scenes/ResolveRoundButton.cs" id="7_1i6q6"]
+[ext_resource type="Script" path="res://resources/source/manager_classes/SceneActionManager.cs" id="6_ug1ii"]
+[ext_resource type="Script" path="res://resources/source/manager_classes/ResolveRoundButton.cs" id="7_1i6q6"]
 
 [sub_resource type="CSharpScript" id="CSharpScript_7na3a"]
 script/source = "using Godot;
@@ -42,7 +41,6 @@ size = Vector3(100, 100, 0.111328)
 script = ExtResource("1_3w7s4")
 
 [node name="Managers" type="Node3D" parent="."]
-script = ExtResource("2_tlw64")
 
 [node name="SceneManager" type="Node3D" parent="Managers"]
 script = ExtResource("1_kuo8a")

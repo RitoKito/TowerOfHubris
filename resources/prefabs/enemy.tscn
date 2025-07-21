@@ -1,12 +1,12 @@
 [gd_scene load_steps=15 format=3 uid="uid://ei0kswaxf6nn"]
 
-[ext_resource type="Script" path="res://resources/source/combat_phase/units/Unit.cs" id="1_m1kmm"]
+[ext_resource type="Script" path="res://resources/source/unit_classes/Unit.cs" id="1_m1kmm"]
 [ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/units/player_units/delta/delta_idle.png" id="2_ps0xl"]
 [ext_resource type="Texture2D" uid="uid://5y3ndtfj5o62" path="res://resources/sprites/units/player_units/delta/delta_idle_highlight.png" id="3_ef0x0"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/units/UnitColliderBody.cs" id="4_sd6t6"]
+[ext_resource type="Script" path="res://resources/source/unit_classes/UnitColliderBody.cs" id="4_sd6t6"]
 [ext_resource type="PackedScene" uid="uid://o57m7h1ehfmr" path="res://resources/prefabs/hp_details_label.tscn" id="5_vjsyf"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/DebugTargetLabel.cs" id="6_ohofr"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/units/TargetArrow.cs" id="7_qw1c2"]
+[ext_resource type="Script" path="res://resources/source/debug_classes/DebugTargetLabel.cs" id="6_ohofr"]
+[ext_resource type="Script" path="res://resources/source/unit_classes/TargetArrow.cs" id="7_qw1c2"]
 [ext_resource type="Texture2D" uid="uid://bb4k6b2edrnj7" path="res://resources/sprites/targetting_arrow/dotted_line.png" id="8_ok8x7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rqfqc"]

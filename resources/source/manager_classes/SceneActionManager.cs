@@ -3,13 +3,20 @@ using System.Collections.Generic;
 
 public partial class SceneActionManager : Node3D
 {
-	private SceneManager _sceneManager;
+    public static SceneActionManager Instance { get; private set; }
+
+
+    public delegate void ActionDelegate();
+
+    private SceneManager _sceneManager;
 	private Messenger _messenger;
 	private Queue<GameAction> _gameActionQueue = new Queue<GameAction>();
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		Instance = this;
+
 		_messenger = Messenger.Instance;
 		_sceneManager = SceneManager.Instance;
 
@@ -28,9 +35,6 @@ public partial class SceneActionManager : Node3D
 
 	private void ProcessNextTask()
 	{
-		if (_gameActionQueue.Count > 0) 
-			return;
-
 		GameAction a = _gameActionQueue.Dequeue();
 		GD.Print("Tasking");
 		a.Execute(() =>

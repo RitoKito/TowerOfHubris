@@ -1,6 +1,6 @@
 using Godot;
 using System.Threading.Tasks;
-using static SceneManager;
+using static SceneActionManager;
 
 public partial class UnitAttackAction : GameAction
 {
@@ -12,9 +12,6 @@ public partial class UnitAttackAction : GameAction
 		MovingHome,
 		Completed
 	}
-
-	public override string Name {  get; set; }
-
 
 	private State _state;
 	private Unit _unit;

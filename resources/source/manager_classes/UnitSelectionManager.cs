@@ -17,7 +17,7 @@ public partial class UnitSelectionManager : Node3D
 		_messenger.OnMouseLeftClick += HandleMouseLeftClick;
 		_messenger.OnMouseLeftRelease += HandleMouseLeftRelease;
 
-		_inputHandler = HeadManager.Instance.InputHandler;
+		_inputHandler = InputHandler.Instance;
 		_cameraObj = GetViewport().GetCamera3D();
 		
 	}

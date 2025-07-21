@@ -3,10 +3,6 @@ using Godot.Collections;
 
 public partial class TargetArrow : Path3D
 {
-
-
-	
-	
 	// Called when the node enters the scene tree for the first time.
 
 	private Camera3D _camera;

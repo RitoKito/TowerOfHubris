@@ -1,9 +1,10 @@
 using Godot;
-using System;
 using Godot.Collections;
 
 public partial class InputHandler : Node3D
 {
+	public static InputHandler Instance { get; private set; }
+
 	private Messenger _messenger;
 	private Camera3D _cameraObj;
 
@@ -18,12 +19,10 @@ public partial class InputHandler : Node3D
 	private Dictionary _objectFromLeftClick = null;
 	public Dictionary ObjectFromLeftClick {  get { return _objectFromLeftClick; } }
 
-
-
-
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		Instance = this;
 		_messenger = Messenger.Instance;
 		_cameraObj = GetViewport().GetCamera3D();
 	}

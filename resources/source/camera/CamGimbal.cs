@@ -48,7 +48,7 @@ public partial class CamGimbal : Node3D
 		Instance = this;
 
 		_cameraObj = GetViewport().GetCamera3D();
-		_inputHandler = HeadManager.Instance.InputHandler;
+		_inputHandler = InputHandler.Instance;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
