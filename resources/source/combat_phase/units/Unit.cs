@@ -1,7 +1,5 @@
 using Godot;
-using System;
-using System.Collections;
-using System.Diagnostics;
+using System.Collections.Generic;
 
 public partial class Unit : Node3D
 {
@@ -11,12 +9,12 @@ public partial class Unit : Node3D
 	public TargetArrow TargetArrow { get { return _targetArrow; } }
     private Unit _enemyTarget = null;
 
-	private int _id = 0;
+	private int _id = -1;
 	public int Id { get { return _id; } set { _id = value; } }
 
 
-	private string _unitName = "placeHolder";
-	public string UnitName {  get { return _unitName; } set { _unitName = Name; } }
+	private string _unitName = "The Mighty Placeholder";
+	public string UnitName {  get { return _unitName; } set { _unitName = value; } }
 
 
 	private float _maxHp = 999;
@@ -24,11 +22,14 @@ public partial class Unit : Node3D
 
 	private float _currentHp;
 
-	private Ability[] _abilityList = new Ability[3];
+	private Ability[] _abilityList = new Ability[0];
 	public Ability[] AbilityList { get { return _abilityList; } set { _abilityList = value; } }
 
 	private Ability _currentAbility = null;
 	public Ability CurrentAbility { get { return _currentAbility; } }
+
+	private Dictionary<string, Texture2D> _unitTextureList = new Dictionary<string, Texture2D>();
+	public Dictionary<string, Texture2D> UnitTextures { get { return  _unitTextureList; } }
 
 	//private float _attackValue = 2;
 
@@ -44,39 +45,6 @@ public partial class Unit : Node3D
 	}
 	public void RemoveEnemyTarget() { _enemyTarget = null; }
 
-	public class UnitBuilder
-	{
-		Unit _unit = new Unit();
-
-		public UnitBuilder SetId(int id) {
-			_unit.Id = id;
-			return this;
-		}
-
-		public UnitBuilder SetName(string name)
-		{
-			_unit.Name = name;
-			return this;
-		}
-
-		public UnitBuilder SetMaxHP(float maxHp)
-		{
-			_unit.MaxHp = maxHp;
-			return this;
-		}
-
-		public UnitBuilder SetAbilityList(Ability[] abilityList)
-		{
-			_unit.AbilityList = abilityList;
-			return this;
-		}
-
-		public Unit Build()
-		{
-			return _unit;
-		}
-	}
-
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -84,13 +52,12 @@ public partial class Unit : Node3D
 		_spriteHighlight = GetNode<Sprite3D>("unit_select_spr");
         _hpLabel = GetNode<HpDetails>("hp_label");
 
-
 		_currentHp = _maxHp;
 
         _hpLabel.updateHpLabel($"{_currentHp}/{_maxHp}");
 
-        showSpriteHighlight(false);
 
+        showSpriteHighlight(false);
 		_currentAbility = _abilityList[2];
 	}
 
@@ -136,7 +103,7 @@ public partial class Unit : Node3D
 			Hide();
 		}
 
-		// TODO SIMPLIFY
+		// TODO simplify
 		_hpLabel.updateHpLabel($"{_currentHp}/{_maxHp}");
 	}
 
@@ -155,6 +122,8 @@ public partial class Unit : Node3D
 		_targetArrow.DrawTargetCurve(_enemyTarget.TargetArrow.TargetCurvePos);
 	}
 
+
+	//TODO Implement C# signals
 	private void _on_static_body_3d_mouse_entered()
 	{
         showSpriteHighlight(true);

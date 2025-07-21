@@ -1,5 +1,4 @@
 using Godot;
-using System;
 using System.Threading.Tasks;
 using static SceneManager;
 
@@ -20,10 +19,11 @@ public partial class UnitAttackAction : Action
 	private State _state;
 	private Unit _unit;
 	private float _moveSpeed = 5f;
-	private float _offsetX = 1f;
+	private Vector3 _offset = new Vector3(1f, 0, 0);
 	private Vector3 _homePosition;
 	private Vector3 _enemyTargetPosition;
 	private Vector3 _targetPosition;
+	private Vector3 destinationThreshold = new Vector3(0.01f, 0, 0);
 	private bool _completed = false;
 
 	private ActionDelegate _actionDelegate;
@@ -35,7 +35,7 @@ public partial class UnitAttackAction : Action
         _unit = unit;
 		_homePosition = unit.GlobalPosition;
 		_enemyTargetPosition = unit.GetEnemyTarget().GlobalPosition;
-		_targetPosition = _enemyTargetPosition - new Vector3(_offsetX, 0, 0);
+		_targetPosition = _enemyTargetPosition - _offset;
 		_state = State.Idle;
 	}
 
@@ -52,7 +52,7 @@ public partial class UnitAttackAction : Action
 		{
 			_unit.GlobalPosition = _unit.GlobalPosition.Lerp(_targetPosition, _moveSpeed * (float)delta);
 
-			if (_unit.GlobalPosition >= _targetPosition - new Vector3(0.01f, 0, 0))
+			if (_unit.GlobalPosition >= _targetPosition - destinationThreshold)
 			{
 				_unit.GlobalPosition = _targetPosition;
 				_state = State.Attacking;
@@ -62,6 +62,8 @@ public partial class UnitAttackAction : Action
 		// TODO ANIMATION
 		if(_state == State.Attacking)
 		{
+			// Arbitrary wait
+			// To be replaced with animations
             await Task.Delay(100);
             _unit.UseAbility();
             await Task.Delay(100);
@@ -72,7 +74,7 @@ public partial class UnitAttackAction : Action
         {
 			_unit.GlobalPosition = _unit.GlobalPosition.Lerp(_homePosition, _moveSpeed * (float)delta);
 
-			if( _unit.GlobalPosition <= _homePosition + new Vector3(0.01f, 0, 0))
+			if( _unit.GlobalPosition <= _homePosition + destinationThreshold)
 			{
 				_unit.GlobalPosition = _homePosition;
 				_state = State.Completed;
@@ -82,7 +84,7 @@ public partial class UnitAttackAction : Action
 		if(_state == State.Completed)
 		{
 			// The node is queued for safe deletion
-			// Until it is deleted it will remain in idle state
+			// Until then it will remain in an idle state
             _state = State.Idle;
 			base.Execute(_actionDelegate);
             QueueFree();

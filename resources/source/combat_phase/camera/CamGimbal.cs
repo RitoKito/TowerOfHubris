@@ -116,7 +116,7 @@ public partial class CamGimbal : Node3D
         {
             if (mouseButton.ButtonIndex == MouseButton.Left && mouseButton.Pressed)
             {
-                if (CombatUtils.ShootRayCast(_cameraObj) != null)
+                if (Utils.ShootRayCast(_cameraObj) != null)
                 {
                     _clickedOnCollider = true;
                 }

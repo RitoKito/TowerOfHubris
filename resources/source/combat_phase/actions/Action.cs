@@ -1,7 +1,8 @@
 using Godot;
-using System;
 using static SceneManager;
 
+
+//Action base class
 public partial class Action : Node
 {
     public virtual string Name {  get; set; }

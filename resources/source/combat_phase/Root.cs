@@ -24,14 +24,16 @@ public partial class Root : Node3D
 	{
 	}
 
+
+	// TODO Make separate function for unit instantiation
 	public void InstantiatePlayerCharacters()
 	{
-		var playerContainer = GD.Load<PackedScene>(InstantionPaths._playerContainerPath);
+		var playerContainer = GD.Load<PackedScene>(PathConstants._playerContainerPath);
 		var playerContainerInstance = playerContainer.Instantiate();
 		AddChild(playerContainerInstance);
 
 
-		var unitPlaceholder = GD.Load<PackedScene>(InstantionPaths._unitPlaceholderPath);
+		var unitPlaceholder = GD.Load<PackedScene>(PathConstants._unitPlaceholderPath);
 		var deltaInstance = unitPlaceholder.Instantiate();
 
 
@@ -41,10 +43,17 @@ public partial class Root : Node3D
 
         var deltaScript = (Unit)deltaInstance;
         deltaScript.Id = playerUnitDataXML.SelectSingleNode("units/delta/id").InnerText.ToInt();
-		deltaScript.Name = playerUnitDataXML.SelectSingleNode("units/delta/name").InnerText;
-		var idle_texture = GD.Load(playerUnitDataXML.SelectSingleNode("units/delta/sprites/idle").InnerText);
-		var idle_highlight_texture = GD.Load(playerUnitDataXML.SelectSingleNode("units/delta/sprites/idle_highlight").InnerText);
-        deltaScript.GetNode<Sprite3D>("unit_spr").Texture = (Texture2D)idle_texture;
+		deltaScript.UnitName = playerUnitDataXML.SelectSingleNode("units/delta/name").InnerText;
+
+		var idle_texture = (Texture2D) GD.Load(playerUnitDataXML.SelectSingleNode("units/delta/sprites/idle").InnerText);
+		var idle_highlight_texture = (Texture2D) GD.Load(playerUnitDataXML.SelectSingleNode("units/delta/sprites/idle_highlight").InnerText);
+
+		deltaScript.UnitTextures.Add("idle", idle_texture);
+		deltaScript.UnitTextures.Add("idle_highlight", idle_highlight_texture);
+
+        //deltaScript.GetNode<Sprite3D>("unit_spr").Texture = idle_texture;
+
+
         deltaScript.MaxHp = playerUnitDataXML.SelectSingleNode("units/delta/stats/max_hp").InnerText.ToInt();
 
 		Ability[] abilityList = ImportAbilities("delta");

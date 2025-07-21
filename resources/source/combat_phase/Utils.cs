@@ -1,9 +1,7 @@
-
-
 using Godot;
 using Godot.Collections;
 
-public static partial class CombatUtils
+public static partial class Utils
 {
     public static Dictionary ShootRayCast(Camera3D cameraObj, uint layer = 1, float rayDistance = 1000)
     {

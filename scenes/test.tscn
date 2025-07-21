@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=3 uid="uid://c6uqidn550wus"]
 
-[ext_resource type="Script" path="res://scenes/Root.cs" id="1_3w7s4"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/Root.cs" id="1_3w7s4"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/SceneManager.cs" id="1_kuo8a"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/camera/CamGimbal.cs" id="2_vlnwf"]
-[ext_resource type="PackedScene" uid="uid://ei0kswaxf6nn" path="res://resources/prefabs/enemy.tscn" id="6_qnhny"]
+[ext_resource type="PackedScene" uid="uid://cgmak1mnjcwky" path="res://resources/prefabs/enemy_unit_container.tscn" id="4_pvupf"]
 
 [sub_resource type="CSharpScript" id="CSharpScript_7na3a"]
 script/source = "using Godot;
@@ -130,9 +130,6 @@ _rotation = null
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 shape = SubResource("BoxShape3D_crgnk")
 
-[node name="enemy" parent="." instance=ExtResource("6_qnhny")]
+[node name="enemy_unit_container" parent="." instance=ExtResource("4_pvupf")]
 
 [connection signal="pressed" from="CombatUI/resolve_round_btn/VBoxContainer/MarginContainer/Button" to="SceneManager" method="_on_button_pressed"]
-
-[editable path="enemy"]
-[editable path="enemy/hp_label"]

@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgmak1mnjcwky"]
+
+[ext_resource type="PackedScene" uid="uid://ei0kswaxf6nn" path="res://resources/prefabs/enemy.tscn" id="1_68ik0"]
+
+[node name="enemy_unit_container" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.45613, 0, 2.5)
+
+[node name="unit_pos_1" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.70803, 0, -0.243795)
+
+[node name="unit_pos_2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.61006, -0.00664747, -1.128)
+
+[node name="enemy" parent="unit_pos_2" instance=ExtResource("1_68ik0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="unit_pos_3" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.75515, 0, 0.0881162)
+
+[node name="enemy" parent="unit_pos_3" instance=ExtResource("1_68ik0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="unit_pos_4" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.15458, -0.0132949, -0.571517)
+
+[node name="enemy" parent="unit_pos_4" instance=ExtResource("1_68ik0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[editable path="unit_pos_2/enemy"]
+[editable path="unit_pos_2/enemy/hp_label"]
+[editable path="unit_pos_3/enemy"]
+[editable path="unit_pos_3/enemy/hp_label"]
+[editable path="unit_pos_4/enemy"]
+[editable path="unit_pos_4/enemy/hp_label"]

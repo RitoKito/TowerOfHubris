@@ -1,8 +1,6 @@
 using Godot;
 using Godot.Collections;
-using System;
 using System.Collections;
-using static SceneManager;
 
 enum PlayerTurnState
 {
@@ -47,12 +45,6 @@ public partial class SceneManager : Node3D
 		_debugInfo2 = GetNode<TextEdit>("../CombatUI/DebugInfo/VBoxContainer/CombatSelection2");
 
 		_cameraObj = GetViewport().GetCamera3D();
-
-		//TODO MAKE PROPER INIT
-		//_playerUnits.Add(GetNode<UnitDetails>("../player_characters/character_pos1/player_delta"));
-        //_playerUnits.Add(GetNode<UnitDetails>("../player_characters/character_pos2/player_delta"));
-        //_playerUnits.Add(GetNode<UnitDetails>("../player_characters/character_pos3/player_delta"));
-        //_playerUnits.Add(GetNode<UnitDetails>("../player_characters/character_pos4/player_delta"));
     }
 
 
@@ -63,7 +55,7 @@ public partial class SceneManager : Node3D
 	{
         if (Input.IsActionJustPressed("mouse_left"))
         {
-            var rayCastResult = CombatUtils.ShootRayCast(_cameraObj);
+            var rayCastResult = Utils.ShootRayCast(_cameraObj);
 
             if (rayCastResult != null)
             {
@@ -74,7 +66,7 @@ public partial class SceneManager : Node3D
         if (Input.IsActionJustReleased("mouse_left") && _selectedPlayerUnit != null)
         {
             _selectedPlayerUnit.HideTargettingUI();
-            var rayCastResult = CombatUtils.ShootRayCast(_cameraObj);
+            var rayCastResult = Utils.ShootRayCast(_cameraObj);
 
             if (_selectedPlayerUnit != null && rayCastResult != null)
             {
@@ -112,7 +104,6 @@ public partial class SceneManager : Node3D
 
         if (collider.GetGroups().Contains("EnemyUnit"))
         {
-            // TODO Refactor as part of target selection in the UNIT DETAILS
             var unitCollider = (UnitColliderBody)collider;
             var enemyUnit = unitCollider.GetParentUnitDetails();
 
@@ -122,11 +113,10 @@ public partial class SceneManager : Node3D
 
     private void ProcessNextTask()
     {
-        GD.Print("Tasking");
-
         Action a = (Action)_actionQueue.Dequeue();
         if (a != null)
         {
+            GD.Print("Tasking");
             a.Execute(() =>
             {
                 if(_actionQueue.Count > 0)
@@ -142,6 +132,7 @@ public partial class SceneManager : Node3D
         _actionQueue.Enqueue(action);
     }
 
+    // TODO Implement C# signals instead
     private void _on_button_pressed()
 	{
 		foreach(Unit unit in _playerUnits)

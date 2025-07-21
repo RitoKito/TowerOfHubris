@@ -1,6 +1,7 @@
 using Godot;
 using System;
 
+// Base class for abilities
 public partial class Ability : Node
 {
 	private int _abilityId;

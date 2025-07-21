@@ -1,6 +1,4 @@
 using Godot;
-using System;
-using System.Drawing;
 
 public partial class TargetArrow : Path3D
 {
@@ -55,7 +53,7 @@ public partial class TargetArrow : Path3D
 
         _mousePos = GetViewport().GetMousePosition();
 
-        var rayCastResult = CombatUtils.ShootRayCast(_camera, _collisionLayer);
+        var rayCastResult = Utils.ShootRayCast(_camera, _collisionLayer);
         if(rayCastResult != null)
         {
             var mouseCollision = (Vector3)rayCastResult["position"];
