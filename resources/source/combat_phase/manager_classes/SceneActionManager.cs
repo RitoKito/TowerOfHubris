@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 public partial class SceneActionManager : Node3D
 {
-    public static SceneActionManager Instance { get; private set; }
+	public static SceneActionManager Instance { get; private set; }
 
 
-    public delegate void ActionDelegate();
+	public delegate void ActionDelegate();
 
-    private SceneManager _sceneManager;
+	private SceneManager _sceneManager;
 	private Messenger _messenger;
 	private Queue<GameAction> _gameActionQueue = new Queue<GameAction>();
 
