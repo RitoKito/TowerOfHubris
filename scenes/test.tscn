@@ -1,49 +1,18 @@
-[gd_scene load_steps=11 format=3 uid="uid://c6uqidn550wus"]
+[gd_scene load_steps=8 format=3 uid="uid://c6uqidn550wus"]
 
-[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/Root.cs" id="1_3w7s4"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/SceneManager.cs" id="1_kuo8a"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/camera/CamGimbal.cs" id="2_vlnwf"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/InputHandler.cs" id="3_6qbw3"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/UnitSelectionManager.cs" id="4_74sud"]
-[ext_resource type="PackedScene" uid="uid://cgmak1mnjcwky" path="res://resources/prefabs/enemy_unit_container.tscn" id="4_pvupf"]
+[ext_resource type="PackedScene" uid="uid://cgmak1mnjcwky" path="res://resources/prefabs/enemy_units/enemy_unit_container.tscn" id="4_pvupf"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/SceneActionManager.cs" id="6_ug1ii"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/ResolveRoundButton.cs" id="7_1i6q6"]
-
-[sub_resource type="CSharpScript" id="CSharpScript_7na3a"]
-script/source = "using Godot;
-using System;
-
-public partial class MouseCollider : StaticBody3D
-{
-	CamGimbal _camera;
-	[Export]
-	Vector3 _rotation;
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-		_camera = CamGimbal.Instance;
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		_rotation = _camera.Rotation;
-		//Rotation = _rotation;
-		//GD.Print(_rotation);
-	}
-}
-"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_crgnk"]
 size = Vector3(100, 100, 0.111328)
 
 [node name="Root" type="Node3D"]
-script = ExtResource("1_3w7s4")
 
 [node name="Managers" type="Node3D" parent="."]
-
-[node name="SceneManager" type="Node3D" parent="Managers"]
-script = ExtResource("1_kuo8a")
 
 [node name="UnitSelectionManager" type="Node3D" parent="Managers"]
 script = ExtResource("4_74sud")
@@ -141,13 +110,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00482, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.792978)
 collision_layer = 2
 collision_mask = 2
-script = SubResource("CSharpScript_7na3a")
-_rotation = null
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="background_mouse_collider"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 shape = SubResource("BoxShape3D_crgnk")
 
 [node name="enemy_unit_container" parent="." instance=ExtResource("4_pvupf")]
-
-[connection signal="pressed" from="CombatUI/resolve_round_btn/VBoxContainer/MarginContainer/Button" to="Managers/SceneManager" method="_on_button_pressed"]

@@ -15,9 +15,12 @@ public partial class SceneActionManager : Node3D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Instance = this;
+        if (Instance == null)
+            Instance = this;
+        else
+            Free();
 
-		_messenger = Messenger.Instance;
+        _messenger = Messenger.Instance;
 		_sceneManager = SceneManager.Instance;
 
 		_messenger.OnResolveRound += QueueUnitActions;
@@ -35,6 +38,9 @@ public partial class SceneActionManager : Node3D
 
 	private void ProcessNextTask()
 	{
+		if (_gameActionQueue.Count == 0)
+			return;
+
 		GameAction a = _gameActionQueue.Dequeue();
 		GD.Print("Tasking");
 		a.Execute(() =>
@@ -48,7 +54,6 @@ public partial class SceneActionManager : Node3D
 
 	private void QueueUnitActions()
 	{
-		GD.Print(_sceneManager.PlayerUnits.Count);
 		foreach (Unit unit in _sceneManager.PlayerUnits)
 		{
 			unit.HideTargetingUI();

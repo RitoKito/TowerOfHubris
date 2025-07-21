@@ -12,8 +12,11 @@ public partial class Messenger : Node
 
 	public override void _Ready()
 	{
-		Instance = this;
-	}
+        if (Instance == null)
+            Instance = this;
+        else
+            Free();
+    }
 
 	public override void _Process(double delta)
 	{

@@ -9,27 +9,28 @@ public partial class Unit : Node3D
 	public TargetArrow TargetArrow { get { return _targetArrow; } }
 	private Unit _enemyTarget = null;
 
+	[Export]
 	private int _id = -1;
-	public int Id { get { return _id; } set { _id = value; } }
+	public int Id { get { return _id; } set { } }
 
-
+	[Export]
 	private string _unitName = "The Mighty Placeholder";
-	public string UnitName {  get { return _unitName; } set { _unitName = value; } }
+	public string UnitName {  get { return _unitName; } set { } }
 
-
+	[Export]
 	private float _maxHp = 999;
-	public float MaxHp { get { return _maxHp; } set { _maxHp = value; } }
+	public float MaxHp { get { return _maxHp; } set { } }
 
 	private float _currentHp;
 
-	private Ability[] _abilityList = null;
-	public Ability[] AbilityList { get { return _abilityList; } set { _abilityList = value; } }
+	[Export]
+	private Ability _abilityTier1;
 
 	private Ability _currentAbility = null;
-	public Ability CurrentAbility { get { return _currentAbility; } }
+	public Ability CurrentAbility { get { return _currentAbility; } set { } }
 
 	private Dictionary<string, Texture2D> _unitTextureList = new Dictionary<string, Texture2D>();
-	public Dictionary<string, Texture2D> UnitTextures { get { return  _unitTextureList; } }
+	public Dictionary<string, Texture2D> UnitTextures { get { return  _unitTextureList; } private set { } }
 
 	//private float _attackValue = 2;
 
@@ -58,9 +59,10 @@ public partial class Unit : Node3D
 
 		// TODO Make ability assignment into function
 		// Handle invalid ability lists
-		if (_abilityList != null)
+		if (_abilityTier1 != null)
 		{
-			_currentAbility = _abilityList[0];
+			//_currentAbility = _abilityList.GetValue(0) as Ability;
+			_currentAbility = _abilityTier1;
 		}
 
 		ShowSpriteHighlight(false);
@@ -92,7 +94,7 @@ public partial class Unit : Node3D
 		if(_enemyTarget != null)
 		{
 			_enemyTarget.TakeDamage(CurrentAbility.AbilityDamage);
-			GD.Print(_currentAbility.AbilityDamage);
+			GD.Print(_currentAbility.AbilityName);
 			_enemyTarget = null;
 		}
 

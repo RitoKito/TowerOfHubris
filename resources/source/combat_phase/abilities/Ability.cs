@@ -4,25 +4,32 @@ using System;
 // Base class for abilities
 public partial class Ability : Node
 {
+	[Export]
 	private int _abilityId;
-	public int AbilityId { get { return _abilityId; } set { _abilityId = value; } }
+	public int AbilityId { get { return _abilityId; } set { } }
 
+	[Export]
 	private string _abilityName;
-	public string AbilityName { get { return _abilityName; } set { _abilityName = value; } }
+	public string AbilityName { get { return _abilityName; } set { } }
 
+	[Export]
 	private int _abilityTier;
-	public int AbilityTier { get { return _abilityTier;  } set { _abilityTier = value; } }
+	public int AbilityTier { get { return _abilityTier;  } set { } }
 
+	[Export]
 	private float _abilityDamage;
-	public float AbilityDamage { get { return _abilityDamage; } set { _abilityDamage = value; } }
+	public float AbilityDamage { get { return _abilityDamage; } set { } }
 
+	[Export]
 	private float _critChance;
-	public float CritChance { get { return _critChance; } set { _critChance = value; } }
-	
+	public float CritChance { get { return _critChance; } set { } }
+
+	[Export]
 	private float _abilityCritMult;
-	public float AbilityCritMult { get { return _abilityCritMult; } set { _abilityCritMult = value; } }
+	public float AbilityCritMult { get { return _abilityCritMult; } set { } }
 
 	// Crit mult applied to final instance of damage
+	[Export]
 	private float _attackCritMult = 1;
 	// animation
 

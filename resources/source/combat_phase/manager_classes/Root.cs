@@ -14,7 +14,7 @@ public partial class Root : Node3D
 		Instance = this;
 		playerUnitDataXML.Load("resources\\data\\player_units\\player_units.xml");
 
-		InstantiatePlayerCharacters();
+		//InstantiatePlayerCharacters();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -26,7 +26,7 @@ public partial class Root : Node3D
 	// TODO Make separate function for unit instantiation
 	public void InstantiatePlayerCharacters()
 	{
-		PackedScene playerContainer = GD.Load<PackedScene>(PathConstants._playerContainerPath);
+		/*PackedScene playerContainer = GD.Load<PackedScene>(PathConstants._playerContainerPath);
 		Node playerContainerInstance = playerContainer.Instantiate();
 		AddChild(playerContainerInstance);
 
@@ -59,7 +59,7 @@ public partial class Root : Node3D
 
 		delta._Ready();
 
-		SceneManager.Instance.AppendPlayerUnit(delta);
+		SceneManager.Instance.AppendPlayerUnit(delta);*/
 	}
 
 	private Ability[] ImportAbilities(string unit)

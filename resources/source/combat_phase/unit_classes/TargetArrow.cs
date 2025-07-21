@@ -22,7 +22,6 @@ public partial class TargetArrow : Path3D
 
 		// Naturally all CSGPolygon objects in the scene would follow the original curve
 		// Duplicating the curve makes polygons follow the duplicate of the parent
-		// TODO make the curve global
 		_curveDuplicate = (Curve3D)Curve.Duplicate();
 		Curve = _curveDuplicate;
 		_targetCurvePos = GetNode<Node3D>("target_curve").GlobalPosition;
