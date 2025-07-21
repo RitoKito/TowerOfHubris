@@ -65,15 +65,18 @@ public partial class TargetArrow : Path3D
 
 			_curveDuplicate.ClearPoints();
 			Vector3 origin = new Vector3(GlobalPosition.X, GlobalPosition.Y, GlobalPosition.Z);
-            Vector3 destination = new Vector3(mouseCollision.X, mouseCollision.Y, mouseCollision.Z);
+
+			
+			
+			Vector3 destination = new Vector3(mouseCollision.X, mouseCollision.Y, mouseCollision.Z);
 
 			_curveDuplicate.AddPoint(ToLocal(origin));
 			_curveDuplicate.AddPoint(ToLocal(destination));
 
 
-            Vector3 lastPoint = _curveDuplicate.GetPointPosition(_curveDuplicate.PointCount - 1);
+			Vector3 lastPoint = _curveDuplicate.GetPointPosition(_curveDuplicate.PointCount - 1);
 			_arrowSprite.GlobalPosition = destination;
-            Vector3 dir = (destination - origin);
+			Vector3 dir = (destination - origin);
 			float angle = Mathf.Atan2(dir.Y, dir.X);
 			_arrowSprite.Rotation = new Vector3(0, 0, angle);
 		}

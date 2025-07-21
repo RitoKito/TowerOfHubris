@@ -11,7 +11,11 @@ public static partial class Utils
 		Vector3 origin = cameraObj.ProjectRayOrigin(mousePos);
 		Vector3 end = origin + cameraObj.ProjectRayNormal(mousePos) * rayDistance;
 
-        PhysicsRayQueryParameters3D query = PhysicsRayQueryParameters3D.Create(origin, end, layer);
+
+		
+		
+		
+		PhysicsRayQueryParameters3D query = PhysicsRayQueryParameters3D.Create(origin, end, layer);
 		query.CollideWithAreas = true;
 		Dictionary result = spaceState.IntersectRay(query);
 

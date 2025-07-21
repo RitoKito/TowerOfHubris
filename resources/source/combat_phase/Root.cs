@@ -33,7 +33,7 @@ public partial class Root : Node3D
 		AddChild(playerContainerInstance);
 
 
-        PackedScene unitPlaceholder = GD.Load<PackedScene>(PathConstants._unitPlaceholderPath);
+		PackedScene unitPlaceholder = GD.Load<PackedScene>(PathConstants._unitPlaceholderPath);
 		Node deltaInstance = unitPlaceholder.Instantiate();
 
 
