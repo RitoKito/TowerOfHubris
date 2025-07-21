@@ -61,7 +61,7 @@ public partial class Root : Node3D
 
 		delta._Ready();
 
-		SceneManager.Instance.appendPlayerUnit(delta);
+		SceneManager.Instance.AppendPlayerUnit(delta);
 	}
 
 	private Ability[] ImportAbilities(string unit)

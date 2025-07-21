@@ -2,7 +2,7 @@ using Godot;
 using System.Threading.Tasks;
 using static SceneManager;
 
-public partial class UnitAttackAction : Action
+public partial class UnitAttackAction : GameAction
 {
 	enum State
 	{

@@ -1,9 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://c6uqidn550wus"]
+[gd_scene load_steps=12 format=3 uid="uid://c6uqidn550wus"]
 
 [ext_resource type="Script" path="res://resources/source/combat_phase/Root.cs" id="1_3w7s4"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/SceneManager.cs" id="1_kuo8a"]
+[ext_resource type="Script" path="res://scenes/HeadManager.cs" id="2_tlw64"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/camera/CamGimbal.cs" id="2_vlnwf"]
+[ext_resource type="Script" path="res://scenes/InputHandler.cs" id="3_6qbw3"]
+[ext_resource type="Script" path="res://scenes/UnitSelectionManager.cs" id="4_74sud"]
 [ext_resource type="PackedScene" uid="uid://cgmak1mnjcwky" path="res://resources/prefabs/enemy_unit_container.tscn" id="4_pvupf"]
+[ext_resource type="Script" path="res://scenes/SceneActionManager.cs" id="6_ug1ii"]
+[ext_resource type="Script" path="res://scenes/ResolveRoundButton.cs" id="7_1i6q6"]
 
 [sub_resource type="CSharpScript" id="CSharpScript_7na3a"]
 script/source = "using Godot;
@@ -35,6 +40,23 @@ size = Vector3(100, 100, 0.111328)
 
 [node name="Root" type="Node3D"]
 script = ExtResource("1_3w7s4")
+
+[node name="Managers" type="Node3D" parent="."]
+script = ExtResource("2_tlw64")
+
+[node name="SceneManager" type="Node3D" parent="Managers"]
+script = ExtResource("1_kuo8a")
+
+[node name="UnitSelectionManager" type="Node3D" parent="Managers"]
+script = ExtResource("4_74sud")
+
+[node name="UIManager" type="Node3D" parent="Managers"]
+
+[node name="InputHandler" type="Node3D" parent="Managers"]
+script = ExtResource("3_6qbw3")
+
+[node name="ActionManager" type="Node3D" parent="Managers"]
+script = ExtResource("6_ug1ii")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.624275, 0.781205, 0, -0.781205, 0.624275, 0, 0.641662, 0)
@@ -95,12 +117,10 @@ size_flags_vertical = 4
 [node name="Button" type="Button" parent="CombatUI/resolve_round_btn/VBoxContainer/MarginContainer"]
 layout_mode = 2
 text = "Resolve Round"
+script = ExtResource("7_1i6q6")
 
 [node name="separator" type="Control" parent="CombatUI/resolve_round_btn/VBoxContainer"]
 layout_mode = 2
-
-[node name="SceneManager" type="Node3D" parent="."]
-script = ExtResource("1_kuo8a")
 
 [node name="cam_gimbal" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.97237, 0.233445, 0, -0.233445, 0.97237, 0, 1.815, 5.81)
@@ -132,4 +152,4 @@ shape = SubResource("BoxShape3D_crgnk")
 
 [node name="enemy_unit_container" parent="." instance=ExtResource("4_pvupf")]
 
-[connection signal="pressed" from="CombatUI/resolve_round_btn/VBoxContainer/MarginContainer/Button" to="SceneManager" method="_on_button_pressed"]
+[connection signal="pressed" from="CombatUI/resolve_round_btn/VBoxContainer/MarginContainer/Button" to="Managers/SceneManager" method="_on_button_pressed"]

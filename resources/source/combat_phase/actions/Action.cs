@@ -3,11 +3,8 @@ using static SceneManager;
 
 
 //Action base class
-public partial class Action : Node
+public partial class GameAction : Node
 {
-
-	
-	
 	public virtual string Name {  get; set; }
 
 	// Called when the node enters the scene tree for the first time.

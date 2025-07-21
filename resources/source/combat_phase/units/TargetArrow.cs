@@ -82,7 +82,7 @@ public partial class TargetArrow : Path3D
 		}
 	}
 
-	public void HideTargettingUI()
+	public void HideTargetingUI()
 	{
 	   _curveDuplicate.ClearPoints();
 		_arrowSprite.Hide();

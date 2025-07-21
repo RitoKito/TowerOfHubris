@@ -10,6 +10,7 @@ public partial class CamGimbal : Node3D
 	public static CamGimbal Instance { get; private set; }
 
 	private Camera3D _cameraObj;
+	private InputHandler _inputHandler;
 
 	[Export] private float _rotationSpeed = 0.05f;
 	private float _mouseMotionY = 0;
@@ -45,7 +46,9 @@ public partial class CamGimbal : Node3D
 	public override void _Ready()
 	{
 		Instance = this;
+
 		_cameraObj = GetViewport().GetCamera3D();
+		_inputHandler = HeadManager.Instance.InputHandler;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -54,28 +57,27 @@ public partial class CamGimbal : Node3D
 
 		// Move camera only if user didn't click on interactable object
 		// The boolean here prevents the camera movement until left mouse button is released
-		if (Input.IsMouseButtonPressed(MouseButton.Left) && !_clickedOnCollider)
+		if (_inputHandler.HoldingLeftMouse && !_inputHandler.ClickedOnCollider)
 		{
-			MoveCamera(delta);
+			MoveCamGimbal(delta);
 		}
 
 		if (Position.Y >= 2.5f)
 		{
-			RotateCamera(delta, _maxCamAngle);
+			RotateCamGimbal(delta, _maxCamAngle);
 		}
-
 		else
 		{
-			RotateCamera(delta, 0);
+			RotateCamGimbal(delta, 0);
 		}
 	}
 
 	// Drag camera up and down
-	private void MoveCamera(double delta)
+	public void MoveCamGimbal(double delta)
 	{
 		if(_mouseMotionY != 0)
 		{
-			Vector2 moveDirV = mouseMoveDir();
+			Vector2 moveDirV = GetMouseMoveDir();
 
 			_targetPositionV += moveDirV[1] * 1f;
 			_targetPositionV = Math.Clamp(_targetPositionV, _cameraMinY, _cameraMaxY);
@@ -86,7 +88,7 @@ public partial class CamGimbal : Node3D
 		}
 	}
 
-	private Vector2 mouseMoveDir()
+	private Vector2 GetMouseMoveDir()
 	{
 		Vector2 moveDirV = new Vector2(0, 0);
 
@@ -104,7 +106,7 @@ public partial class CamGimbal : Node3D
 	}
 
 	// Rotate camera angle when camera reaches Y pos -0.45
-	private void RotateCamera(double delta, float targetAngle)
+	private void RotateCamGimbal(double delta, float targetAngle)
 	{
 		float currentAngle = Rotation.X;
 		Rotation = new Vector3(Mathf.Lerp(currentAngle, targetAngle, 1f*(float)delta), 0, 0);
