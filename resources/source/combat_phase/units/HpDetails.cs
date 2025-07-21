@@ -20,7 +20,7 @@ public partial class HpDetails : Label3D
 
 	public void faceCamera(Vector3 cameraPos)
 	{
-		var target = cameraPos;
+		Vector3 target = cameraPos;
 
 		LookAt(target);
 	}

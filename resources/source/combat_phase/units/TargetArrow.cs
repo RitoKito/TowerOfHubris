@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 
 public partial class TargetArrow : Path3D
 {
@@ -42,8 +43,8 @@ public partial class TargetArrow : Path3D
 	public void DrawTargetCurve(Vector3 destination)
 	{
 		Curve.ClearPoints();
-		var origin = _targetCurvePos;
-		var midpoint = (origin + destination) / 2;
+		Vector3 origin = _targetCurvePos;
+		Vector3 midpoint = (origin + destination) / 2;
 
 
 		Curve.AddPoint(ToLocal(origin));
@@ -57,24 +58,23 @@ public partial class TargetArrow : Path3D
 
 		_mousePos = GetViewport().GetMousePosition();
 
-		var rayCastResult = Utils.ShootRayCast(_camera, _collisionLayer);
+		Dictionary rayCastResult = Utils.ShootRayCast(_camera, _collisionLayer);
 		if(rayCastResult != null)
 		{
-			var mouseCollision = (Vector3)rayCastResult["position"];
+			Vector3 mouseCollision = (Vector3)rayCastResult["position"];
 
 			_curveDuplicate.ClearPoints();
-			var origin = new Vector3(GlobalPosition.X, GlobalPosition.Y, GlobalPosition.Z);
-			var destination = new Vector3(mouseCollision.X, mouseCollision.Y, mouseCollision.Z);
+			Vector3 origin = new Vector3(GlobalPosition.X, GlobalPosition.Y, GlobalPosition.Z);
+            Vector3 destination = new Vector3(mouseCollision.X, mouseCollision.Y, mouseCollision.Z);
 
 			_curveDuplicate.AddPoint(ToLocal(origin));
 			_curveDuplicate.AddPoint(ToLocal(destination));
 
 
-			var lastPoint = _curveDuplicate.GetPointPosition(_curveDuplicate.PointCount - 1);
-		   // var arrowPos = ToGlobal(new Vector3(lastPoint.X, lastPoint.Y, lastPoint.Z));
+            Vector3 lastPoint = _curveDuplicate.GetPointPosition(_curveDuplicate.PointCount - 1);
 			_arrowSprite.GlobalPosition = destination;
-			var dir = (destination - origin);
-			var angle = Mathf.Atan2(dir.Y, dir.X);
+            Vector3 dir = (destination - origin);
+			float angle = Mathf.Atan2(dir.Y, dir.X);
 			_arrowSprite.Rotation = new Vector3(0, 0, angle);
 		}
 	}

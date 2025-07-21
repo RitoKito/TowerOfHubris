@@ -53,7 +53,7 @@ public partial class SceneManager : Node3D
 	{
 		if (Input.IsActionJustPressed("mouse_left"))
 		{
-			var rayCastResult = Utils.ShootRayCast(_cameraObj);
+			Dictionary rayCastResult = Utils.ShootRayCast(_cameraObj);
 
 			if (rayCastResult != null)
 			{
@@ -64,7 +64,7 @@ public partial class SceneManager : Node3D
 		if (Input.IsActionJustReleased("mouse_left") && _selectedPlayerUnit != null)
 		{
 			_selectedPlayerUnit.HideTargettingUI();
-			var rayCastResult = Utils.ShootRayCast(_cameraObj);
+			Dictionary rayCastResult = Utils.ShootRayCast(_cameraObj);
 
 			if (_selectedPlayerUnit != null && rayCastResult != null)
 			{
@@ -78,11 +78,11 @@ public partial class SceneManager : Node3D
 
 	private void SelectPlayerUnit(Dictionary rayCastResult)
 	{
-		var collider = (Node)rayCastResult["collider"];
+		Node collider = (Node)rayCastResult["collider"];
 		if (collider.GetGroups().Contains("PlayerUnit"))
 		{
-			var unitCollider = (UnitColliderBody)collider;
-			var playerUnit = unitCollider.GetParentUnitDetails();
+			UnitColliderBody unitCollider = (UnitColliderBody)collider;
+			Unit playerUnit = unitCollider.GetParentUnitDetails();
 			_selectedPlayerUnit = playerUnit;
 
 
@@ -98,12 +98,12 @@ public partial class SceneManager : Node3D
 
 	private void SelectEnemyUnit(Dictionary rayCastResult)
 	{
-		var collider = (Node)rayCastResult["collider"];
+		Node collider = (Node)rayCastResult["collider"];
 
 		if (collider.GetGroups().Contains("EnemyUnit"))
 		{
-			var unitCollider = (UnitColliderBody)collider;
-			var enemyUnit = unitCollider.GetParentUnitDetails();
+			UnitColliderBody unitCollider = (UnitColliderBody)collider;
+			Unit enemyUnit = unitCollider.GetParentUnitDetails();
 
 			_selectedPlayerUnit.SetEnemeyTarget(enemyUnit);
 		}

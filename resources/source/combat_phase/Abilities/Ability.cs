@@ -84,13 +84,13 @@ public partial class Ability : Node
 	public void DealDamage(Unit target)
 	{
 		Random rnd = new Random();
-		var crit = rnd.Next(1, 100);
+		float crit = rnd.Next(1, 100);
 
 		if(crit <= _critChance) {
 			_attackCritMult += _abilityCritMult;
 		}
 
-		var damageFormula = _abilityDamage * _attackCritMult;
+		float damageFormula = _abilityDamage * _attackCritMult;
 
 		target.TakeDamage(damageFormula);
 	}

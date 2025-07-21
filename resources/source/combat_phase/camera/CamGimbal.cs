@@ -88,7 +88,7 @@ public partial class CamGimbal : Node3D
 
 	private Vector2 mouseMoveDir()
 	{
-		var moveDirV = new Vector2(0, 0);
+		Vector2 moveDirV = new Vector2(0, 0);
 
 		// Removes magnitude from mouse movement
 		if (_mouseMotionY > 0)
@@ -106,7 +106,7 @@ public partial class CamGimbal : Node3D
 	// Rotate camera angle when camera reaches Y pos -0.45
 	private void RotateCamera(double delta, float targetAngle)
 	{
-		var currentAngle = Rotation.X;
+		float currentAngle = Rotation.X;
 		Rotation = new Vector3(Mathf.Lerp(currentAngle, targetAngle, 1f*(float)delta), 0, 0);
 	}
 

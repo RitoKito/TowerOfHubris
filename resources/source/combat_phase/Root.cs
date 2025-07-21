@@ -28,40 +28,40 @@ public partial class Root : Node3D
 	// TODO Make separate function for unit instantiation
 	public void InstantiatePlayerCharacters()
 	{
-		var playerContainer = GD.Load<PackedScene>(PathConstants._playerContainerPath);
-		var playerContainerInstance = playerContainer.Instantiate();
+		PackedScene playerContainer = GD.Load<PackedScene>(PathConstants._playerContainerPath);
+		Node playerContainerInstance = playerContainer.Instantiate();
 		AddChild(playerContainerInstance);
 
 
-		var unitPlaceholder = GD.Load<PackedScene>(PathConstants._unitPlaceholderPath);
-		var deltaInstance = unitPlaceholder.Instantiate();
+        PackedScene unitPlaceholder = GD.Load<PackedScene>(PathConstants._unitPlaceholderPath);
+		Node deltaInstance = unitPlaceholder.Instantiate();
 
 
-		var pos = playerUnitDataXML.SelectSingleNode("units/delta/field_pos").InnerText;
-		var unitPos = $"unit_pos_{pos}";
+		string pos = playerUnitDataXML.SelectSingleNode("units/delta/field_pos").InnerText;
+		string unitPos = $"unit_pos_{pos}";
 		playerContainerInstance.GetNode(unitPos).AddChild(deltaInstance);
 
-		var deltaScript = (Unit)deltaInstance;
-		deltaScript.Id = playerUnitDataXML.SelectSingleNode("units/delta/id").InnerText.ToInt();
-		deltaScript.UnitName = playerUnitDataXML.SelectSingleNode("units/delta/name").InnerText;
+		Unit delta = (Unit)deltaInstance;
+		delta.Id = playerUnitDataXML.SelectSingleNode("units/delta/id").InnerText.ToInt();
+		delta.UnitName = playerUnitDataXML.SelectSingleNode("units/delta/name").InnerText;
 
-		var idle_texture = (Texture2D) GD.Load(playerUnitDataXML.SelectSingleNode("units/delta/sprites/idle").InnerText);
-		var idle_highlight_texture = (Texture2D) GD.Load(playerUnitDataXML.SelectSingleNode("units/delta/sprites/idle_highlight").InnerText);
+		Texture2D idle_texture = (Texture2D) GD.Load(playerUnitDataXML.SelectSingleNode("units/delta/sprites/idle").InnerText);
+		Texture2D idle_highlight_texture = (Texture2D) GD.Load(playerUnitDataXML.SelectSingleNode("units/delta/sprites/idle_highlight").InnerText);
 
-		deltaScript.UnitTextures.Add("idle", idle_texture);
-		deltaScript.UnitTextures.Add("idle_highlight", idle_highlight_texture);
+		delta.UnitTextures.Add("idle", idle_texture);
+		delta.UnitTextures.Add("idle_highlight", idle_highlight_texture);
 
 		//deltaScript.GetNode<Sprite3D>("unit_spr").Texture = idle_texture;
 
 
-		deltaScript.MaxHp = playerUnitDataXML.SelectSingleNode("units/delta/stats/max_hp").InnerText.ToInt();
+		delta.MaxHp = playerUnitDataXML.SelectSingleNode("units/delta/stats/max_hp").InnerText.ToInt();
 
 		Ability[] abilityList = ImportAbilities("delta");
-		deltaScript.AbilityList = abilityList;
+		delta.AbilityList = abilityList;
 
-		deltaScript._Ready();
+		delta._Ready();
 
-		SceneManager.Instance.appendPlayerUnit(deltaScript);
+		SceneManager.Instance.appendPlayerUnit(delta);
 	}
 
 	private Ability[] ImportAbilities(string unit)
@@ -72,8 +72,8 @@ public partial class Root : Node3D
 		{
 			try
 			{
-				var abilityData = playerUnitDataXML.SelectSingleNode($"units/{unit}/abilities/ability_{i}");
-				var ability = new Ability.AbilityBuilder()
+				XmlNode abilityData = playerUnitDataXML.SelectSingleNode($"units/{unit}/abilities/ability_{i}");
+				Ability ability = new Ability.AbilityBuilder()
 						.SetId(abilityData.SelectSingleNode("ability_id").InnerText.ToInt())
 						.SetName(abilityData.SelectSingleNode("ability_name").InnerText)
 						.SetTier(abilityData.SelectSingleNode("ability_tier").InnerText.ToInt())
