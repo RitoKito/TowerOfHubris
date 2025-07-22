@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://bgif0302wsc6g"]
+
+[ext_resource type="Script" path="res://resources/source/combat_phase/abilities/Ability.cs" id="1_1i86t"]
+
+[node name="ability_placeholder1" type="Node3D"]
+script = ExtResource("1_1i86t")
+_abilityId = -1
+_abilityName = "PlaceHolder Attack"
+_abilityTier = 1
+_abilityDamage = 50.0
+_critChance = 50.0
+_abilityCritMult = 1.0

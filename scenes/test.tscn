@@ -1,32 +1,17 @@
-[gd_scene load_steps=8 format=3 uid="uid://c6uqidn550wus"]
+[gd_scene load_steps=9 format=3 uid="uid://c6uqidn550wus"]
 
+[ext_resource type="Script" path="res://resources/source/combat_phase/TurnCounterLabel.cs" id="2_357na"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/camera/CamGimbal.cs" id="2_vlnwf"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/InputHandler.cs" id="3_6qbw3"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/UnitSelectionManager.cs" id="4_74sud"]
-[ext_resource type="PackedScene" uid="uid://cgmak1mnjcwky" path="res://resources/prefabs/enemy_units/enemy_unit_container.tscn" id="4_pvupf"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/SceneActionManager.cs" id="6_ug1ii"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/ResolveRoundButton.cs" id="7_1i6q6"]
+[ext_resource type="PackedScene" uid="uid://cgmak1mnjcwky" path="res://resources/prefabs/units/enemy_units/enemy_unit_container.tscn" id="4_pvupf"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/ActionManager.cs" id="6_ug1ii"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/ResolveTurnButton.cs" id="7_1i6q6"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_crgnk"]
 size = Vector3(100, 100, 0.111328)
 
 [node name="Root" type="Node3D"]
-
-[node name="Managers" type="Node3D" parent="."]
-
-[node name="UnitSelectionManager" type="Node3D" parent="Managers"]
-script = ExtResource("4_74sud")
-
-[node name="UIManager" type="Node3D" parent="Managers"]
-
-[node name="InputHandler" type="Node3D" parent="Managers"]
-script = ExtResource("3_6qbw3")
-
-[node name="ActionManager" type="Node3D" parent="Managers"]
-script = ExtResource("6_ug1ii")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.624275, 0.781205, 0, -0.781205, 0.624275, 0, 0.641662, 0)
 
 [node name="CombatUI" type="Control" parent="."]
 layout_mode = 3
@@ -36,26 +21,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
-
-[node name="DebugInfo" type="MarginContainer" parent="CombatUI"]
-custom_minimum_size = Vector2(200, 35)
-layout_mode = 1
-offset_right = 200.0
-offset_bottom = 74.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="CombatUI/DebugInfo"]
-custom_minimum_size = Vector2(100, 50)
-layout_mode = 2
-
-[node name="CombatSelection" type="TextEdit" parent="CombatUI/DebugInfo/VBoxContainer"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-placeholder_text = "Player: Alpha"
-
-[node name="CombatSelection2" type="TextEdit" parent="CombatUI/DebugInfo/VBoxContainer"]
-custom_minimum_size = Vector2(0, 35)
-layout_mode = 2
-placeholder_text = "Enemy: Proton"
 
 [node name="resolve_round_btn" type="MarginContainer" parent="CombatUI"]
 layout_mode = 1
@@ -88,6 +53,42 @@ script = ExtResource("7_1i6q6")
 
 [node name="separator" type="Control" parent="CombatUI/resolve_round_btn/VBoxContainer"]
 layout_mode = 2
+
+[node name="round_counter" type="MarginContainer" parent="CombatUI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -23.5
+offset_right = 23.5
+offset_bottom = 40.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CombatUI/round_counter"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CombatUI/round_counter/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Turn: 0"
+script = ExtResource("2_357na")
+
+[node name="Managers" type="Node3D" parent="."]
+
+[node name="UnitSelectionManager" type="Node3D" parent="Managers"]
+script = ExtResource("4_74sud")
+
+[node name="UIManager" type="Node3D" parent="Managers"]
+
+[node name="InputHandler" type="Node3D" parent="Managers"]
+script = ExtResource("3_6qbw3")
+
+[node name="ActionManager" type="Node3D" parent="Managers"]
+script = ExtResource("6_ug1ii")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.624275, 0.781205, 0, -0.781205, 0.624275, 0, 0.641662, 0)
 
 [node name="cam_gimbal" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.97237, 0.233445, 0, -0.233445, 0.97237, 0, 1.815, 5.81)

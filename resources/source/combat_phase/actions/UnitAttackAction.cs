@@ -1,8 +1,8 @@
 using Godot;
 using System.Threading.Tasks;
-using static SceneActionManager;
+using static ActionManager;
 
-public partial class UnitAttackAction : GameAction
+public partial class UnitAttackAction : Node, IGameAction
 {
 	enum State
 	{
@@ -84,13 +84,13 @@ public partial class UnitAttackAction : GameAction
 			// The node is queued for safe deletion
 			// Until then it will remain in an idle state
 			_state = State.Idle;
-			base.Execute(_actionDelegate);
+			_actionDelegate.Invoke();
 			QueueFree();
 		}
 	}
 
 
-	public override void Execute(ActionDelegate actionDelegate)
+	public void Execute(ActionDelegate actionDelegate)
 	{
 		_actionDelegate = actionDelegate; 
 		_state = State.MovingToEnemy;

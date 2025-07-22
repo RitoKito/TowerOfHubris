@@ -93,7 +93,7 @@ public partial class Unit : Node3D
 	{
 		if(_enemyTarget != null)
 		{
-			_enemyTarget.TakeDamage(CurrentAbility.AbilityDamage);
+			_enemyTarget.TakeDamage(CurrentAbility.CalculateDamageInstance());
 			GD.Print(_currentAbility.AbilityName);
 			_enemyTarget = null;
 		}
@@ -128,7 +128,6 @@ public partial class Unit : Node3D
 	public void DrawTargetingCurve() {
 		_targetArrow.DrawTargetCurve(_enemyTarget.TargetArrow.TargetCurvePos);
 	}
-
 
 	//TODO Implement C# signals
 	private void _on_static_body_3d_mouse_entered()

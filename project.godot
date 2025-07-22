@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Messenger="*res://resources/source/combat_phase/manager_classes/Messenger.cs"
 SceneManager="*res://resources/source/combat_phase/manager_classes/SceneManager.cs"
+TurnManager="*res://resources/source/combat_phase/manager_classes/TurnManager.cs"
 
 [debug]
 

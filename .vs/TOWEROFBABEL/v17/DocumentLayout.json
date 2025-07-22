@@ -3,12 +3,28 @@
   "WorkspaceRootPath": "E:\\TowerOfHubris\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\resources\\source\\combat_phase\\manager_classes\\messenger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:resources\\source\\combat_phase\\manager_classes\\messenger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\resources\\source\\combat_phase\\manager_classes\\turnmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:resources\\source\\combat_phase\\manager_classes\\turnmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\resources\\source\\combat_phase\\actions\\action.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:resources\\source\\combat_phase\\actions\\action.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\scenes\\roundmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:scenes\\roundmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\resources\\source\\combat_phase\\abilities\\ability.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:resources\\source\\combat_phase\\abilities\\ability.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\resources\\source\\combat_phase\\unit_classes\\unit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:resources\\source\\combat_phase\\unit_classes\\unit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\resources\\source\\combat_phase\\manager_classes\\unitselectionmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:resources\\source\\combat_phase\\manager_classes\\unitselectionmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\resources\\source\\combat_phase\\unit_classes\\unitcolliderbody.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:resources\\source\\combat_phase\\unit_classes\\unitcolliderbody.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\resources\\source\\combat_phase\\actions\\unitattackaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -19,32 +35,12 @@
       "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:resources\\source\\combat_phase\\manager_classes\\sceneactionmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\resources\\source\\combat_phase\\abilities\\ability.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:resources\\source\\combat_phase\\abilities\\ability.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\resources\\source\\combat_phase\\manager_classes\\resolveroundbutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:resources\\source\\combat_phase\\manager_classes\\resolveroundbutton.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\resources\\source\\combat_phase\\unit_classes\\targetarrow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:resources\\source\\combat_phase\\unit_classes\\targetarrow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\resources\\source\\combat_phase\\actions\\action.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:resources\\source\\combat_phase\\actions\\action.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\resources\\source\\combat_phase\\pathconstants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:resources\\source\\combat_phase\\pathconstants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\resources\\source\\combat_phase\\manager_classes\\scenemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:resources\\source\\combat_phase\\manager_classes\\scenemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\resources\\source\\combat_phase\\unit_classes\\unit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:resources\\source\\combat_phase\\unit_classes\\unit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|e:\\towerofhubris\\resources\\source\\combat_phase\\utils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C9C5AD39-0BE4-4D48-9BBF-DAA38D0F9290}|TowerOfBabel.csproj|solutionrelative:resources\\source\\combat_phase\\utils.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -58,150 +54,125 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Action.cs",
-              "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\actions\\Action.cs",
-              "RelativeDocumentMoniker": "resources\\source\\combat_phase\\actions\\Action.cs",
-              "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\actions\\Action.cs",
-              "RelativeToolTip": "resources\\source\\combat_phase\\actions\\Action.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAA7AAAA",
+              "DocumentIndex": 0,
+              "Title": "TurnManager.cs",
+              "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\manager_classes\\TurnManager.cs",
+              "RelativeDocumentMoniker": "resources\\source\\combat_phase\\manager_classes\\TurnManager.cs",
+              "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\manager_classes\\TurnManager.cs",
+              "RelativeToolTip": "resources\\source\\combat_phase\\manager_classes\\TurnManager.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-21T12:50:21.775Z",
+              "WhenOpened": "2025-07-22T07:40:52.979Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "RoundManager.cs",
+              "DocumentMoniker": "E:\\TowerOfHubris\\scenes\\RoundManager.cs",
+              "RelativeDocumentMoniker": "scenes\\RoundManager.cs",
+              "ToolTip": "E:\\TowerOfHubris\\scenes\\RoundManager.cs",
+              "RelativeToolTip": "scenes\\RoundManager.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAAACAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-22T07:32:02.324Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "UnitAttackAction.cs",
-              "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\actions\\UnitAttackAction.cs",
-              "RelativeDocumentMoniker": "resources\\source\\combat_phase\\actions\\UnitAttackAction.cs",
-              "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\actions\\UnitAttackAction.cs",
-              "RelativeToolTip": "resources\\source\\combat_phase\\actions\\UnitAttackAction.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACkAAAANAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-21T12:37:18.726Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "SceneActionManager.cs",
-              "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\manager_classes\\SceneActionManager.cs",
-              "RelativeDocumentMoniker": "resources\\source\\combat_phase\\manager_classes\\SceneActionManager.cs",
-              "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\manager_classes\\SceneActionManager.cs",
-              "RelativeToolTip": "resources\\source\\combat_phase\\manager_classes\\SceneActionManager.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAACAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-21T12:36:11.985Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
               "Title": "Ability.cs",
               "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\abilities\\Ability.cs",
               "RelativeDocumentMoniker": "resources\\source\\combat_phase\\abilities\\Ability.cs",
               "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\abilities\\Ability.cs",
               "RelativeToolTip": "resources\\source\\combat_phase\\abilities\\Ability.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAFEAAAAcAAAA",
+              "ViewState": "AQIAAEMAAAAAAAAAAAAmwF0AAAAoAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-21T12:07:47.699Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-22T06:42:42.131Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "UnitSelectionManager.cs",
+              "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\manager_classes\\UnitSelectionManager.cs",
+              "RelativeDocumentMoniker": "resources\\source\\combat_phase\\manager_classes\\UnitSelectionManager.cs",
+              "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\manager_classes\\UnitSelectionManager.cs",
+              "RelativeToolTip": "resources\\source\\combat_phase\\manager_classes\\UnitSelectionManager.cs",
+              "ViewState": "AQIAABMAAAAAAAAAAAAgwD0AAAAWAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-22T06:40:38.432Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 9,
-              "Title": "Unit.cs",
-              "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\unit_classes\\Unit.cs",
-              "RelativeDocumentMoniker": "resources\\source\\combat_phase\\unit_classes\\Unit.cs",
-              "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\unit_classes\\Unit.cs",
-              "RelativeToolTip": "resources\\source\\combat_phase\\unit_classes\\Unit.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAAAfAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-21T11:56:29.872Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Utils.cs",
-              "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\Utils.cs",
-              "RelativeDocumentMoniker": "resources\\source\\combat_phase\\Utils.cs",
-              "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\Utils.cs",
-              "RelativeToolTip": "resources\\source\\combat_phase\\Utils.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAA1AAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-21T11:14:37.636Z"
-            }
-          ]
-        },
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Messenger.cs",
-              "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\manager_classes\\Messenger.cs",
-              "RelativeDocumentMoniker": "resources\\source\\combat_phase\\manager_classes\\Messenger.cs",
-              "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\manager_classes\\Messenger.cs",
-              "RelativeToolTip": "resources\\source\\combat_phase\\manager_classes\\Messenger.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-21T12:47:52.728Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ResolveRoundButton.cs",
-              "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\manager_classes\\ResolveRoundButton.cs",
-              "RelativeDocumentMoniker": "resources\\source\\combat_phase\\manager_classes\\ResolveRoundButton.cs",
-              "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\manager_classes\\ResolveRoundButton.cs",
-              "RelativeToolTip": "resources\\source\\combat_phase\\manager_classes\\ResolveRoundButton.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-21T12:47:46.488Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "TargetArrow.cs",
-              "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\unit_classes\\TargetArrow.cs",
-              "RelativeDocumentMoniker": "resources\\source\\combat_phase\\unit_classes\\TargetArrow.cs",
-              "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\unit_classes\\TargetArrow.cs",
-              "RelativeToolTip": "resources\\source\\combat_phase\\unit_classes\\TargetArrow.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAhAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-21T12:46:46.36Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
               "Title": "PathConstants.cs",
               "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\PathConstants.cs",
               "RelativeDocumentMoniker": "resources\\source\\combat_phase\\PathConstants.cs",
               "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\PathConstants.cs",
               "RelativeToolTip": "resources\\source\\combat_phase\\PathConstants.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAABtAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAABMAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-21T12:14:08.171Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-22T06:37:29.855Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "UnitColliderBody.cs",
+              "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\unit_classes\\UnitColliderBody.cs",
+              "RelativeDocumentMoniker": "resources\\source\\combat_phase\\unit_classes\\UnitColliderBody.cs",
+              "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\unit_classes\\UnitColliderBody.cs",
+              "RelativeToolTip": "resources\\source\\combat_phase\\unit_classes\\UnitColliderBody.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-22T06:15:31.824Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Unit.cs",
+              "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\unit_classes\\Unit.cs",
+              "RelativeDocumentMoniker": "resources\\source\\combat_phase\\unit_classes\\Unit.cs",
+              "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\unit_classes\\Unit.cs",
+              "RelativeToolTip": "resources\\source\\combat_phase\\unit_classes\\Unit.cs",
+              "ViewState": "AQIAAFIAAAAAAAAAAAAUwF0AAAAaAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-22T06:15:20.908Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "SceneActionManager.cs",
+              "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\manager_classes\\SceneActionManager.cs",
+              "RelativeDocumentMoniker": "resources\\source\\combat_phase\\manager_classes\\SceneActionManager.cs",
+              "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\manager_classes\\SceneActionManager.cs",
+              "RelativeToolTip": "resources\\source\\combat_phase\\manager_classes\\SceneActionManager.cs",
+              "ViewState": "AQIAABgAAAAAAAAAAAAowEUAAAATAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-22T05:48:59.601Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 8,
-              "Title": "SceneManager.cs",
-              "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\manager_classes\\SceneManager.cs",
-              "RelativeDocumentMoniker": "resources\\source\\combat_phase\\manager_classes\\SceneManager.cs",
-              "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\manager_classes\\SceneManager.cs",
-              "RelativeToolTip": "resources\\source\\combat_phase\\manager_classes\\SceneManager.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABUAAAAAAAAA",
+              "Title": "Action.cs",
+              "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\actions\\Action.cs",
+              "RelativeDocumentMoniker": "resources\\source\\combat_phase\\actions\\Action.cs",
+              "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\actions\\Action.cs",
+              "RelativeToolTip": "resources\\source\\combat_phase\\actions\\Action.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAqwAYAAAABAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-21T12:11:47.566Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-22T05:38:17.944Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "UnitAttackAction.cs",
+              "DocumentMoniker": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\actions\\UnitAttackAction.cs",
+              "RelativeDocumentMoniker": "resources\\source\\combat_phase\\actions\\UnitAttackAction.cs",
+              "ToolTip": "E:\\TowerOfHubris\\resources\\source\\combat_phase\\actions\\UnitAttackAction.cs",
+              "RelativeToolTip": "resources\\source\\combat_phase\\actions\\UnitAttackAction.cs",
+              "ViewState": "AQIAAC8AAAAAAAAAAAAIwAwAAAALAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-22T05:37:57.09Z"
             }
           ]
         }

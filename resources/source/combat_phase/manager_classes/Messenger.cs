@@ -8,9 +8,12 @@ public partial class Messenger : Node
 
 	public event Action<Dictionary> OnMouseLeftClick;
 	public event Action<Dictionary> OnMouseLeftRelease;
-	public event Action OnResolveRound;
+    public event Action OnResolveTurn;
+    public event Action OnTurnResolved;
+    public event Action<TurnState> OnTurnStateChanged;
 
-	public override void _Ready()
+
+    public override void _Ready()
 	{
 		if (Instance == null)
 			Instance = this;
@@ -32,8 +35,20 @@ public partial class Messenger : Node
 		OnMouseLeftRelease?.Invoke(clickedObject);
 	}
 
-	public void EmitResolveRound()
+	// Turn starts
+	public void EmitResolveTurn()
 	{
-		OnResolveRound?.Invoke();
+		OnResolveTurn?.Invoke();
+    }
+
+	// Turn resolved
+	public void EmitTurnResolved()
+	{
+		OnTurnResolved?.Invoke();
+	}
+
+	public void EmitTurnStateChanged(TurnState state)
+	{
+		OnTurnStateChanged?.Invoke(state);
 	}
 }

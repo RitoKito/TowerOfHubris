@@ -88,17 +88,19 @@ public partial class Ability : Node
 	{
 	}
 
-	public void DealDamage(Unit target)
+	public float CalculateDamageInstance()
 	{
 		Random rnd = new Random();
-		float crit = rnd.Next(1, 100);
+		//rnd func is exclusive of upper bound
+		float crit = rnd.Next(1, 101);
 
-		if(crit <= _critChance) {
-			_attackCritMult += _abilityCritMult;
+        float finalCritMult = 1;
+		if(crit >= 100 - _critChance) {
+			finalCritMult = _abilityCritMult;
 		}
 
-		float damageFormula = _abilityDamage * _attackCritMult;
+		float damageFormula = _abilityDamage * finalCritMult;
 
-		target.TakeDamage(damageFormula);
+		return damageFormula;
 	}
 }

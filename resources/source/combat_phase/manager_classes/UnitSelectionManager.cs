@@ -59,6 +59,7 @@ public partial class UnitSelectionManager : Node3D
 
 			if (collider.GetGroups().Contains("EnemyUnit"))
 			{
+				GD.Print("Enemy");
 				UnitColliderBody unitCollider = collider as UnitColliderBody;
 				Unit enemyUnit = unitCollider.GetParentUnitDetails();
 

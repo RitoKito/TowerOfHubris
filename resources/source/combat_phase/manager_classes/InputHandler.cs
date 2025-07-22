@@ -25,12 +25,20 @@ public partial class InputHandler : Node3D
 		Instance = this;
 		_messenger = Messenger.Instance;
 		_cameraObj = GetViewport().GetCamera3D();
+
+		_messenger.OnTurnStateChanged += HandleTurnStateChanged;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-	   if(!_inputEnabled) { return; }
+	   if(!_inputEnabled) 
+		{
+            _holdingLeftMouse = false;
+            _clickedOnCollider = false;
+            _objectFromLeftClick = null;
+            return; 
+		}
 
 	   if (Input.IsActionJustPressed("mouse_left"))
 		{
@@ -67,5 +75,13 @@ public partial class InputHandler : Node3D
 			Dictionary objectFromMouseLeftRelease = Utils.ShootRayCast(_cameraObj);
 			_messenger.EmitMouseLeftReleased(objectFromMouseLeftRelease);
 		}
+	}
+
+	private void HandleTurnStateChanged(TurnState turnState)
+	{
+		if (turnState == TurnState.PlayerTurn)
+			_inputEnabled = true;
+		else
+			_inputEnabled = false;
 	}
 }

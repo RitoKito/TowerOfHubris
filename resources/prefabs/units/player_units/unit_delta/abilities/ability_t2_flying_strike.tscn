@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://1ktphjpkniet"]
+
+[ext_resource type="Script" path="res://resources/source/combat_phase/abilities/Ability.cs" id="1_2ucof"]
+
+[node name="ability_t2_flying_strike" type="Node3D"]
+script = ExtResource("1_2ucof")
+_abilityId = 2
+_abilityName = "Flying Strike"
+_abilityTier = 2
+_abilityDamage = 50.0
+_critChance = 25.0
+_abilityCritMult = 1.0
