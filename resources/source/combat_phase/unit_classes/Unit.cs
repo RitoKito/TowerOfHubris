@@ -3,38 +3,36 @@ using System.Collections.Generic;
 
 public abstract partial class Unit: Node3D
 {
-    protected Sprite3D _spriteHighlight = null;
-    protected HpDetails _hpLabel = null;
-    protected TargetArrow _targetArrow = null;
-	public TargetArrow TargetArrow { get { return _targetArrow; } }
-    protected Unit _enemyTarget = null;
+	protected Sprite3D _spriteHighlight = null;
+	protected HpDetails _hpLabel = null;
+	protected TargetArrow _targetArrow = null;
+	protected Unit _enemyTarget = null;
 
 	[Export]
 	protected int _id = -1;
-	public int Id { get { return _id; } set { } }
 
 	[Export]
-    protected string _unitName = "The Mighty Placeholder";
-	public string UnitName {  get { return _unitName; } set { } }
+	protected string _unitName = "The Mighty Placeholder";
+	public string UnitName {  get { return _unitName; }}
 
 	[Export]
-    protected float _maxHp = 999;
-	public float MaxHp { get { return _maxHp; } set { } }
+	protected float _maxHp = 999;
+	public float MaxHp { get { return _maxHp; } }
 
-    protected float _currentHp;
+	protected float _currentHp;
 
 	[Export]
-    protected Ability _abilityTier1;
+	protected Ability _abilityTier1;
 
-    protected Ability _currentAbility = null;
-	public Ability CurrentAbility { get { return _currentAbility; } set { } }
+	protected Ability _currentAbility = null;
+	public Ability CurrentAbility { get { return _currentAbility; } }
 
-    protected Dictionary<string, Texture2D> _unitTextureList = new Dictionary<string, Texture2D>();
+	protected Dictionary<string, Texture2D> _unitTextureList = new Dictionary<string, Texture2D>();
 	public Dictionary<string, Texture2D> UnitTextures { get { return  _unitTextureList; } private set { } }
 
-    //private float _attackValue = 2;
+	//private float _attackValue = 2;
 
-    protected bool _drawTargetArrow = false;
+	protected bool _drawTargetArrow = false;
 	public bool DrawTargetArrow { set { _drawTargetArrow = value; } }
 
 	public Unit GetEnemyTarget() { return _enemyTarget; }
@@ -42,9 +40,24 @@ public abstract partial class Unit: Node3D
 		_enemyTarget = target;
 		_drawTargetArrow = false;
 		_targetArrow.HideTargetingUI();
-		DrawTargetingCurve();
+
+		if(_enemyTarget.GetEnemyTarget() == this)
+		{
+			// Bool param sets the curve to half
+			DrawTargetingCurve(true);
+			_enemyTarget.DrawTargetingCurve(true);
+		}
+		else
+			DrawTargetingCurve();
 	}
-	public void RemoveEnemyTarget() { _enemyTarget = null; }
+	public void RemoveEnemyTarget() {
+		if(_enemyTarget.GetEnemyTarget() == this)
+		{
+			_enemyTarget.DrawTargetingCurve(false);
+		}
+
+		_enemyTarget = null; 
+	}
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -114,7 +127,7 @@ public abstract partial class Unit: Node3D
 		_hpLabel.updateHpLabel($"{_currentHp}/{_maxHp}");
 	}
 
-	public void DrawTagettingUI()
+	public void DrawTargetingUI()
 	{
 		_drawTargetArrow = true;
 	}
@@ -125,17 +138,23 @@ public abstract partial class Unit: Node3D
 		_targetArrow.HideTargetingUI();
 	}
 
-	public void DrawTargetingCurve() {
-		_targetArrow.DrawTargetCurve(_enemyTarget.TargetArrow.TargetCurvePos);
+	public void DrawTargetingCurve(bool drawHalf = false) 
+	{
+		_targetArrow.DrawTargetCurve(_enemyTarget.GetTargetCurvePos(), drawHalf);
 	}
 
-    //TODO Implement C# signals
-    protected void _on_static_body_3d_mouse_entered()
+	public Vector3 GetTargetCurvePos()
+	{
+		return _targetArrow.TargetCurvePos;
+	}
+
+	//TODO Implement C# signals
+	protected void _on_static_body_3d_mouse_entered()
 	{
 		ShowSpriteHighlight(true);
 	}
 
-    protected void _on_static_body_3d_mouse_exited()
+	protected void _on_static_body_3d_mouse_exited()
 	{
 		ShowSpriteHighlight(false);
 	}

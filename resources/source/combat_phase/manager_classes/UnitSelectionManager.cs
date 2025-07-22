@@ -43,7 +43,7 @@ public partial class UnitSelectionManager : Node3D
 				_selectedPlayerUnit.RemoveEnemyTarget();
 			}
 
-			_selectedPlayerUnit.DrawTagettingUI();
+			_selectedPlayerUnit.DrawTargetingUI();
 		}
 	}
 
@@ -59,7 +59,6 @@ public partial class UnitSelectionManager : Node3D
 
 			if (collider.GetGroups().Contains("EnemyUnit"))
 			{
-				GD.Print("Enemy");
 				UnitColliderBody unitCollider = collider as UnitColliderBody;
 				Unit enemyUnit = unitCollider.GetParentUnitDetails();
 

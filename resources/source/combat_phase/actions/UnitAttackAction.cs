@@ -33,7 +33,7 @@ public partial class UnitAttackAction : Node, IGameAction
 		_homePosition = unit.GlobalPosition;
 		_offset *= _homePosition.DirectionTo(_targetPosition);
 		_enemyTargetPosition = unit.GetEnemyTarget().GlobalPosition;
-        _targetPosition = _enemyTargetPosition - _offset;
+		_targetPosition = _enemyTargetPosition - _offset;
 		_state = State.Idle;
 	}
 

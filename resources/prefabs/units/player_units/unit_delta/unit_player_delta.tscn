@@ -37,6 +37,9 @@ texture_filter = 0
 
 [node name="player_delta" type="Node3D" node_paths=PackedStringArray("_abilityTier1") groups=["PlayerUnit"]]
 script = ExtResource("1_gysfy")
+_id = 1
+_unitName = "Delta"
+_maxHp = 125.0
 _abilityTier1 = NodePath("abilities/ability_t1_sword_slash")
 
 [node name="unit_sprite" type="Sprite3D" parent="."]

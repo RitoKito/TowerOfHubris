@@ -8,10 +8,13 @@ public partial class SceneManager : Node3D
 
 	private Messenger _messenger;
 
-	private readonly List<PlayerUnit> _playerUnits = new List<PlayerUnit>();
-	public List<PlayerUnit> PlayerUnits { get { return _playerUnits; } }
-	private readonly List<EnemyUnit> _enemyUnits = new List<EnemyUnit>();
+	private readonly List<Unit> _playerUnits = new List<Unit>();
+	private readonly List<Unit> _enemyUnits = new List<Unit>();
 	private readonly List<Unit> _allUnits = new List<Unit>();
+
+	private int _playerUnitCount = 0;
+	private int _enemyUnitCount = 0;
+
 	public IReadOnlyList<Unit> GetAllUnits()
 	{
 		return _allUnits.AsReadOnly();
@@ -30,36 +33,38 @@ public partial class SceneManager : Node3D
 
 	private Unit GetRandomPlayerUnit()
 	{
-        Random rnd = new Random();
-		int index = rnd.Next(0, 4);
+		Random rnd = new Random();
+		int index = rnd.Next(0, _playerUnitCount);
 		return _playerUnits[index];
-    }
+	}
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		if (Instance == null)
 			Instance = this;
-		else
+		else if (Instance != this)
 			Free();
 
 		_messenger = Messenger.Instance;
 		_messenger.OnTurnStateChanged += HandleTurnStateChanged;
 
 		InstantiatePlayerUnits();
+		_playerUnitCount = _playerUnits.Count;
 		InstantiateEnemyUnits();
+		_enemyUnitCount = _enemyUnits.Count;
+
 		_allUnits.AddRange(_playerUnits);
 		_allUnits.AddRange(_enemyUnits);
 
-        if (_playerUnits.Count == 0) 
+		if (_playerUnits.Count == 0) 
 		{
 			GD.PrintErr("Warning! No player units registered in the scene!");
 		}
 		else if(_enemyUnits.Count == 0)
 		{
-            GD.PrintErr("Warning! No enemy units registered in the scene!");
-        }
-
+			GD.PrintErr("Warning! No enemy units registered in the scene!");
+		}
 	}
 
 
@@ -91,22 +96,22 @@ public partial class SceneManager : Node3D
 		var enemyUnitContainer = enemyContainerInstance as UnitContainer;
 		AddChild(enemyContainerInstance);
 
-        foreach (EnemyUnit enemyUnit in enemyUnitContainer.UnitArray)
-        {
-            if (enemyUnit != null)
-            {
-                AppendEnemyUnit(enemyUnit);
-            }
-        }
-    }
+		foreach (EnemyUnit enemyUnit in enemyUnitContainer.UnitArray)
+		{
+			if (enemyUnit != null)
+			{
+				AppendEnemyUnit(enemyUnit);
+			}
+		}
+	}
 
 	private void TargetRandomPlayerUnits()
 	{
-        foreach (EnemyUnit unit in _enemyUnits)
-        {
+		foreach (EnemyUnit unit in _enemyUnits)
+		{
 			unit.TargetPlayerUnit(GetRandomPlayerUnit());
-        }
-    }
+		}
+	}
 
 	private void HandleTurnStateChanged(TurnState state)
 	{

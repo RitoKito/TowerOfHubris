@@ -34,10 +34,10 @@ public partial class InputHandler : Node3D
 	{
 	   if(!_inputEnabled) 
 		{
-            _holdingLeftMouse = false;
-            _clickedOnCollider = false;
-            _objectFromLeftClick = null;
-            return; 
+			_holdingLeftMouse = false;
+			_clickedOnCollider = false;
+			_objectFromLeftClick = null;
+			return; 
 		}
 
 	   if (Input.IsActionJustPressed("mouse_left"))

@@ -90,7 +90,7 @@ public partial class Ability : Node
 		//rnd func is exclusive of upper bound
 		float crit = rnd.Next(1, 101);
 
-        float finalCritMult = 1;
+		float finalCritMult = 1;
 		if(crit >= 100 - _critChance) {
 			finalCritMult = _abilityCritMult;
 		}

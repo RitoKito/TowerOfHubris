@@ -17,7 +17,7 @@ public partial class ActionManager : Node3D
 	{
 		if (Instance == null)
 			Instance = this;
-		else
+		else if (Instance != this)
 			Free();
 
 		_messenger = Messenger.Instance;
@@ -40,16 +40,16 @@ public partial class ActionManager : Node3D
 	{
 		if (_gameActionQueue.Count == 0)
 		{
-            _messenger.EmitTurnResolved();
-            return;
-        }
+			_messenger.EmitTurnResolved();
+			return;
+		}
 
-        IGameAction a = _gameActionQueue.Dequeue();
+		IGameAction a = _gameActionQueue.Dequeue();
 		GD.Print("Tasking");
 		a.Execute(() =>
 		{
 			ProcessNextAction();
-        });
+		});
 	}
 
 	private void QueueUnitActions()

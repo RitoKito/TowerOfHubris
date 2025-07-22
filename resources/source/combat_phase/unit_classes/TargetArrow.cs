@@ -12,9 +12,9 @@ public partial class TargetArrow : Path3D
 	private Node3D _arrowSprite;
 
 	private Vector2 _mousePos;
-	private float _curveStrenght = 1;
+	private float _curveStrenght = 1f;
 	private uint _collisionLayer = 2;
-	private float _vertexHeight = 0.2f;
+	private float _vertexHeight = 3f;
 
 	public override void _Ready()
 	{
@@ -35,18 +35,23 @@ public partial class TargetArrow : Path3D
 
 	}
 
-	public void DrawTargetCurve(Vector3 destination)
+	public void DrawTargetCurve(Vector3 destination, bool drawHalf = false) 
 	{
 		Curve.ClearPoints();
 		Vector3 origin = _targetCurvePos;
 		Vector3 midpoint = (origin + destination) / 2;
 
+		if (drawHalf)
+		{
+			destination = midpoint * new Vector3(1, 1.5f*1.05f, 1);
+			midpoint = (origin + destination) / 2;
+		}
 
 		Curve.AddPoint(ToLocal(origin));
 		Curve.AddPoint(ToLocal(destination));
 
-		float _vertexHeightPerDistance = _vertexHeight + GlobalPosition.DistanceTo(destination / 10);
-        Curve.SetPointIn(1, ToLocal(new Vector3(origin.X - destination.X, _vertexHeightPerDistance, midpoint.Z) * _curveStrenght));
+		float vertexHeightByDistance = _vertexHeight + GlobalPosition.DistanceTo(destination) / 50;
+		Curve.SetPointOut(0, ToLocal(new Vector3(midpoint.X, vertexHeightByDistance, midpoint.Z) * _curveStrenght));
 	}
 
 	public void DrawTargetArrow()
@@ -62,8 +67,6 @@ public partial class TargetArrow : Path3D
 
 			_curveDuplicate.ClearPoints();
 			Vector3 origin = new Vector3(GlobalPosition.X, GlobalPosition.Y, GlobalPosition.Z);
-
-			
 			
 			Vector3 destination = new Vector3(mouseCollision.X, mouseCollision.Y, mouseCollision.Z);
 
