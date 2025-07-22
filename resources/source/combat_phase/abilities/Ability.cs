@@ -42,10 +42,6 @@ public partial class Ability : Node
 			_ability.AbilityId = id;
 			return this;
 		}
-
-
-		
-		
 		public AbilityBuilder SetName(string name)
 		{
 			_ability.AbilityName= name;

@@ -1,20 +1,39 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 
 public partial class SceneManager : Node3D
 {
 	public static SceneManager Instance { get; private set; }
-	Camera3D _cameraObj;
 
-	private readonly List<Unit> _playerUnits = new List<Unit>();
-	public List<Unit> PlayerUnits { get { return _playerUnits; } }
+	private Messenger _messenger;
+
+	private readonly List<PlayerUnit> _playerUnits = new List<PlayerUnit>();
+	public List<PlayerUnit> PlayerUnits { get { return _playerUnits; } }
+	private readonly List<EnemyUnit> _enemyUnits = new List<EnemyUnit>();
+	private readonly List<Unit> _allUnits = new List<Unit>();
+	public IReadOnlyList<Unit> GetAllUnits()
+	{
+		return _allUnits.AsReadOnly();
+	}
 
 	private bool _processingTask = false;
 
-	public void AppendPlayerUnit(Unit unit)
+	public void AppendPlayerUnit(PlayerUnit unit)
 	{
 		_playerUnits.Add(unit);
 	}
+	public void AppendEnemyUnit(EnemyUnit unit)
+	{
+		_enemyUnits.Add(unit);
+	}
+
+	private Unit GetRandomPlayerUnit()
+	{
+        Random rnd = new Random();
+		int index = rnd.Next(0, 4);
+		return _playerUnits[index];
+    }
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -24,14 +43,23 @@ public partial class SceneManager : Node3D
 		else
 			Free();
 
-		_cameraObj = GetViewport().GetCamera3D();
+		_messenger = Messenger.Instance;
+		_messenger.OnTurnStateChanged += HandleTurnStateChanged;
 
-		InstantiatePlayerCharacters();
+		InstantiatePlayerUnits();
+		InstantiateEnemyUnits();
+		_allUnits.AddRange(_playerUnits);
+		_allUnits.AddRange(_enemyUnits);
 
-		if(_playerUnits.Count == 0) 
+        if (_playerUnits.Count == 0) 
 		{
-			GD.Print("Warning! No player units registered in the scene!");
+			GD.PrintErr("Warning! No player units registered in the scene!");
 		}
+		else if(_enemyUnits.Count == 0)
+		{
+            GD.PrintErr("Warning! No enemy units registered in the scene!");
+        }
+
 	}
 
 
@@ -40,20 +68,49 @@ public partial class SceneManager : Node3D
 	{
 	}
 
-	private void InstantiatePlayerCharacters()
+	private void InstantiatePlayerUnits()
 	{
 		PackedScene playerContainer = GD.Load<PackedScene>(PathConstants.PLAYER_CONTAINER_PATH);
 		Node playerContainerInstance = playerContainer.Instantiate();
-		var playerUnitContainer = playerContainerInstance as PlayerUnitContainer;
+		var playerUnitContainer = playerContainerInstance as UnitContainer;	
 		AddChild(playerContainerInstance);
 
-		foreach (Unit unit in playerUnitContainer.UnitArray)
+		foreach (PlayerUnit playerUnit in playerUnitContainer.UnitArray)
 		{
-			if (unit != null)
+			if (playerUnit != null)
 			{
-				AppendPlayerUnit(unit);
+				AppendPlayerUnit(playerUnit);
 			}
 		}
-		//AppendPlayerUnit(playerContainerInstance.GetNode<Unit>("unit_pos_2/player_delta"));
+	}
+
+	private void InstantiateEnemyUnits()
+	{
+		PackedScene enemyContainer = GD.Load<PackedScene>(PathConstants.ENEMY_CONTAINER_PATH);
+		Node enemyContainerInstance = enemyContainer.Instantiate();
+		var enemyUnitContainer = enemyContainerInstance as UnitContainer;
+		AddChild(enemyContainerInstance);
+
+        foreach (EnemyUnit enemyUnit in enemyUnitContainer.UnitArray)
+        {
+            if (enemyUnit != null)
+            {
+                AppendEnemyUnit(enemyUnit);
+            }
+        }
+    }
+
+	private void TargetRandomPlayerUnits()
+	{
+        foreach (EnemyUnit unit in _enemyUnits)
+        {
+			unit.TargetPlayerUnit(GetRandomPlayerUnit());
+        }
+    }
+
+	private void HandleTurnStateChanged(TurnState state)
+	{
+		if(state == TurnState.PlayerTurn)
+			TargetRandomPlayerUnits();
 	}
 }

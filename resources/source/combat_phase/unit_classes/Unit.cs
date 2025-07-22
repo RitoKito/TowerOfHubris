@@ -1,40 +1,40 @@
 using Godot;
 using System.Collections.Generic;
 
-public partial class Unit : Node3D
+public abstract partial class Unit: Node3D
 {
-	private Sprite3D _spriteHighlight = null;
-	private HpDetails _hpLabel = null;
-	private TargetArrow _targetArrow = null;
+    protected Sprite3D _spriteHighlight = null;
+    protected HpDetails _hpLabel = null;
+    protected TargetArrow _targetArrow = null;
 	public TargetArrow TargetArrow { get { return _targetArrow; } }
-	private Unit _enemyTarget = null;
+    protected Unit _enemyTarget = null;
 
 	[Export]
-	private int _id = -1;
+	protected int _id = -1;
 	public int Id { get { return _id; } set { } }
 
 	[Export]
-	private string _unitName = "The Mighty Placeholder";
+    protected string _unitName = "The Mighty Placeholder";
 	public string UnitName {  get { return _unitName; } set { } }
 
 	[Export]
-	private float _maxHp = 999;
+    protected float _maxHp = 999;
 	public float MaxHp { get { return _maxHp; } set { } }
 
-	private float _currentHp;
+    protected float _currentHp;
 
 	[Export]
-	private Ability _abilityTier1;
+    protected Ability _abilityTier1;
 
-	private Ability _currentAbility = null;
+    protected Ability _currentAbility = null;
 	public Ability CurrentAbility { get { return _currentAbility; } set { } }
 
-	private Dictionary<string, Texture2D> _unitTextureList = new Dictionary<string, Texture2D>();
+    protected Dictionary<string, Texture2D> _unitTextureList = new Dictionary<string, Texture2D>();
 	public Dictionary<string, Texture2D> UnitTextures { get { return  _unitTextureList; } private set { } }
 
-	//private float _attackValue = 2;
+    //private float _attackValue = 2;
 
-	private bool _drawTargetArrow = false;
+    protected bool _drawTargetArrow = false;
 	public bool DrawTargetArrow { set { _drawTargetArrow = value; } }
 
 	public Unit GetEnemyTarget() { return _enemyTarget; }
@@ -129,13 +129,13 @@ public partial class Unit : Node3D
 		_targetArrow.DrawTargetCurve(_enemyTarget.TargetArrow.TargetCurvePos);
 	}
 
-	//TODO Implement C# signals
-	private void _on_static_body_3d_mouse_entered()
+    //TODO Implement C# signals
+    protected void _on_static_body_3d_mouse_entered()
 	{
 		ShowSpriteHighlight(true);
 	}
 
-	private void _on_static_body_3d_mouse_exited()
+    protected void _on_static_body_3d_mouse_exited()
 	{
 		ShowSpriteHighlight(false);
 	}

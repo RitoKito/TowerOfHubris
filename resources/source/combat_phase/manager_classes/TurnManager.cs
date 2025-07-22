@@ -66,6 +66,4 @@ public partial class TurnManager : Node3D
     {
         _messenger.EmitTurnStateChanged(TurnState);
     }
-
-
 }

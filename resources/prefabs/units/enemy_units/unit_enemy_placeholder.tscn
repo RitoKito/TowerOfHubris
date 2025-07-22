@@ -1,6 +1,6 @@
 [gd_scene load_steps=17 format=3 uid="uid://bk2fuvy6g34ig"]
 
-[ext_resource type="Script" path="res://resources/source/combat_phase/unit_classes/Unit.cs" id="1_02868"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit_classes/EnemyUnit.cs" id="1_5yuwy"]
 [ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/units/player_units/delta/delta_idle.png" id="2_aup3p"]
 [ext_resource type="Texture2D" uid="uid://5y3ndtfj5o62" path="res://resources/sprites/units/player_units/delta/delta_idle_highlight.png" id="3_u0wj4"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit_classes/UnitColliderBody.cs" id="4_8jykj"]
@@ -33,12 +33,10 @@ no_depth_test = true
 albedo_texture = ExtResource("8_e5ao8")
 texture_filter = 0
 
-[node name="unit_enemy_placeholder" type="Node3D" groups=["EnemyUnit"]]
+[node name="unit_enemy_placeholder" type="Node3D" node_paths=PackedStringArray("_abilityTier1") groups=["EnemyUnit"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.34604, 0.166017, 0.348642)
-script = ExtResource("1_02868")
-_id = -2
-_unitName = "EnemyPlaceholder"
-_maxHp = 200.0
+script = ExtResource("1_5yuwy")
+_abilityTier1 = NodePath("abilities/ability_1")
 
 [node name="unit_sprite" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.701322, 0, 0)
@@ -127,6 +125,7 @@ texture = ExtResource("9_vyixc")
 [node name="abilities" type="Node3D" parent="."]
 
 [node name="ability_1" parent="abilities" instance=ExtResource("10_n6cyw")]
+_abilityCritMult = 2.0
 
 [connection signal="mouse_entered" from="unit_col_bdy" to="." method="_on_static_body_3d_mouse_entered"]
 [connection signal="mouse_exited" from="unit_col_bdy" to="." method="_on_static_body_3d_mouse_exited"]

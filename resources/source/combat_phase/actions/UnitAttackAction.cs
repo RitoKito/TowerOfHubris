@@ -31,8 +31,9 @@ public partial class UnitAttackAction : Node, IGameAction
 
 		_unit = unit;
 		_homePosition = unit.GlobalPosition;
+		_offset *= _homePosition.DirectionTo(_targetPosition);
 		_enemyTargetPosition = unit.GetEnemyTarget().GlobalPosition;
-		_targetPosition = _enemyTargetPosition - _offset;
+        _targetPosition = _enemyTargetPosition - _offset;
 		_state = State.Idle;
 	}
 
@@ -49,7 +50,7 @@ public partial class UnitAttackAction : Node, IGameAction
 		{
 			_unit.GlobalPosition = _unit.GlobalPosition.Lerp(_targetPosition, _moveSpeed * (float)delta);
 
-			if (_unit.GlobalPosition >= _targetPosition - destinationThreshold)
+			if (_unit.GlobalPosition.DistanceTo(_targetPosition) <= 0.02f)
 			{
 				_unit.GlobalPosition = _targetPosition;
 				_state = State.Attacking;
@@ -72,7 +73,7 @@ public partial class UnitAttackAction : Node, IGameAction
 		{
 			_unit.GlobalPosition = _unit.GlobalPosition.Lerp(_homePosition, _moveSpeed * (float)delta);
 
-			if( _unit.GlobalPosition <= _homePosition + destinationThreshold)
+			if(_unit.GlobalPosition.DistanceTo(_homePosition) <= 0.02f)
 			{
 				_unit.GlobalPosition = _homePosition;
 				_state = State.Completed;

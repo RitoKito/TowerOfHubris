@@ -1,6 +1,6 @@
 [gd_scene load_steps=19 format=3 uid="uid://dptiqga2qqv8e"]
 
-[ext_resource type="Script" path="res://resources/source/combat_phase/unit_classes/Unit.cs" id="1_6kj6w"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit_classes/PlayerUnit.cs" id="1_gysfy"]
 [ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/units/player_units/delta/delta_idle.png" id="2_q14p1"]
 [ext_resource type="Texture2D" uid="uid://5y3ndtfj5o62" path="res://resources/sprites/units/player_units/delta/delta_idle_highlight.png" id="3_ubups"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit_classes/UnitColliderBody.cs" id="4_2ehur"]
@@ -36,10 +36,7 @@ albedo_texture = ExtResource("8_xb51g")
 texture_filter = 0
 
 [node name="player_delta" type="Node3D" node_paths=PackedStringArray("_abilityTier1") groups=["PlayerUnit"]]
-script = ExtResource("1_6kj6w")
-_id = 1
-_unitName = "Delta"
-_maxHp = 125.0
+script = ExtResource("1_gysfy")
 _abilityTier1 = NodePath("abilities/ability_t1_sword_slash")
 
 [node name="unit_sprite" type="Sprite3D" parent="."]

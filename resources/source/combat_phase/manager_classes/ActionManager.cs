@@ -54,7 +54,7 @@ public partial class ActionManager : Node3D
 
 	private void QueueUnitActions()
 	{
-		foreach (Unit unit in _sceneManager.PlayerUnits)
+		foreach (Unit unit in _sceneManager.GetAllUnits())
 		{
 			unit.HideTargetingUI();
 			// TODO ALLOW ONLY WHEN ALL UNITS HAVE TARGET
@@ -66,6 +66,7 @@ public partial class ActionManager : Node3D
 				EnqueueAction(unitAction);
 			}
 		}
+
 
 		ProcessNextAction();
 	}

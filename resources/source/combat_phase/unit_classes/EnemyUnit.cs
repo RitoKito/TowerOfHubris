@@ -1,26 +1,25 @@
 using Godot;
+using System;
+using System.Collections.Generic;
 
-public partial class DebugTargetLabel : Label3D
+public partial class EnemyUnit : Unit
 {
-	Unit unit = null;
-
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		unit = GetParentOrNull<Unit>();
+		base._Ready();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		if(unit.GetEnemyTarget() != null)
-		{
-			Text = $"Target: {unit.GetEnemyTarget().UnitName}";
-		}
-		else
-		{
-			Text = "Target: No Target";
-		}
+		base._Process(delta);
+	}
 
+	public void TargetPlayerUnit(Unit target)
+	{
+		_enemyTarget = target;
+
+		DrawTargetingCurve();
 	}
 }
