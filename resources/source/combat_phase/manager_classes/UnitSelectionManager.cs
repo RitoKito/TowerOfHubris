@@ -1,12 +1,13 @@
 using Godot;
-using System;
 using Godot.Collections;
 
 public partial class UnitSelectionManager : Node3D
 {
 	private Messenger _messenger;
-	private Camera3D _cameraObj;
-	private InputHandler _inputHandler;
+    private InputHandler _inputHandler;
+	private SceneManager _sceneManager;
+
+    private Camera3D _cameraObj;
 	private Unit _selectedPlayerUnit;
 	private Dictionary _clickedObject;
 
@@ -18,6 +19,7 @@ public partial class UnitSelectionManager : Node3D
 		_messenger.OnMouseLeftRelease += HandleMouseLeftRelease;
 
 		_inputHandler = InputHandler.Instance;
+		_sceneManager = SceneManager.Instance;
 		_cameraObj = GetViewport().GetCamera3D();
 		
 	}
@@ -35,15 +37,18 @@ public partial class UnitSelectionManager : Node3D
 		{
 			UnitColliderBody unitCollider = collider as UnitColliderBody;
 			Unit playerUnit = unitCollider.GetParentUnitDetails();
-			_selectedPlayerUnit = playerUnit;
 
-
-			if (_selectedPlayerUnit.GetEnemyTarget() != null)
+			if (playerUnit.CurrentState != UnitState.Dead)
 			{
-				_selectedPlayerUnit.RemoveEnemyTarget();
-			}
+				_selectedPlayerUnit = playerUnit;
 
-			_selectedPlayerUnit.DrawTargetingUI();
+				if (_selectedPlayerUnit.GetEnemyTarget() != null)
+				{
+					_selectedPlayerUnit.RemoveEnemyTarget();
+				}
+
+				_selectedPlayerUnit.DrawTargetingUI();
+			}
 		}
 	}
 
@@ -62,8 +67,12 @@ public partial class UnitSelectionManager : Node3D
 				UnitColliderBody unitCollider = collider as UnitColliderBody;
 				Unit enemyUnit = unitCollider.GetParentUnitDetails();
 
-				_selectedPlayerUnit.SetEnemyTarget(enemyUnit);
-			}
+				if(enemyUnit.CurrentState != UnitState.Dead) 
+				{
+					_selectedPlayerUnit.SetEnemyTarget(enemyUnit);
+					_selectedPlayerUnit.SetFallBackTargets(_sceneManager.GetAliveEnemyUnits());
+                }
+            }
 		}
 		_selectedPlayerUnit = null;
 	}

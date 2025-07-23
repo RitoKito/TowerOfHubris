@@ -10,7 +10,7 @@ public partial class ActionManager : Node3D
 
 	private SceneManager _sceneManager;
 	private Messenger _messenger;
-	private Queue<IGameAction> _gameActionQueue = new Queue<IGameAction>();
+	private Queue<GameAction> _gameActionQueue = new Queue<GameAction>();
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -31,7 +31,7 @@ public partial class ActionManager : Node3D
 	{
 	}
 
-	private void EnqueueAction(IGameAction action)
+	private void EnqueueAction(GameAction action)
 	{
 		_gameActionQueue.Enqueue(action);
 	}
@@ -44,13 +44,20 @@ public partial class ActionManager : Node3D
 			return;
 		}
 
-		IGameAction a = _gameActionQueue.Dequeue();
-		GD.Print("Tasking");
-		a.Execute(() =>
+        GameAction action = _gameActionQueue.Dequeue();
+
+		if(action.AutorUnit.CurrentState == UnitState.Dead)
 		{
 			ProcessNextAction();
-		});
-	}
+		}
+		else
+		{
+            action.Execute(() =>
+            {
+                ProcessNextAction();
+            });
+        }
+    }
 
 	private void QueueUnitActions()
 	{
@@ -61,7 +68,7 @@ public partial class ActionManager : Node3D
 			// TODO Make interface for GameAction
 			if (unit.GetEnemyTarget() != null)
 			{
-				IGameAction unitAction = new UnitAttackAction(unit);
+                GameAction unitAction = new UnitAttackAction(unit);
 				AddChild(unitAction as Node);
 				EnqueueAction(unitAction);
 			}

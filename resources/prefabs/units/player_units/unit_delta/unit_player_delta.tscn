@@ -1,17 +1,17 @@
-[gd_scene load_steps=19 format=3 uid="uid://dptiqga2qqv8e"]
+[gd_scene load_steps=19 format=3 uid="uid://dpkbteb7pa8te"]
 
-[ext_resource type="Script" path="res://resources/source/combat_phase/unit_classes/PlayerUnit.cs" id="1_gysfy"]
-[ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/units/player_units/delta/delta_idle.png" id="2_q14p1"]
-[ext_resource type="Texture2D" uid="uid://5y3ndtfj5o62" path="res://resources/sprites/units/player_units/delta/delta_idle_highlight.png" id="3_ubups"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/unit_classes/UnitColliderBody.cs" id="4_2ehur"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/unit_classes/HpDetails.cs" id="5_gbrrc"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/debug_classes/DebugTargetLabel.cs" id="6_0k145"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/unit_classes/TargetArrow.cs" id="7_beiwo"]
-[ext_resource type="Texture2D" uid="uid://bb4k6b2edrnj7" path="res://resources/sprites/targetting_arrow/dotted_line.png" id="8_xb51g"]
-[ext_resource type="Texture2D" uid="uid://byg5tuodni1xh" path="res://resources/sprites/targetting_arrow/arrowhead.png" id="9_n2f8c"]
-[ext_resource type="PackedScene" uid="uid://d17sff2ou344i" path="res://resources/prefabs/units/player_units/unit_delta/abilities/ability_t1_sword_slash.tscn" id="10_3wugk"]
-[ext_resource type="PackedScene" uid="uid://1ktphjpkniet" path="res://resources/prefabs/units/player_units/unit_delta/abilities/ability_t2_flying_strike.tscn" id="11_u283x"]
-[ext_resource type="PackedScene" uid="uid://bs02p5mqwrih3" path="res://resources/prefabs/units/player_units/unit_delta/abilities/ability_t3_falling_heaven.tscn" id="12_knp1i"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit_classes/PlayerUnit.cs" id="1_800yu"]
+[ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/units/player_units/delta/delta_idle.png" id="2_o1rpa"]
+[ext_resource type="Texture2D" uid="uid://5y3ndtfj5o62" path="res://resources/sprites/units/player_units/delta/delta_idle_highlight.png" id="3_rpow4"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit_classes/UnitColliderBody.cs" id="4_womm4"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit_classes/HpDetails.cs" id="5_sfct8"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/debug_classes/DebugTargetLabel.cs" id="6_cmpcu"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit_classes/TargetArrow.cs" id="7_sv1cs"]
+[ext_resource type="Texture2D" uid="uid://bb4k6b2edrnj7" path="res://resources/sprites/targetting_arrow/dotted_line.png" id="8_vpfqv"]
+[ext_resource type="Texture2D" uid="uid://byg5tuodni1xh" path="res://resources/sprites/targetting_arrow/arrowhead.png" id="9_iloaq"]
+[ext_resource type="PackedScene" uid="uid://d17sff2ou344i" path="res://resources/prefabs/units/player_units/unit_delta/abilities/ability_t1_sword_slash.tscn" id="10_ggwa5"]
+[ext_resource type="PackedScene" uid="uid://1ktphjpkniet" path="res://resources/prefabs/units/player_units/unit_delta/abilities/ability_t2_flying_strike.tscn" id="11_ht6de"]
+[ext_resource type="PackedScene" uid="uid://bs02p5mqwrih3" path="res://resources/prefabs/units/player_units/unit_delta/abilities/ability_t3_falling_heaven.tscn" id="12_awwdc"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rqfqc"]
 size = Vector3(0.527005, 1.995, 0.107162)
@@ -32,21 +32,22 @@ render_priority = -1
 transparency = 1
 cull_mode = 2
 no_depth_test = true
-albedo_texture = ExtResource("8_xb51g")
+albedo_texture = ExtResource("8_vpfqv")
 texture_filter = 0
 
-[node name="player_delta" type="Node3D" node_paths=PackedStringArray("_abilityTier1") groups=["PlayerUnit"]]
-script = ExtResource("1_gysfy")
+[node name="player_delta" type="Node3D" node_paths=PackedStringArray("_abilities") groups=["PlayerUnit"]]
+script = ExtResource("1_800yu")
 _id = 1
 _unitName = "Delta"
 _maxHp = 125.0
-_abilityTier1 = NodePath("abilities/ability_t1_sword_slash")
+_affinityWeaknesses = [3, 4]
+_abilities = [NodePath("abilities/ability_t1_sword_slash"), NodePath("abilities/ability_t2_flying_strike"), NodePath("abilities/ability_t3_falling_heaven")]
 
 [node name="unit_sprite" type="Sprite3D" parent="."]
 offset = Vector2(81, 265)
 pixel_size = 0.004
 texture_filter = 0
-texture = ExtResource("2_q14p1")
+texture = ExtResource("2_o1rpa")
 
 [node name="unit_select_spr" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.00128113)
@@ -54,10 +55,10 @@ offset = Vector2(81, 265)
 pixel_size = 0.004
 texture_filter = 0
 render_priority = -1
-texture = ExtResource("3_ubups")
+texture = ExtResource("3_rpow4")
 
 [node name="unit_col_bdy" type="StaticBody3D" parent="." groups=["PlayerUnit"]]
-script = ExtResource("4_2ehur")
+script = ExtResource("4_womm4")
 
 [node name="unit_col_shape" type="CollisionShape3D" parent="unit_col_bdy"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0447506, 1.07914, -0.0441498)
@@ -69,7 +70,7 @@ pixel_size = 0.003
 render_priority = 1
 text = "999/999"
 font_size = 82
-script = ExtResource("5_gbrrc")
+script = ExtResource("5_sfct8")
 
 [node name="attack_btn" type="CSGMesh3D" parent="."]
 transform = Transform3D(0.428517, 0, 0, 0, 0.332149, 0, 0, 0, 1, -0.0098182, 2.54458, 0)
@@ -91,12 +92,12 @@ shape = SubResource("BoxShape3D_3xrok")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00397038, 3.13366, 0)
 text = "Target: Enemy"
 font_size = 52
-script = ExtResource("6_0k145")
+script = ExtResource("6_cmpcu")
 
 [node name="target_arrow" type="Path3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0537333, 1.13846, 0)
 curve = SubResource("Curve3D_qgumi")
-script = ExtResource("7_beiwo")
+script = ExtResource("7_sv1cs")
 
 [node name="curve_polygon" type="CSGPolygon3D" parent="target_arrow"]
 polygon = PackedVector2Array(0, 0.05, 0, 0, 0, 0)
@@ -119,15 +120,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.238168, 2.18043, 0)
 transform = Transform3D(0.731478, 0, 0, 0, 0.341561, 0, 0, 0, 1, 0, 0, 0)
 no_depth_test = true
 texture_filter = 0
-texture = ExtResource("9_n2f8c")
+texture = ExtResource("9_iloaq")
 
 [node name="abilities" type="Node3D" parent="."]
 
-[node name="ability_t1_sword_slash" parent="abilities" instance=ExtResource("10_3wugk")]
+[node name="ability_t1_sword_slash" parent="abilities" instance=ExtResource("10_ggwa5")]
 
-[node name="ability_t2_flying_strike" parent="abilities" instance=ExtResource("11_u283x")]
+[node name="ability_t2_flying_strike" parent="abilities" instance=ExtResource("11_ht6de")]
 
-[node name="ability_t3_falling_heaven" parent="abilities" instance=ExtResource("12_knp1i")]
+[node name="ability_t3_falling_heaven" parent="abilities" instance=ExtResource("12_awwdc")]
 
 [connection signal="mouse_entered" from="unit_col_bdy" to="." method="_on_static_body_3d_mouse_entered"]
 [connection signal="mouse_exited" from="unit_col_bdy" to="." method="_on_static_body_3d_mouse_exited"]

@@ -8,12 +8,20 @@ public partial class SceneManager : Node3D
 
 	private Messenger _messenger;
 
-	private readonly List<Unit> _playerUnits = new List<Unit>();
-	private readonly List<Unit> _enemyUnits = new List<Unit>();
+	private readonly List<PlayerUnit> _playerUnits = new List<PlayerUnit>();
+    private List<PlayerUnit> _alivePlayerUnits = new List<PlayerUnit>();
+
+    private readonly List<EnemyUnit> _enemyUnits = new List<EnemyUnit>();
+	private List<EnemyUnit> _aliveEnemyUnits = new List<EnemyUnit>();
+	public IReadOnlyList<EnemyUnit> GetAliveEnemyUnits()
+	{
+		return _aliveEnemyUnits.AsReadOnly();
+	}
+
 	private readonly List<Unit> _allUnits = new List<Unit>();
 
-	private int _playerUnitCount = 0;
-	private int _enemyUnitCount = 0;
+	private int _playerUnitsAlive = 0;
+	private int _enemyUnitsAlive = 0;
 
 	public IReadOnlyList<Unit> GetAllUnits()
 	{
@@ -34,8 +42,8 @@ public partial class SceneManager : Node3D
 	private Unit GetRandomPlayerUnit()
 	{
 		Random rnd = new Random();
-		int index = rnd.Next(0, _playerUnitCount);
-		return _playerUnits[index];
+		int index = rnd.Next(0, _alivePlayerUnits.Count);
+		return _alivePlayerUnits[index];
 	}
 
 	// Called when the node enters the scene tree for the first time.
@@ -48,11 +56,14 @@ public partial class SceneManager : Node3D
 
 		_messenger = Messenger.Instance;
 		_messenger.OnTurnStateChanged += HandleTurnStateChanged;
+		_messenger.OnUnitDeath += HandleUnitDeath;
 
 		InstantiatePlayerUnits();
-		_playerUnitCount = _playerUnits.Count;
+		_alivePlayerUnits.AddRange(_playerUnits);
+		_playerUnitsAlive = _playerUnits.Count;
 		InstantiateEnemyUnits();
-		_enemyUnitCount = _enemyUnits.Count;
+		_aliveEnemyUnits.AddRange(_enemyUnits);
+		_enemyUnitsAlive = _enemyUnits.Count;
 
 		_allUnits.AddRange(_playerUnits);
 		_allUnits.AddRange(_enemyUnits);
@@ -75,9 +86,10 @@ public partial class SceneManager : Node3D
 
 	private void InstantiatePlayerUnits()
 	{
-		PackedScene playerContainer = GD.Load<PackedScene>(PathConstants.PLAYER_CONTAINER_PATH);
+		PackedScene playerContainer = GD.Load<PackedScene>(PathConstants.CONTAINER_UNIT_PLAYER);
 		Node playerContainerInstance = playerContainer.Instantiate();
-		var playerUnitContainer = playerContainerInstance as UnitContainer;	
+		var playerUnitContainer = playerContainerInstance as UnitContainer;
+		playerUnitContainer.PopulatePlayerContainer();
 		AddChild(playerContainerInstance);
 
 		foreach (PlayerUnit playerUnit in playerUnitContainer.UnitArray)
@@ -91,9 +103,10 @@ public partial class SceneManager : Node3D
 
 	private void InstantiateEnemyUnits()
 	{
-		PackedScene enemyContainer = GD.Load<PackedScene>(PathConstants.ENEMY_CONTAINER_PATH);
+		PackedScene enemyContainer = GD.Load<PackedScene>(PathConstants.CONTAINER_UNIT_ENEMY);
 		Node enemyContainerInstance = enemyContainer.Instantiate();
 		var enemyUnitContainer = enemyContainerInstance as UnitContainer;
+		enemyUnitContainer.PopulateEnemyContainer();
 		AddChild(enemyContainerInstance);
 
 		foreach (EnemyUnit enemyUnit in enemyUnitContainer.UnitArray)
@@ -107,6 +120,9 @@ public partial class SceneManager : Node3D
 
 	private void TargetRandomPlayerUnits()
 	{
+		if(_alivePlayerUnits.Count <= 0)
+			return;
+
 		foreach (EnemyUnit unit in _enemyUnits)
 		{
 			unit.TargetPlayerUnit(GetRandomPlayerUnit());
@@ -117,5 +133,27 @@ public partial class SceneManager : Node3D
 	{
 		if(state == TurnState.PlayerTurn)
 			TargetRandomPlayerUnits();
+	}
+
+	private void HandleUnitDeath(Unit unit)
+	{
+		if (unit.GetGroups().Contains("PlayerUnit"))
+		{
+			_playerUnitsAlive--;
+			_alivePlayerUnits.Remove(unit as PlayerUnit);
+			if(_playerUnitsAlive <= 0)
+			{
+				GD.Print("Player Lost");
+			}
+		}
+		else if (unit.GetGroups().Contains("EnemyUnit"))
+		{
+			_enemyUnitsAlive--;
+			_aliveEnemyUnits.Remove(unit as EnemyUnit);
+            if (_enemyUnitsAlive <= 0)
+            {
+                GD.Print("Player Won");
+            }
+        }
 	}
 }

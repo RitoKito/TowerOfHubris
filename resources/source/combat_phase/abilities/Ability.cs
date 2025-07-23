@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 using System;
 
 // Base class for abilities
@@ -27,6 +28,26 @@ public partial class Ability : Node
 	[Export]
 	private float _abilityCritMult;
 	public float AbilityCritMult { get { return _abilityCritMult; } set { } }
+
+	[Export]
+	private Array<Affinity> _affinities = new Array<Affinity>();
+	public Array<Affinity> Affinities { get { return _affinities; } }
+
+	public void AddAffinity(Affinity affinity)
+	{
+		if (_affinities.Contains(affinity))
+		{
+			GD.PrintErr($"Ability {_abilityName} already posses {affinity} affinity");
+			return;
+		}
+
+		_affinities.Add(affinity);
+	}
+
+	public void RemoveAffinity(Affinity affinity)
+	{
+		_affinities.Remove(affinity);
+	}
 
 	// Crit mult applied to final instance of damage
 	[Export]
@@ -84,7 +105,7 @@ public partial class Ability : Node
 	{
 	}
 
-	public float CalculateDamageInstance()
+	public (float, Array<Affinity>) CalculateDamageInstance()
 	{
 		Random rnd = new Random();
 		//rnd func is exclusive of upper bound
@@ -96,7 +117,8 @@ public partial class Ability : Node
 		}
 
 		float damageFormula = _abilityDamage * finalCritMult;
+		(float, Array<Affinity>) damageInstance = (damageFormula, _affinities);
 
-		return damageFormula;
+		return damageInstance;
 	}
 }

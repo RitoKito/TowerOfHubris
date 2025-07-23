@@ -1,15 +1,27 @@
 using Godot;
+using Godot.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public abstract partial class Unit: Node3D
 {
+	protected Messenger _messenger;
+
 	protected Sprite3D _spriteHighlight = null;
 	protected HpDetails _hpLabel = null;
 	protected TargetArrow _targetArrow = null;
 	protected Unit _enemyTarget = null;
+	// In case primary target dies before action executed
+	// it will be redirected to one of _fallbackUnits
+	protected List<Unit> _fallBackEnemyTargets = new List<Unit>();
+	public IReadOnlyList<Unit> FallBackEnemyTargets {  get { return _fallBackEnemyTargets.AsReadOnly(); } }
 
 	[Export]
 	protected int _id = -1;
+
+	[Export]
+	protected int _unitPos = 0;
+	public int UnitPos { get { return _unitPos; } }
 
 	[Export]
 	protected string _unitName = "The Mighty Placeholder";
@@ -21,47 +33,39 @@ public abstract partial class Unit: Node3D
 
 	protected float _currentHp;
 
+	protected UnitState _currentState;
+	public UnitState CurrentState { get { return _currentState; } }
+
+	// Damage Resistance is in % form
 	[Export]
-	protected Ability _abilityTier1;
+	protected float _damageResistanceMultiplier = 0;
+
+	// TODO Implement better structure for affinities
+	[Export]
+	protected Array<Affinity> _affinityWeaknesses = new Array<Affinity>();
+	[Export]
+	protected Array<Affinity> _affinityStrengths = new Array<Affinity>();
+
+	[Export]
+	protected Array<Ability> _abilities = new Array<Ability>();
 
 	protected Ability _currentAbility = null;
 	public Ability CurrentAbility { get { return _currentAbility; } }
 
-	protected Dictionary<string, Texture2D> _unitTextureList = new Dictionary<string, Texture2D>();
-	public Dictionary<string, Texture2D> UnitTextures { get { return  _unitTextureList; } private set { } }
+	//protected Dictionary<string, Texture2D> _unitTextureList = new Dictionary<string, Texture2D>();
+	//public Dictionary<string, Texture2D> UnitTextures { get { return  _unitTextureList; } private set { } }
 
 	//private float _attackValue = 2;
 
 	protected bool _drawTargetArrow = false;
 	public bool DrawTargetArrow { set { _drawTargetArrow = value; } }
 
-	public Unit GetEnemyTarget() { return _enemyTarget; }
-	public void SetEnemyTarget(Unit target) {
-		_enemyTarget = target;
-		_drawTargetArrow = false;
-		_targetArrow.HideTargetingUI();
 
-		if(_enemyTarget.GetEnemyTarget() == this)
-		{
-			// Bool param sets the curve to half
-			DrawTargetingCurve(true);
-			_enemyTarget.DrawTargetingCurve(true);
-		}
-		else
-			DrawTargetingCurve();
-	}
-	public void RemoveEnemyTarget() {
-		if(_enemyTarget.GetEnemyTarget() == this)
-		{
-			_enemyTarget.DrawTargetingCurve(false);
-		}
-
-		_enemyTarget = null; 
-	}
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		_messenger = Messenger.Instance;
 		_targetArrow = GetNode<TargetArrow>("target_arrow");
 		_spriteHighlight = GetNode<Sprite3D>("unit_select_spr");
 		_hpLabel = GetNode<HpDetails>("hp_label");
@@ -72,13 +76,18 @@ public abstract partial class Unit: Node3D
 
 		// TODO Make ability assignment into function
 		// Handle invalid ability lists
-		if (_abilityTier1 != null)
+		if (_abilities[0] != null)
 		{
 			//_currentAbility = _abilityList.GetValue(0) as Ability;
-			_currentAbility = _abilityTier1;
+			_currentAbility = _abilities[0];
+		}
+		else
+		{
+			GD.PrintErr($"Ability List of {_unitName} May Be Empty");
 		}
 
 		ShowSpriteHighlight(false);
+		_currentState = UnitState.Alive;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -90,7 +99,46 @@ public abstract partial class Unit: Node3D
 		}
 	}
 
-	public void ShowSpriteHighlight(bool state)
+    public Unit GetEnemyTarget() { return _enemyTarget; }
+    public void SetEnemyTarget(Unit target)
+    {
+        _enemyTarget = target;
+        _drawTargetArrow = false;
+        _targetArrow.HideTargetingUI();
+
+        if (_enemyTarget.GetEnemyTarget() == this)
+        {
+            // Bool param sets the curve to half
+            DrawTargetingCurve(true);
+            _enemyTarget.DrawTargetingCurve(true);
+        }
+        else
+            DrawTargetingCurve();
+    }
+
+	// When setting fallback target the UI is not needed
+	public void SetFallbackTarget(Unit target)
+	{
+		_enemyTarget = target;
+	}
+
+	// TODO Encapsulate the method 
+	public void SetFallBackTargets(IReadOnlyList<Unit> aliveEnemyTargets)
+	{
+        _fallBackEnemyTargets.AddRange(aliveEnemyTargets.Where(t => t != _enemyTarget));
+	}
+
+    public void RemoveEnemyTarget()
+    {
+        if (_enemyTarget.GetEnemyTarget() == this)
+        {
+            _enemyTarget.DrawTargetingCurve(false);
+        }
+
+        _enemyTarget = null;
+    }
+
+    public void ShowSpriteHighlight(bool state)
 	{
 		if (state)
 		{
@@ -107,24 +155,53 @@ public abstract partial class Unit: Node3D
 		if(_enemyTarget != null)
 		{
 			_enemyTarget.TakeDamage(CurrentAbility.CalculateDamageInstance());
-			GD.Print(_currentAbility.AbilityName);
+			GD.Print($"{_unitName} performed {_currentAbility.AbilityName}");
 			_enemyTarget = null;
 		}
 
 		_targetArrow.HideTargetingUI();
 	}
 
-	public void TakeDamage(float damageValue)
+	public void TakeDamage((float damageValue, Array<Affinity> affinties) damageInstance)
 	{
-		_currentHp -= damageValue;
+		float weaknessMultiplier = 1;
+		float streghtMultiplier = 1;
+        int numberOfWeakAffintiies = _affinityWeaknesses.Intersect(damageInstance.affinties).Count();
+		int numberOfStrongAffinties = _affinityStrengths.Intersect(damageInstance.affinties).Count();
 
-		if(_currentHp <= 0)
+
+		if (numberOfWeakAffintiies > 0)
 		{
-			Hide();
+			weaknessMultiplier += numberOfWeakAffintiies / 10f;
+		}
+
+		if(numberOfStrongAffinties > 0)
+		{
+			streghtMultiplier = 1 - (numberOfStrongAffinties / 10f);
+        }
+
+
+
+        _damageResistanceMultiplier = (100 - _damageResistanceMultiplier) / 100;
+		float totalDamage = damageInstance.damageValue * weaknessMultiplier * streghtMultiplier * _damageResistanceMultiplier;
+        _currentHp -= totalDamage;
+
+        if (_currentHp <= 0)
+		{
+			Die();
 		}
 
 		// TODO simplify
 		_hpLabel.updateHpLabel($"{_currentHp}/{_maxHp}");
+	}
+
+	protected void Die()
+	{
+		_currentState = UnitState.Dead;
+
+		// TODO Make Dead Sprite
+		Hide();
+		_messenger.EmitUnitDied(this);
 	}
 
 	public void DrawTargetingUI()

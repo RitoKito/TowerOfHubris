@@ -10,8 +10,7 @@ public partial class TurnCounterLabel : Label
 	{
 		_messenger = Messenger.Instance;
 		_messenger.OnTurnStateChanged += HandleTurnStateChanged;
-
-		UpdateTurnCount(TurnManager.Instance.TurnCount);
+		//UpdateTurnCount(TurnManager.Instance.TurnCount);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -1,0 +1,59 @@
+[gd_scene load_steps=8 format=3 uid="uid://bmxwr384pvyx6"]
+
+[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/UnitSelectionManager.cs" id="1_fha01"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/InputHandler.cs" id="2_2dn8v"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/SceneManager.cs" id="2_6f53p"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/ActionManager.cs" id="3_l2ig0"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/camera/CamGimbal.cs" id="4_sill0"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/TurnManager.cs" id="4_smpwj"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_crgnk"]
+size = Vector3(100, 100, 0.111328)
+
+[node name="level_placeholder" type="Node3D"]
+
+[node name="managers" type="Node3D" parent="."]
+
+[node name="input_handler" type="Node3D" parent="managers"]
+script = ExtResource("2_2dn8v")
+
+[node name="scene_manager" type="Node3D" parent="managers"]
+script = ExtResource("2_6f53p")
+
+[node name="unit_selection_manager" type="Node3D" parent="managers"]
+script = ExtResource("1_fha01")
+
+[node name="action_manager" type="Node3D" parent="managers"]
+script = ExtResource("3_l2ig0")
+
+[node name="turn_manager" type="Node3D" parent="managers"]
+script = ExtResource("4_smpwj")
+
+[node name="light_source" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.624275, 0.781205, 0, -0.781205, 0.624275, 0, 0.641662, 0)
+
+[node name="cam_gimbal" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.97237, 0.233445, 0, -0.233445, 0.97237, 0, 1.815, 5.81)
+script = ExtResource("4_sill0")
+_rotationSpeed = 0.005
+
+[node name="player_camera" type="Camera3D" parent="cam_gimbal"]
+fov = 120.0
+size = 0.1
+near = 0.001
+
+[node name="ground_placeholder" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.495, -0.32)
+size = Vector3(20, 1, 20)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="ground_placeholder"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00482, 0)
+
+[node name="background_mouse_collider" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.792978)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="background_mouse_collider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+shape = SubResource("BoxShape3D_crgnk")

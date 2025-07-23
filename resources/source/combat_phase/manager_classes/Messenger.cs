@@ -11,7 +11,7 @@ public partial class Messenger : Node
 	public event Action OnResolveTurn;
 	public event Action OnTurnResolved;
 	public event Action<TurnState> OnTurnStateChanged;
-
+	public event Action<Unit> OnUnitDeath;
 
 	public override void _Ready()
 	{
@@ -50,5 +50,10 @@ public partial class Messenger : Node
 	public void EmitTurnStateChanged(TurnState state)
 	{
 		OnTurnStateChanged?.Invoke(state);
+	}
+
+	public void EmitUnitDied(Unit unit)
+	{
+		OnUnitDeath?.Invoke(unit);
 	}
 }

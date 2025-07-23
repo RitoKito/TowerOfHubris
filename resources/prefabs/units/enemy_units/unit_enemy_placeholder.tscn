@@ -33,10 +33,11 @@ no_depth_test = true
 albedo_texture = ExtResource("8_e5ao8")
 texture_filter = 0
 
-[node name="unit_enemy_placeholder" type="Node3D" node_paths=PackedStringArray("_abilityTier1") groups=["EnemyUnit"]]
+[node name="unit_enemy_placeholder" type="Node3D" node_paths=PackedStringArray("_abilities") groups=["EnemyUnit"]]
 script = ExtResource("1_5yuwy")
 _maxHp = 65.0
-_abilityTier1 = NodePath("abilities/ability_1")
+_affinityStrengths = [1]
+_abilities = [NodePath("abilities/ability_1")]
 
 [node name="unit_sprite" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.701322, 0, 0)

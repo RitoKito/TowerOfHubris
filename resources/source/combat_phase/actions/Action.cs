@@ -3,9 +3,12 @@ using static ActionManager;
 
 
 //Action base class
-public partial interface IGameAction
+public abstract partial class GameAction : Node
 {
-	public virtual void Execute(ActionDelegate actionDelegate)
+    protected Unit _authorUnit;
+	public Unit AutorUnit {  get { return _authorUnit; } }
+
+    public virtual void Execute(ActionDelegate actionDelegate)
 	{
 		actionDelegate.Invoke();
 	}

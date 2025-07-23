@@ -1,14 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://c6uqidn550wus"]
+[gd_scene load_steps=3 format=3 uid="uid://c6uqidn550wus"]
 
 [ext_resource type="Script" path="res://resources/source/combat_phase/TurnCounterLabel.cs" id="2_357na"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/camera/CamGimbal.cs" id="2_vlnwf"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/InputHandler.cs" id="3_6qbw3"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/UnitSelectionManager.cs" id="4_74sud"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/ActionManager.cs" id="6_ug1ii"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/ResolveTurnButton.cs" id="7_1i6q6"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_crgnk"]
-size = Vector3(100, 100, 0.111328)
 
 [node name="Root" type="Node3D"]
 
@@ -21,97 +14,60 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="resolve_round_btn" type="MarginContainer" parent="UIManager"]
+[node name="CombatUI" type="Control" parent="UIManager"]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="resolve_round_btn" type="MarginContainer" parent="UIManager/CombatUI"]
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -61.0
-offset_top = -61.0
-offset_right = 61.0
+offset_left = 495.0
+offset_top = 547.0
+offset_right = 617.0
+offset_bottom = 608.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UIManager/resolve_round_btn"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UIManager/CombatUI/resolve_round_btn"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 theme_override_constants/separation = 30
 
-[node name="MarginContainer" type="MarginContainer" parent="UIManager/resolve_round_btn/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="UIManager/CombatUI/resolve_round_btn/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Button" type="Button" parent="UIManager/resolve_round_btn/VBoxContainer/MarginContainer"]
+[node name="Button" type="Button" parent="UIManager/CombatUI/resolve_round_btn/VBoxContainer/MarginContainer"]
 layout_mode = 2
 text = "Resolve Round"
 script = ExtResource("7_1i6q6")
 
-[node name="separator" type="Control" parent="UIManager/resolve_round_btn/VBoxContainer"]
+[node name="separator" type="Control" parent="UIManager/CombatUI/resolve_round_btn/VBoxContainer"]
 layout_mode = 2
 
-[node name="round_counter" type="MarginContainer" parent="UIManager"]
+[node name="round_counter" type="MarginContainer" parent="UIManager/CombatUI"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -23.5
-offset_right = 23.5
-offset_bottom = 40.0
+offset_left = 512.0
+offset_right = 600.0
+offset_bottom = 47.0
 grow_horizontal = 2
 theme_override_constants/margin_top = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="UIManager/round_counter"]
+[node name="HBoxContainer" type="HBoxContainer" parent="UIManager/CombatUI/round_counter"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UIManager/round_counter/HBoxContainer"]
+[node name="Label" type="Label" parent="UIManager/CombatUI/round_counter/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
 text = "Turn: 0"
 script = ExtResource("2_357na")
-
-[node name="Managers" type="Node3D" parent="."]
-
-[node name="UnitSelectionManager" type="Node3D" parent="Managers"]
-script = ExtResource("4_74sud")
-
-[node name="UIManager" type="Node3D" parent="Managers"]
-visible = false
-
-[node name="InputHandler" type="Node3D" parent="Managers"]
-script = ExtResource("3_6qbw3")
-
-[node name="ActionManager" type="Node3D" parent="Managers"]
-script = ExtResource("6_ug1ii")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.624275, 0.781205, 0, -0.781205, 0.624275, 0, 0.641662, 0)
-
-[node name="cam_gimbal" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.97237, 0.233445, 0, -0.233445, 0.97237, 0, 1.815, 5.81)
-script = ExtResource("2_vlnwf")
-_rotationSpeed = 0.005
-
-[node name="player_camera" type="Camera3D" parent="cam_gimbal"]
-fov = 120.0
-size = 0.1
-near = 0.001
-
-[node name="GroundPlaceholder" type="CSGBox3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.495, -0.32)
-size = Vector3(20, 1, 20)
-
-[node name="CSGBox3D" type="CSGBox3D" parent="GroundPlaceholder"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.00482, 0)
-
-[node name="background_mouse_collider" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.792978)
-collision_layer = 2
-collision_mask = 2
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="background_mouse_collider"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
-shape = SubResource("BoxShape3D_crgnk")
