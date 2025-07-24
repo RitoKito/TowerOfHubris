@@ -27,7 +27,7 @@ public partial class UnitAttackAction : GameAction
 		Name = $"{authorUnit.UnitName} Performing {authorUnit.CurrentAbility.AbilityName}";
 
 		_messenger = messenger;
-        _authorUnit = authorUnit;
+        _creator = authorUnit;
 		_homePosition = authorUnit.GlobalPosition;
 
         _actionTarget = authorUnit.GetEnemyTarget();
@@ -43,11 +43,11 @@ public partial class UnitAttackAction : GameAction
 	{
 		if (_state == State.MovingToEnemy)
 		{
-            _authorUnit.GlobalPosition = _authorUnit.GlobalPosition.Lerp(_targetPosition, _moveSpeed * (float)delta);
+            _creator.GlobalPosition = _creator.GlobalPosition.Lerp(_targetPosition, _moveSpeed * (float)delta);
 
-			if (_authorUnit.GlobalPosition.DistanceTo(_targetPosition) <= 0.02f)
+			if (_creator.GlobalPosition.DistanceTo(_targetPosition) <= 0.02f)
 			{
-                _authorUnit.GlobalPosition = _targetPosition;
+                _creator.GlobalPosition = _targetPosition;
 				_state = State.Attacking;
 			}
 		}
@@ -59,29 +59,29 @@ public partial class UnitAttackAction : GameAction
 			// To be replaced with animations
 
 			await Task.Delay(100);
-            _authorUnit.UseAbility();
+            _creator.UseAbility();
 			await Task.Delay(100);
 			_state = State.MovingHome;
 		}
 
 		if (_state == State.MovingHome)
 		{
-            _authorUnit.GlobalPosition = _authorUnit.GlobalPosition.Lerp(_homePosition, _moveSpeed * (float)delta);
+            _creator.GlobalPosition = _creator.GlobalPosition.Lerp(_homePosition, _moveSpeed * (float)delta);
 
-			if(_authorUnit.GlobalPosition.DistanceTo(_homePosition) <= 0.02f)
+			if(_creator.GlobalPosition.DistanceTo(_homePosition) <= 0.02f)
 			{
-                _authorUnit.GlobalPosition = _homePosition;
-				_messenger.EmitActionCompleted();
-				_state = State.Completed;
+                _creator.GlobalPosition = _homePosition;
+                _messenger.EmitActionCompleted(this);
+                _state = State.Completed;
 			}
 		}
 
 		if(_state == State.Completed)
 		{
-			// The node is queued for safe deletion
-			// Until then it will remain in an idle state
-			_state = State.AwaitingDeletion;
-			QueueFree();
+            // The node is queued for safe deletion
+            // Until then it will remain in an idle state
+            _state = State.AwaitingDeletion;
+            QueueFree();
 		}
 	}
 

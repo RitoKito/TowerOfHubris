@@ -5,9 +5,9 @@ using static ActionManager;
 //Action base class
 public abstract partial class GameAction : Node
 {
-    protected Unit _authorUnit;
+    protected Unit _creator;
 	protected IMessenger _messenger;
-	public Unit AutorUnit {  get { return _authorUnit; } }
+	public Unit Creator {  get { return _creator; } }
 
     public virtual void Execute()
 	{

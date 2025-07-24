@@ -135,7 +135,7 @@ public abstract partial class Unit : Node3D
 	// When setting fallback target the UI is not needed
 	public void SelectAlternativeTarget()
 	{
-		Random rnd = new Random();
+		/*Random rnd = new Random();
 
 		int targetIndex = rnd.Next(0, _alternativeTargets.Count);
 		Unit alternativeTarget = _alternativeTargets[targetIndex];
@@ -143,20 +143,23 @@ public abstract partial class Unit : Node3D
 		if (alternativeTarget.IsDead)
 		{
 			_alternativeTargets.Remove(alternativeTarget);
-			SelectAlternativeTarget();
+			SelectAlternativeTarget(del);
+			return;
         }
 
-		_enemyTarget = alternativeTarget;
+		_enemyTarget = alternativeTarget;*/
 
 
-        /*foreach (Unit alternativeTarget in _alternativeTargets)
+        foreach (Unit alternativeTarget in _alternativeTargets)
         {
             if (!alternativeTarget.IsDead)
             {
                 _enemyTarget = alternativeTarget;
-                break;
+				return;
             }
-        }*/
+        }
+
+		_enemyTarget = null;
     }
 
 	// TODO Encapsulate the method 
@@ -173,7 +176,7 @@ public abstract partial class Unit : Node3D
         }
 
         _enemyTarget = null;
-        _messenger.EmitTargetSelected(this);
+        _messenger.EmitTargetDeselected(this);
     }
 
     public void ShowSpriteHighlight(bool state)

@@ -14,7 +14,7 @@ public interface IMessenger
     public event Action<Unit> OnTargetDeselected;
 
     public event Action OnTurnInProgress;
-    public event Action OnActionCompleted;
+    public event Action<GameAction> OnActionCompleted;
     public event Action OnTurnResolved;
     public event Action<TurnState> OnTurnStateChanged;
 
@@ -28,7 +28,7 @@ public interface IMessenger
     public void EmitUnitDied(Unit unit);
 
     public void EmitTurnInProgress();
-    public void EmitActionCompleted();
+    public void EmitActionCompleted(GameAction emitter);
     public void EmitTurnResolved();
     public void EmitTurnStateChanged(TurnState state);
 
