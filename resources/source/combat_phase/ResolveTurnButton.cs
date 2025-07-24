@@ -19,7 +19,7 @@ public partial class ResolveTurnButton : Button
 
 	public override void _Pressed()
 	{
-		Messenger.Instance.EmitResolveTurn();
+		Messenger.Instance.EmitTurnInProgress();
 	}
 
 	private void HandleTurnStateChanged(TurnState state)

@@ -1,12 +1,11 @@
 using Godot;
 using System.Threading.Tasks;
-using static ActionManager;
 
 public partial class UnitAttackAction : GameAction
 {
 	enum State
 	{
-		Idle,
+		AwaitingDeletion,
 		MovingToEnemy,
 		Attacking,
 		MovingHome,
@@ -14,6 +13,7 @@ public partial class UnitAttackAction : GameAction
 	}
 
 	private State _state;
+
 	private float _moveSpeed = 5f;
 	private Vector3 _offset = new Vector3(1f, 0, 0);
 	private Vector3 _homePosition;
@@ -21,14 +21,12 @@ public partial class UnitAttackAction : GameAction
 	private Vector3 _enemyTargetPosition;
 	private Vector3 _targetPosition;
 	private Vector3 destinationThreshold = new Vector3(0.01f, 0, 0);
-	private bool _completed = false;
 
-	private ActionDelegate _actionDelegate;
-
-	public UnitAttackAction(Unit authorUnit)
+	public UnitAttackAction(Unit authorUnit, IMessenger messenger)
 	{
 		Name = $"{authorUnit.UnitName} Performing {authorUnit.CurrentAbility.AbilityName}";
 
+		_messenger = messenger;
         _authorUnit = authorUnit;
 		_homePosition = authorUnit.GlobalPosition;
 
@@ -37,13 +35,7 @@ public partial class UnitAttackAction : GameAction
         _offset *= _homePosition.DirectionTo(_targetPosition);
 		_enemyTargetPosition = _actionTarget.GlobalPosition;
 		_targetPosition = _enemyTargetPosition - _offset;
-        _state = State.Idle;
-	}
-
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-		base._Ready();
+        _state = State.AwaitingDeletion;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -79,6 +71,7 @@ public partial class UnitAttackAction : GameAction
 			if(_authorUnit.GlobalPosition.DistanceTo(_homePosition) <= 0.02f)
 			{
                 _authorUnit.GlobalPosition = _homePosition;
+				_messenger.EmitActionCompleted();
 				_state = State.Completed;
 			}
 		}
@@ -87,42 +80,13 @@ public partial class UnitAttackAction : GameAction
 		{
 			// The node is queued for safe deletion
 			// Until then it will remain in an idle state
-			_state = State.Idle;
-			_actionDelegate.Invoke();
+			_state = State.AwaitingDeletion;
 			QueueFree();
 		}
 	}
 
-	public void SelectDifferentTarget()
+	public override void Execute()
 	{
-		if(_authorUnit.FallBackEnemyTargets.Count <= 0)
-		{
-			_state = State.Completed;
-		}
-
-		foreach(Unit fallbackTarget in _authorUnit.FallBackEnemyTargets)
-		{
-			if(fallbackTarget.CurrentState != UnitState.Dead) 
-			{
-				_actionTarget = fallbackTarget;
-				_authorUnit.SetFallbackTarget(fallbackTarget);
-                _offset *= _homePosition.DirectionTo(_targetPosition);
-                _enemyTargetPosition = _actionTarget.GlobalPosition;
-                _targetPosition = _enemyTargetPosition - _offset;
-				break;
-			}
-		}
-	}
-
-	public override void Execute(ActionDelegate actionDelegate)
-	{
-        _actionDelegate = actionDelegate;
-
-        if (_actionTarget.CurrentState == UnitState.Dead)
-        {
-            SelectDifferentTarget();
-        }
-
 		_state = State.MovingToEnemy;
 	}
 }

@@ -32,9 +32,9 @@ public partial class TurnManager : Node3D
 		_messenger = Messenger.Instance;
 		_inputHandler = InputHandler.Instance;
 
-		_messenger.OnResolveTurn += HandleTurnInProgress;
+		//_messenger.OnResolveTurn += HandleTurnInProgress;
 		_messenger.OnTurnResolved += HandleTurnResolved;
-		_messenger.OnResolveTurn += HandleTurnInProgress;
+		_messenger.OnTurnInProgress += HandleTurnInProgress;
 
 		_turnState = TurnState.SceneInitialization;
 		BeginNewTurn();

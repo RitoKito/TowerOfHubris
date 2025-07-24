@@ -88,8 +88,8 @@ public partial class SceneManager : Node3D
 	{
 		PackedScene playerContainer = GD.Load<PackedScene>(PathConstants.CONTAINER_UNIT_PLAYER);
 		Node playerContainerInstance = playerContainer.Instantiate();
-		var playerUnitContainer = playerContainerInstance as UnitContainer;
-		playerUnitContainer.PopulatePlayerContainer();
+		var playerUnitContainer = playerContainerInstance as UnitContainerPlayer;
+		playerUnitContainer.PopulateContainer();
 		AddChild(playerContainerInstance);
 
 		foreach (PlayerUnit playerUnit in playerUnitContainer.UnitArray)
@@ -105,8 +105,8 @@ public partial class SceneManager : Node3D
 	{
 		PackedScene enemyContainer = GD.Load<PackedScene>(PathConstants.CONTAINER_UNIT_ENEMY);
 		Node enemyContainerInstance = enemyContainer.Instantiate();
-		var enemyUnitContainer = enemyContainerInstance as UnitContainer;
-		enemyUnitContainer.PopulateEnemyContainer();
+		var enemyUnitContainer = enemyContainerInstance as UnitContainerEnemy;
+		enemyUnitContainer.PopulateContainer();
 		AddChild(enemyContainerInstance);
 
 		foreach (EnemyUnit enemyUnit in enemyUnitContainer.UnitArray)
@@ -118,14 +118,19 @@ public partial class SceneManager : Node3D
 		}
 	}
 
+	// TODO move to enemy logic
 	private void TargetRandomPlayerUnits()
 	{
 		if(_alivePlayerUnits.Count <= 0)
 			return;
 
-		foreach (EnemyUnit unit in _enemyUnits)
+		foreach (EnemyUnit unit in _aliveEnemyUnits)
 		{
-			unit.TargetPlayerUnit(GetRandomPlayerUnit());
+			if (!unit.IsDead)
+			{
+				unit.TargetPlayerUnit(GetRandomPlayerUnit());
+				_messenger.EmitTargetSelected(unit);
+			}
 		}
 	}
 

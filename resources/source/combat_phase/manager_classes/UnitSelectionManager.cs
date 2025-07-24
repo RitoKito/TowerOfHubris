@@ -38,7 +38,7 @@ public partial class UnitSelectionManager : Node3D
 			UnitColliderBody unitCollider = collider as UnitColliderBody;
 			Unit playerUnit = unitCollider.GetParentUnitDetails();
 
-			if (playerUnit.CurrentState != UnitState.Dead)
+			if (!playerUnit.IsDead)
 			{
 				_selectedPlayerUnit = playerUnit;
 
@@ -67,10 +67,10 @@ public partial class UnitSelectionManager : Node3D
 				UnitColliderBody unitCollider = collider as UnitColliderBody;
 				Unit enemyUnit = unitCollider.GetParentUnitDetails();
 
-				if(enemyUnit.CurrentState != UnitState.Dead) 
+				if(!enemyUnit.IsDead) 
 				{
 					_selectedPlayerUnit.SetEnemyTarget(enemyUnit);
-					_selectedPlayerUnit.SetFallBackTargets(_sceneManager.GetAliveEnemyUnits());
+					_selectedPlayerUnit.SetAlternativeTargets(_sceneManager.GetAliveEnemyUnits());
                 }
             }
 		}

@@ -1,11 +1,13 @@
 using Godot;
 using Godot.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public abstract partial class Unit: Node3D
+public abstract partial class Unit : Node3D
 {
-	protected Messenger _messenger;
+	protected IMessenger _messenger;
+	public IMessenger Messenger { get { return _messenger; } private set {} }
 
 	protected Sprite3D _spriteHighlight = null;
 	protected HpDetails _hpLabel = null;
@@ -13,8 +15,13 @@ public abstract partial class Unit: Node3D
 	protected Unit _enemyTarget = null;
 	// In case primary target dies before action executed
 	// it will be redirected to one of _fallbackUnits
-	protected List<Unit> _fallBackEnemyTargets = new List<Unit>();
-	public IReadOnlyList<Unit> FallBackEnemyTargets {  get { return _fallBackEnemyTargets.AsReadOnly(); } }
+	protected List<Unit> _alternativeTargets = new List<Unit>();
+	public IReadOnlyList<Unit> FallBackEnemyTargets {  get { return _alternativeTargets.AsReadOnly(); } }
+
+	// Tag variable set in package editor
+	[Export]
+	private UnitTag _tag;
+	public UnitTag Tag {  get { return _tag; } }
 
 	[Export]
 	protected int _id = -1;
@@ -33,8 +40,8 @@ public abstract partial class Unit: Node3D
 
 	protected float _currentHp;
 
-	protected UnitState _currentState;
-	public UnitState CurrentState { get { return _currentState; } }
+	protected bool _isDead = false;
+	public bool IsDead {  get { return _isDead; } private set { } }
 
 	// Damage Resistance is in % form
 	[Export]
@@ -55,17 +62,18 @@ public abstract partial class Unit: Node3D
 	//protected Dictionary<string, Texture2D> _unitTextureList = new Dictionary<string, Texture2D>();
 	//public Dictionary<string, Texture2D> UnitTextures { get { return  _unitTextureList; } private set { } }
 
-	//private float _attackValue = 2;
-
 	protected bool _drawTargetArrow = false;
 	public bool DrawTargetArrow { set { _drawTargetArrow = value; } }
 
-
+	public void SetMessenger(IMessenger messenger)
+	{
+		_messenger = messenger;
+		_messenger.OnTurnInProgress += HandleTurnProgress;
+	}
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_messenger = Messenger.Instance;
 		_targetArrow = GetNode<TargetArrow>("target_arrow");
 		_spriteHighlight = GetNode<Sprite3D>("unit_select_spr");
 		_hpLabel = GetNode<HpDetails>("hp_label");
@@ -87,7 +95,6 @@ public abstract partial class Unit: Node3D
 		}
 
 		ShowSpriteHighlight(false);
-		_currentState = UnitState.Alive;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -112,20 +119,50 @@ public abstract partial class Unit: Node3D
             DrawTargetingCurve(true);
             _enemyTarget.DrawTargetingCurve(true);
         }
-        else
+		else
+		{
             DrawTargetingCurve();
+        }
+
+		_messenger.EmitTargetSelected(this);
     }
 
-	// When setting fallback target the UI is not needed
-	public void SetFallbackTarget(Unit target)
+	protected void HandleTurnProgress()
 	{
-		_enemyTarget = target;
+		HideTargetingUI();
 	}
 
-	// TODO Encapsulate the method 
-	public void SetFallBackTargets(IReadOnlyList<Unit> aliveEnemyTargets)
+	// When setting fallback target the UI is not needed
+	public void SelectAlternativeTarget()
 	{
-        _fallBackEnemyTargets.AddRange(aliveEnemyTargets.Where(t => t != _enemyTarget));
+		Random rnd = new Random();
+
+		int targetIndex = rnd.Next(0, _alternativeTargets.Count);
+		Unit alternativeTarget = _alternativeTargets[targetIndex];
+
+		if (alternativeTarget.IsDead)
+		{
+			_alternativeTargets.Remove(alternativeTarget);
+			SelectAlternativeTarget();
+        }
+
+		_enemyTarget = alternativeTarget;
+
+
+        /*foreach (Unit alternativeTarget in _alternativeTargets)
+        {
+            if (!alternativeTarget.IsDead)
+            {
+                _enemyTarget = alternativeTarget;
+                break;
+            }
+        }*/
+    }
+
+	// TODO Encapsulate the method 
+	public void SetAlternativeTargets(IReadOnlyList<Unit> aliveEnemyTargets)
+	{
+        _alternativeTargets.AddRange(aliveEnemyTargets.Where(t => t != _enemyTarget));
 	}
 
     public void RemoveEnemyTarget()
@@ -136,6 +173,7 @@ public abstract partial class Unit: Node3D
         }
 
         _enemyTarget = null;
+        _messenger.EmitTargetSelected(this);
     }
 
     public void ShowSpriteHighlight(bool state)
@@ -197,7 +235,7 @@ public abstract partial class Unit: Node3D
 
 	protected void Die()
 	{
-		_currentState = UnitState.Dead;
+		_isDead = true;
 
 		// TODO Make Dead Sprite
 		Hide();

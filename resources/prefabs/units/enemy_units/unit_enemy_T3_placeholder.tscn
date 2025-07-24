@@ -35,6 +35,7 @@ texture_filter = 0
 
 [node name="unit_enemy_placeholder" type="Node3D" node_paths=PackedStringArray("_abilities") groups=["EnemyUnit"]]
 script = ExtResource("1_qfwr0")
+_tag = 1
 _maxHp = 90.0
 _affinityStrengths = [1]
 _abilities = [NodePath("abilities/ability_1")]

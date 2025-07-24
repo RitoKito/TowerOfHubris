@@ -2,15 +2,22 @@ using Godot;
 using Godot.Collections;
 using System;
 
-public partial class Messenger : Node
+public partial class Messenger : Node, IMessenger
 {
 	public static Messenger Instance { get; private set; }
 
 	public event Action<Dictionary> OnMouseLeftClick;
 	public event Action<Dictionary> OnMouseLeftRelease;
-	public event Action OnResolveTurn;
+
+	public event Action<Unit> OnTargetSelected;
+    public event Action<Unit> OnTargetDeselected;
+
+    public event Action OnTurnInProgress;
+	public event Action OnActionCompleted;
 	public event Action OnTurnResolved;
+
 	public event Action<TurnState> OnTurnStateChanged;
+
 	public event Action<Unit> OnUnitDeath;
 
 	public override void _Ready()
@@ -35,10 +42,25 @@ public partial class Messenger : Node
 		OnMouseLeftRelease?.Invoke(clickedObject);
 	}
 
-	// Turn starts
-	public void EmitResolveTurn()
+	public void EmitTargetSelected(Unit emitter)
 	{
-		OnResolveTurn?.Invoke();
+		OnTargetSelected?.Invoke(emitter);
+	}
+
+	public void EmitTargetDeselected(Unit emitter)
+	{
+		OnTargetDeselected?.Invoke(emitter);
+	}
+
+	// Turn starts
+	public void EmitTurnInProgress()
+	{
+		OnTurnInProgress?.Invoke();
+	}
+
+	public void EmitActionCompleted()
+	{
+		OnActionCompleted?.Invoke();
 	}
 
 	// Turn resolved

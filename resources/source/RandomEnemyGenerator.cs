@@ -24,11 +24,11 @@ public static class RandomEnemyGenerator
 
         if(escalation < 40)
         {
-            minEnemyCount = 2;
+            minEnemyCount = 1 + rnd.Next(0, 4);
         }
         else if(escalation < 60)
         {
-            minEnemyCount = 3;
+            minEnemyCount = 2 + rnd.Next(0, 2);
         }
         else
         {
