@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://4qd4vij7ird5"]
+
+[ext_resource type="Script" path="res://resources/source/combat_phase/camera/CamGimbal.cs" id="1_lp6me"]
+
+[node name="cam_gimbal" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 0.97237, 0.233445, 0, -0.233445, 0.97237, 0, 1.815, 5.81)
+script = ExtResource("1_lp6me")
+_rotationSpeed = 0.005
+
+[node name="player_camera" type="Camera3D" parent="."]
+fov = 120.0
+size = 0.1
+near = 0.001

@@ -3,12 +3,9 @@ using System;
 
 public partial class CamGimbal : Node3D
 {
-
-
-
-
 	public static CamGimbal Instance { get; private set; }
 
+	private IMessenger _messenger;
 	private Camera3D _cameraObj;
 	private InputHandler _inputHandler;
 
@@ -27,6 +24,12 @@ public partial class CamGimbal : Node3D
 	private float _cameraMaxY = 3.5f;
 	private float _maxCamAngle = Mathf.DegToRad(-20f);
 
+	private Vector3 _levelTreePos = new Vector3(0f, 25f, -15f);
+	private Vector3 _levelTreeRot = Vector3.Zero;
+	private Vector3 _combatPos = new Vector3(0f, 1.815f, 5.81f);
+	private Vector3 _combatRot = new Vector3(-13.5f, 0, 0);
+
+	private bool _inCombat = false;
 	// Boolean set by checking if the player clicked on an object
 	private bool _clickedOnCollider = false;
 
@@ -47,28 +50,35 @@ public partial class CamGimbal : Node3D
 	{
 		Instance = this;
 
+		_messenger = Messenger.Instance;
 		_cameraObj = GetViewport().GetCamera3D();
 		_inputHandler = InputHandler.Instance;
+
+		_messenger.OnGameStateChanged += HandleGameStateChanged;
+
+		SetLevelTreeCam();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		if (_inCombat)
+		{
+			// Move camera only if user didn't click on interactable object
+			// The boolean here prevents the camera movement until left mouse button is released
+			if (_inputHandler.HoldingLeftMouse && !_inputHandler.ClickedOnCollider)
+			{
+				MoveCamGimbal(delta);
+			}
 
-		// Move camera only if user didn't click on interactable object
-		// The boolean here prevents the camera movement until left mouse button is released
-		if (_inputHandler.HoldingLeftMouse && !_inputHandler.ClickedOnCollider)
-		{
-			MoveCamGimbal(delta);
-		}
-
-		if (Position.Y >= 2.5f)
-		{
-			RotateCamGimbal(delta, _maxCamAngle);
-		}
-		else
-		{
-			RotateCamGimbal(delta, 0);
+			if (Position.Y >= 2.5f)
+			{
+				RotateCamGimbal(delta, _maxCamAngle);
+			}
+			else
+			{
+				RotateCamGimbal(delta, 0);
+			}
 		}
 	}
 
@@ -137,5 +147,33 @@ public partial class CamGimbal : Node3D
 				_clickedOnCollider = false;
 			}
 		}
+	}
+
+	private void HandleGameStateChanged(GameState state)
+	{
+		switch(state)
+		{
+			case GameState.LevelTree:
+				SetLevelTreeCam();
+				_inCombat = false;
+				break;
+			case GameState.Combat:
+				SetCombatCam();
+				_inCombat = true;
+				break;
+		}
+	}
+
+
+	private void SetLevelTreeCam()
+	{
+		GlobalPosition = _levelTreePos;
+		Rotation = _levelTreeRot;
+	}
+
+	private void SetCombatCam()
+	{
+		GlobalPosition = _combatPos;
+		//Rotation = _combatRot;
 	}
 }

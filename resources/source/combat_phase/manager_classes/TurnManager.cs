@@ -11,9 +11,8 @@ public enum TurnState
 
 public partial class TurnManager : Node3D
 {
-	public static TurnManager Instance { get; private set; }
-
 	private Messenger _messenger;
+	private SceneManager _sceneManager;
 	private InputHandler _inputHandler;
 
 	private int _turnCount = 0;
@@ -24,13 +23,8 @@ public partial class TurnManager : Node3D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		if (Instance == null)
-			Instance = this;
-		else if (Instance != this)
-			Free();
-
 		_messenger = Messenger.Instance;
-		_inputHandler = InputHandler.Instance;
+		_sceneManager = GetParent<Node3D>().GetNode<SceneManager>("scene_manager");
 
 		//_messenger.OnResolveTurn += HandleTurnInProgress;
 		_messenger.OnTurnResolved += HandleTurnResolved;
@@ -59,11 +53,23 @@ public partial class TurnManager : Node3D
 	}
 	private void HandleTurnResolved()
 	{
-		BeginNewTurn();
+		if(_sceneManager.GetAliveEnemyUnits().Count <= 0)
+		{
+			_turnState = TurnState.SceneComplete;
+			_messenger.EmitTurnStateChanged(TurnState);
+
+
+			_messenger.EmitCombatSceneConcluded();
+		}
+		else
+		{
+			BeginNewTurn();
+		}
 	}
 
-	private void TurnStateChanged()
+	public override void _ExitTree()
 	{
-		_messenger.EmitTurnStateChanged(TurnState);
+		_messenger.OnTurnResolved -= HandleTurnResolved;
+		_messenger.OnTurnInProgress -= HandleTurnInProgress;
 	}
 }

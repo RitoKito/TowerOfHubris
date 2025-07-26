@@ -27,14 +27,11 @@ public partial class ResolveTurnButton : Button
 		switch (state)
 		{
 			case TurnState.PlayerTurn:
-				GD.Print("Enabling");
 				Disabled = false;
 				break;
 			case TurnState.InProgress:
-				GD.Print("Disabling");
 				Disabled = true;
 				break;
 		}
-
 	}
 }

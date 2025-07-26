@@ -4,10 +4,10 @@ using Godot.Collections;
 public partial class UnitSelectionManager : Node3D
 {
 	private Messenger _messenger;
-    private InputHandler _inputHandler;
 	private SceneManager _sceneManager;
+	private InputHandler _inputHandler;
 
-    private Camera3D _cameraObj;
+	private Camera3D _cameraObj;
 	private Unit _selectedPlayerUnit;
 	private Dictionary _clickedObject;
 
@@ -19,8 +19,9 @@ public partial class UnitSelectionManager : Node3D
 		_messenger.OnMouseLeftRelease += HandleMouseLeftRelease;
 
 		_inputHandler = InputHandler.Instance;
-		_sceneManager = SceneManager.Instance;
 		_cameraObj = GetViewport().GetCamera3D();
+
+		_sceneManager = GetParent<Node3D>().GetNode<SceneManager>("scene_manager");
 		
 	}
 
@@ -54,7 +55,8 @@ public partial class UnitSelectionManager : Node3D
 
 	private void HandleMouseLeftRelease(Dictionary rayCastResult)
 	{
-		if(_selectedPlayerUnit == null) return;
+		if (_selectedPlayerUnit == null) 
+			return;
 
 		_selectedPlayerUnit.HideTargetingUI();
 
@@ -71,9 +73,15 @@ public partial class UnitSelectionManager : Node3D
 				{
 					_selectedPlayerUnit.SetEnemyTarget(enemyUnit);
 					_selectedPlayerUnit.SetAlternativeTargets(_sceneManager.GetAliveEnemyUnits());
-                }
-            }
+				}
+			}
 		}
 		_selectedPlayerUnit = null;
+	}
+
+	public override void _ExitTree()
+	{
+		_messenger.OnMouseLeftClick += HandleMouseLeftClick;
+		_messenger.OnMouseLeftRelease += HandleMouseLeftRelease;
 	}
 }

@@ -20,8 +20,8 @@ public partial class TurnCounterLabel : Label
 
 	public void HandleTurnStateChanged(TurnState state)
 	{
-		if (state == TurnState.PlayerTurn)
-			UpdateTurnCount(TurnManager.Instance.TurnCount);
+		//if (state == TurnState.PlayerTurn)
+			//UpdateTurnCount(TurnManager.Instance.TurnCount);
 	}
 
 	public void UpdateTurnCount(int turnCount)

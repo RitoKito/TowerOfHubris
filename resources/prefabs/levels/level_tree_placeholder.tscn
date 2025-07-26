@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://nsm2km22tdmw"]
+
+[ext_resource type="Script" path="res://resources/source/LevelTree.cs" id="1_5mgis"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_btrkt"]
+shading_mode = 0
+albedo_color = Color(0.658514, 0.785966, 0.957699, 1)
+
+[node name="level_tree" type="CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.266319, 26.7592, -31.3638)
+size = Vector3(200, 200, 1)
+material = SubResource("StandardMaterial3D_btrkt")
+script = ExtResource("1_5mgis")

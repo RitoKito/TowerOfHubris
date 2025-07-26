@@ -1,6 +1,5 @@
 using Godot;
 using Godot.Collections;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,8 +19,8 @@ public abstract partial class Unit : Node3D
 
 	// Tag variable set in package editor
 	[Export]
-	private UnitTag _tag;
-	public UnitTag Tag {  get { return _tag; } }
+	private UnitEnums.UnitTag _tag;
+	public UnitEnums.UnitTag Tag {  get { return _tag; } }
 
 	[Export]
 	protected int _id = -1;
@@ -68,7 +67,7 @@ public abstract partial class Unit : Node3D
 	public void SetMessenger(IMessenger messenger)
 	{
 		_messenger = messenger;
-		_messenger.OnTurnInProgress += HandleTurnProgress;
+		_messenger.OnTurnStateChanged += HandleTurnStateChanged;
 	}
 
 	// Called when the node enters the scene tree for the first time.
@@ -106,30 +105,35 @@ public abstract partial class Unit : Node3D
 		}
 	}
 
-    public Unit GetEnemyTarget() { return _enemyTarget; }
-    public void SetEnemyTarget(Unit target)
-    {
-        _enemyTarget = target;
-        _drawTargetArrow = false;
-        _targetArrow.HideTargetingUI();
+	public Unit GetEnemyTarget() { return _enemyTarget; }
+	public void SetEnemyTarget(Unit target)
+	{
+		_enemyTarget = target;
+		_drawTargetArrow = false;
+		_targetArrow.HideTargetingUI();
 
-        if (_enemyTarget.GetEnemyTarget() == this)
-        {
-            // Bool param sets the curve to half
-            DrawTargetingCurve(true);
-            _enemyTarget.DrawTargetingCurve(true);
-        }
+		if (_enemyTarget.GetEnemyTarget() == this)
+		{
+			// Bool param sets the curve to half
+			DrawTargetingCurve(true);
+			_enemyTarget.DrawTargetingCurve(true);
+		}
 		else
 		{
-            DrawTargetingCurve();
-        }
+			DrawTargetingCurve();
+		}
 
 		_messenger.EmitTargetSelected(this);
-    }
+	}
 
-	protected void HandleTurnProgress()
+	protected void HandleTurnStateChanged(TurnState state)
 	{
-		HideTargetingUI();
+		switch (state)
+		{
+			case TurnState.InProgress:
+				HideTargetingUI();
+				break;
+		}
 	}
 
 	// When setting fallback target the UI is not needed
@@ -145,41 +149,41 @@ public abstract partial class Unit : Node3D
 			_alternativeTargets.Remove(alternativeTarget);
 			SelectAlternativeTarget(del);
 			return;
-        }
+		}
 
 		_enemyTarget = alternativeTarget;*/
 
 
-        foreach (Unit alternativeTarget in _alternativeTargets)
-        {
-            if (!alternativeTarget.IsDead)
-            {
-                _enemyTarget = alternativeTarget;
+		foreach (Unit alternativeTarget in _alternativeTargets)
+		{
+			if (!alternativeTarget.IsDead)
+			{
+				_enemyTarget = alternativeTarget;
 				return;
-            }
-        }
+			}
+		}
 
 		_enemyTarget = null;
-    }
+	}
 
 	// TODO Encapsulate the method 
 	public void SetAlternativeTargets(IReadOnlyList<Unit> aliveEnemyTargets)
 	{
-        _alternativeTargets.AddRange(aliveEnemyTargets.Where(t => t != _enemyTarget));
+		_alternativeTargets.AddRange(aliveEnemyTargets.Where(t => t != _enemyTarget));
 	}
 
-    public void RemoveEnemyTarget()
-    {
-        if (_enemyTarget.GetEnemyTarget() == this)
-        {
-            _enemyTarget.DrawTargetingCurve(false);
-        }
+	public void RemoveEnemyTarget()
+	{
+		if (_enemyTarget.GetEnemyTarget() == this)
+		{
+			_enemyTarget.DrawTargetingCurve(false);
+		}
 
-        _enemyTarget = null;
-        _messenger.EmitTargetDeselected(this);
-    }
+		_enemyTarget = null;
+		_messenger.EmitTargetDeselected(this);
+	}
 
-    public void ShowSpriteHighlight(bool state)
+	public void ShowSpriteHighlight(bool state)
 	{
 		if (state)
 		{
@@ -207,7 +211,7 @@ public abstract partial class Unit : Node3D
 	{
 		float weaknessMultiplier = 1;
 		float streghtMultiplier = 1;
-        int numberOfWeakAffintiies = _affinityWeaknesses.Intersect(damageInstance.affinties).Count();
+		int numberOfWeakAffintiies = _affinityWeaknesses.Intersect(damageInstance.affinties).Count();
 		int numberOfStrongAffinties = _affinityStrengths.Intersect(damageInstance.affinties).Count();
 
 
@@ -219,15 +223,15 @@ public abstract partial class Unit : Node3D
 		if(numberOfStrongAffinties > 0)
 		{
 			streghtMultiplier = 1 - (numberOfStrongAffinties / 10f);
-        }
+		}
 
 
 
-        _damageResistanceMultiplier = (100 - _damageResistanceMultiplier) / 100;
+		_damageResistanceMultiplier = (100 - _damageResistanceMultiplier) / 100;
 		float totalDamage = damageInstance.damageValue * weaknessMultiplier * streghtMultiplier * _damageResistanceMultiplier;
-        _currentHp -= totalDamage;
+		_currentHp -= totalDamage;
 
-        if (_currentHp <= 0)
+		if (_currentHp <= 0)
 		{
 			Die();
 		}
@@ -275,5 +279,10 @@ public abstract partial class Unit : Node3D
 	protected void _on_static_body_3d_mouse_exited()
 	{
 		ShowSpriteHighlight(false);
+	}
+
+	public override void _ExitTree()
+	{
+		_messenger.OnTurnStateChanged -= HandleTurnStateChanged;
 	}
 }

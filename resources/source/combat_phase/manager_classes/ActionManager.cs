@@ -4,12 +4,8 @@ using System.Linq;
 
 public partial class ActionManager : Node3D
 {
-	public static ActionManager Instance { get; private set; }
-
-
 	public delegate void ActionDelegate();
 
-	private SceneManager _sceneManager;
 	private Messenger _messenger;
 	// List datastructure is used as it allows to remove 
 	// actions from any index
@@ -21,13 +17,7 @@ public partial class ActionManager : Node3D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		if (Instance == null)
-			Instance = this;
-		else if (Instance != this)
-			Free();
-
 		_messenger = Messenger.Instance;
-		_sceneManager = SceneManager.Instance;
 
 		_messenger.OnTurnInProgress += QueueUnitActions;
 		_messenger.OnTargetSelected += HandleTargetSelected;
@@ -53,10 +43,10 @@ public partial class ActionManager : Node3D
 	{
 		switch (unit.Tag)
 		{
-			case UnitTag.Player:
+			case UnitEnums.UnitTag.Player:
 				_playerUnitQueue.Add(unit);
 				break;
-			case UnitTag.Enemy:
+			case UnitEnums.UnitTag.Enemy:
 				_enemyUnitQueue.Add(unit);
 				break;
 		}
@@ -65,22 +55,15 @@ public partial class ActionManager : Node3D
 	{
 		switch (unit.Tag)
 		{
-			case UnitTag.Player:
+			case UnitEnums.UnitTag.Player:
 				GD.Print("Removed");
 				_playerUnitQueue.Remove(unit);
 				break;
-			case UnitTag.Enemy:
-                GD.Print("Removed");
-                _enemyUnitQueue.Remove(unit);
+			case UnitEnums.UnitTag.Enemy:
+				GD.Print("Removed");
+				_enemyUnitQueue.Remove(unit);
 				break;
 		}
-	}
-
-	private void ProcessNextAction()
-	{
-		GameAction action = _currentAction;
-
-		action.Execute();
 	}
 
 	private void HandleOnActionCompleted(GameAction action)
@@ -135,5 +118,13 @@ public partial class ActionManager : Node3D
 		_enemyUnitQueue.Clear();
 
 		ProcessNextUnit(_combinedUnitQueue);
+	}
+
+	public override void _ExitTree()
+	{
+		_messenger.OnTurnInProgress -= QueueUnitActions;
+		_messenger.OnTargetSelected -= HandleTargetSelected;
+		_messenger.OnTargetDeselected -= HandleTargetDeselected;
+		_messenger.OnActionCompleted -= HandleOnActionCompleted;
 	}
 }

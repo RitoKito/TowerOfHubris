@@ -32,13 +32,13 @@ public partial class InputHandler : Node3D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-	   if(!_inputEnabled) 
+	   /*if(!_inputEnabled) 
 		{
 			_holdingLeftMouse = false;
 			_clickedOnCollider = false;
 			_objectFromLeftClick = null;
 			return; 
-		}
+		}*/
 
 	   if (Input.IsActionJustPressed("mouse_left"))
 		{

@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 public partial class SceneManager : Node3D
 {
-	public static SceneManager Instance { get; private set; }
+	//public static SceneManager Instance { get; private set; }
 
 	private Messenger _messenger;
 
 	private readonly List<PlayerUnit> _playerUnits = new List<PlayerUnit>();
-    private List<PlayerUnit> _alivePlayerUnits = new List<PlayerUnit>();
+	private List<PlayerUnit> _alivePlayerUnits = new List<PlayerUnit>();
 
-    private readonly List<EnemyUnit> _enemyUnits = new List<EnemyUnit>();
+	private readonly List<EnemyUnit> _enemyUnits = new List<EnemyUnit>();
 	private List<EnemyUnit> _aliveEnemyUnits = new List<EnemyUnit>();
 	public IReadOnlyList<EnemyUnit> GetAliveEnemyUnits()
 	{
@@ -49,14 +49,12 @@ public partial class SceneManager : Node3D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		if (Instance == null)
-			Instance = this;
-		else if (Instance != this)
-			Free();
 
 		_messenger = Messenger.Instance;
 		_messenger.OnTurnStateChanged += HandleTurnStateChanged;
 		_messenger.OnUnitDeath += HandleUnitDeath;
+		//_messenger.OnGameStateChanged += HandleGameStateChanged;
+
 
 		InstantiatePlayerUnits();
 		_alivePlayerUnits.AddRange(_playerUnits);
@@ -155,10 +153,40 @@ public partial class SceneManager : Node3D
 		{
 			_enemyUnitsAlive--;
 			_aliveEnemyUnits.Remove(unit as EnemyUnit);
-            if (_enemyUnitsAlive <= 0)
-            {
-                GD.Print("Player Won");
-            }
-        }
+			if (_enemyUnitsAlive <= 0)
+			{
+				GD.Print("Player Won");
+			}
+		}
+	}
+
+	public void HandleGameStateChanged(GameState state)
+	{
+		GD.Print("TO");
+
+		switch (state)
+		{
+			case GameState.LevelTree:
+				break;
+
+			case GameState.Combat:
+				InstantiatePlayerUnits();
+				_alivePlayerUnits.AddRange(_playerUnits);
+				_playerUnitsAlive = _playerUnits.Count;
+
+				InstantiateEnemyUnits();
+				_aliveEnemyUnits.AddRange(_enemyUnits);
+				_enemyUnitsAlive = _enemyUnits.Count;
+
+				_allUnits.AddRange(_playerUnits);
+				_allUnits.AddRange(_enemyUnits);
+				break;
+		}
+	}
+
+	public override void _ExitTree()
+	{
+		_messenger.OnTurnStateChanged -= HandleTurnStateChanged;
+		_messenger.OnUnitDeath -= HandleUnitDeath;
 	}
 }
