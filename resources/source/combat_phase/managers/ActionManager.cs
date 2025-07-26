@@ -1,0 +1,126 @@
+using Godot;
+using System.Collections.Generic;
+using System.Linq;
+
+public partial class ActionManager : Node3D
+{
+	public delegate void ActionDelegate();
+
+	private Messenger _messenger;
+	// List datastructure is used as it allows to remove 
+	// actions from any index
+	private List<Unit> _playerUnitQueue = new List<Unit>();
+	private List<Unit> _enemyUnitQueue = new List<Unit>();
+	private List<Unit> _combinedUnitQueue = new List<Unit>();
+	private GameAction _currentAction = null;
+
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+		_messenger = Messenger.Instance;
+
+		_messenger.OnTurnInProgress += QueueUnitActions;
+		_messenger.OnTargetSelected += HandleTargetSelected;
+		_messenger.OnTargetDeselected += HandleTargetDeselected;
+		_messenger.OnActionCompleted += HandleOnActionCompleted;
+	}
+
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+	}
+
+	private void EnqueueAction(GameAction action)
+	{
+		_currentAction = action;
+	}
+
+	private void HandleTargetSelected(Unit unit)
+	{
+		switch (unit.Tag)
+		{
+			case UnitEnums.UnitTag.Player:
+				_playerUnitQueue.Add(unit);
+				break;
+			case UnitEnums.UnitTag.Enemy:
+				_enemyUnitQueue.Add(unit);
+				break;
+		}
+	}
+	private void HandleTargetDeselected(Unit unit)
+	{
+		switch (unit.Tag)
+		{
+			case UnitEnums.UnitTag.Player:
+				GD.Print("Removed");
+				_playerUnitQueue.Remove(unit);
+				break;
+			case UnitEnums.UnitTag.Enemy:
+				GD.Print("Removed");
+				_enemyUnitQueue.Remove(unit);
+				break;
+		}
+	}
+
+	private void HandleOnActionCompleted(GameAction action)
+	{
+		_combinedUnitQueue.Remove(action.Creator);
+		ProcessNextUnit(_combinedUnitQueue);
+	}
+
+	private void ProcessNextUnit(List<Unit> unitQueue) 
+	{
+		if (unitQueue.Count == 0)
+		{
+			_messenger.EmitTurnResolved();
+			return;
+		}
+
+		Unit unit = unitQueue.First();
+
+		if (unit.IsDead)
+		{
+			unitQueue.Remove(unit);
+			ProcessNextUnit(unitQueue);
+			return;
+		}
+
+		if(unit.GetEnemyTarget() == null)
+		{
+			unitQueue.Remove(unit);
+			ProcessNextUnit(unitQueue);
+			return;
+		}
+
+		// TODO ALLOW ONLY WHEN ALL UNITS HAVE TARGET
+		if (unit.GetEnemyTarget().IsDead)
+		{
+			unit.SelectAlternativeTarget();
+		}
+
+		GameAction unitAction = new UnitAttackAction(unit, unit.Messenger);
+
+		AddChild(unitAction);
+		unitAction.Execute();
+	}
+
+
+
+	private void QueueUnitActions()
+	{
+		_combinedUnitQueue.AddRange(_playerUnitQueue);
+		_combinedUnitQueue.AddRange(_enemyUnitQueue);
+		_playerUnitQueue.Clear();
+		_enemyUnitQueue.Clear();
+
+		ProcessNextUnit(_combinedUnitQueue);
+	}
+
+	public override void _ExitTree()
+	{
+		_messenger.OnTurnInProgress -= QueueUnitActions;
+		_messenger.OnTargetSelected -= HandleTargetSelected;
+		_messenger.OnTargetDeselected -= HandleTargetDeselected;
+		_messenger.OnActionCompleted -= HandleOnActionCompleted;
+	}
+}

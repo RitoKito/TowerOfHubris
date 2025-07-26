@@ -22,18 +22,19 @@ public partial class UnitAttackAction : GameAction
 	private Vector3 _targetPosition;
 	private Vector3 destinationThreshold = new Vector3(0.01f, 0, 0);
 
-	public UnitAttackAction(Unit authorUnit, IMessenger messenger)
+	public UnitAttackAction(Unit creator, IMessenger messenger)
 	{
-		Name = $"{authorUnit.UnitName} Performing {authorUnit.CurrentAbility.AbilityName}";
+		Name = $"{creator.UnitName} Performing {creator.CurrentAbility.AbilityName}";
 
 		_messenger = messenger;
-		_creator = authorUnit;
-		_homePosition = authorUnit.GlobalPosition;
+		_creator = creator;
+		_homePosition = creator.GlobalPosition;
 
-		_actionTarget = authorUnit.GetEnemyTarget();
+		_actionTarget = creator.GetEnemyTarget();
 
 		_offset *= _homePosition.DirectionTo(_targetPosition);
 		_enemyTargetPosition = _actionTarget.GlobalPosition;
+		if(_actionTarget != null){ GD.PrintErr($"Unit's ({_creator}) Ability Is Missing Target");}
 		_targetPosition = _enemyTargetPosition - _offset;
 		_state = State.AwaitingDeletion;
 	}
@@ -41,6 +42,8 @@ public partial class UnitAttackAction : GameAction
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public async override void _Process(double delta)
 	{
+
+
 		if (_state == State.MovingToEnemy)
 		{
 			_creator.GlobalPosition = _creator.GlobalPosition.Lerp(_targetPosition, _moveSpeed * (float)delta);

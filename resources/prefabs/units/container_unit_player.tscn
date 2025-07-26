@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://kaw2lpttxubm"]
 
-[ext_resource type="Script" path="res://resources/source/combat_phase/unit_classes/UnitContainerPlayer.cs" id="1_kj0lu"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit/player/UnitContainerPlayer.cs" id="1_kj0lu"]
 
 [node name="container_unit_player" type="Node3D" node_paths=PackedStringArray("_unitPosArray")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.5)

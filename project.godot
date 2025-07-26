@@ -17,9 +17,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Messenger="*res://resources/source/combat_phase/manager_classes/Messenger.cs"
-LevelManager="*res://resources/source/LevelManager.cs"
-InputHandler="*res://resources/source/combat_phase/manager_classes/InputHandler.cs"
+Messenger="*res://resources/source/global_managers/Messenger.cs"
+LevelManager="*res://resources/source/level_selection_phase/LevelTreeManager.cs"
+InputHandler="*res://resources/source/global_managers/InputHandler.cs"
 
 [debug]
 

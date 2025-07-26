@@ -1,6 +1,18 @@
 public enum GameState
 {
-	Menu,
+	MainMenu,
 	LevelTree,
 	Combat,
+}
+
+public enum CombatOutcome
+{
+	Victory,
+	Defeat,
+}
+
+public enum SceneTransitionState
+{
+    Normal,
+    Black,
 }

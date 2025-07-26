@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://bmxwr384pvyx6"]
+[gd_scene load_steps=7 format=3 uid="uid://bmxwr384pvyx6"]
 
-[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/UnitSelectionManager.cs" id="1_fha01"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/SceneManager.cs" id="2_6f53p"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/ActionManager.cs" id="3_l2ig0"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/manager_classes/TurnManager.cs" id="4_smpwj"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/managers/UnitSelectionManager.cs" id="1_fha01"]
+[ext_resource type="Script" path="res://resources/prefabs/levels/CSHeadManager.cs" id="1_jmkeh"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/managers/SceneManager.cs" id="2_6f53p"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/managers/ActionManager.cs" id="3_l2ig0"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/managers/TurnManager.cs" id="4_smpwj"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_crgnk"]
 size = Vector3(100, 100, 0.111328)
@@ -11,6 +12,8 @@ size = Vector3(100, 100, 0.111328)
 [node name="level_placeholder" type="Node3D"]
 
 [node name="managers" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0210505, 0, -0.0001297)
+script = ExtResource("1_jmkeh")
 
 [node name="scene_manager" type="Node3D" parent="managers"]
 script = ExtResource("2_6f53p")

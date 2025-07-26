@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://o57m7h1ehfmr"]
 
-[ext_resource type="Script" path="res://resources/source/combat_phase/unit_classes/HpDetails.cs" id="1_agf7i"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/HpDetails.cs" id="1_agf7i"]
 
 [node name="hpDetailsLabel" type="Label3D"]
 transform = Transform3D(0.292696, 0, 0, 0, 0.381532, 0, 0, 0, 1.00378, 0, 0, 0)

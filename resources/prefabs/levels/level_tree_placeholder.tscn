@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://nsm2km22tdmw"]
 
-[ext_resource type="Script" path="res://resources/source/LevelTree.cs" id="1_5mgis"]
+[ext_resource type="Script" path="res://resources/source/level_selection_phase/LevelTree.cs" id="1_5mgis"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_btrkt"]
 shading_mode = 0
