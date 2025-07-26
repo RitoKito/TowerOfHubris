@@ -10,7 +10,7 @@ public static class PathConstants
 
 
 	public const string UNIT_1_PLAYER_DELTA = "res://resources/prefabs/units/player_units/unit_delta/unit_player_delta.tscn";
-	public const string UNIT_2_PLAYER_IOTA = "res://resources/prefabs/units/player_units/unit_delta/unit_player_iota.tscn";
+	public const string UNIT_2_PLAYER_IOTA = "res://resources/prefabs/units/player_units/unit_iota/unit_player_iota.tscn";
 
 	public static readonly string[] PLAYER_UNITS = { UNIT_1_PLAYER_DELTA, UNIT_2_PLAYER_IOTA};
 

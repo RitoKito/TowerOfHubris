@@ -13,25 +13,25 @@ public partial class GameManager : Node3D
 		_messenger = Messenger.Instance;
 		_messenger.OnLevelSelected += HandleLevelSelected;
 		_messenger.OnTransitionComplete += HandleTransitionComplete;
-        _messenger.OnCombatSceneLoaded += HandleOnCombatSceneLoaded;
-        _messenger.OnCombatSceneConcluded += HandleCombatSceneConcluded;
+		_messenger.OnCombatSceneLoaded += HandleOnCombatSceneLoaded;
+		_messenger.OnCombatSceneConcluded += HandleCombatSceneConcluded;
 		_messenger.OnLevelTreeLoaded += HandleLevelTreeLoaded;
 
 		_gameState = GameState.LevelTree;
-    }
+	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 	}
 
-    private void SetGameState()
-    {
+	private void SetGameState()
+	{
 		if(_gameState == _transitionToState) {  return; }
 
-        _gameState = _transitionToState;
-        _messenger.EmitGameStateChanged(_gameState);
-    }
+		_gameState = _transitionToState;
+		_messenger.EmitGameStateChanged(_gameState);
+	}
 
 	private void HandleCombatSceneConcluded(CombatOutcome outcome)
 	{
@@ -40,7 +40,7 @@ public partial class GameManager : Node3D
 			case CombatOutcome.Victory:
 				_transitionToState = GameState.LevelTree;
 				_messenger.EmitSceneTransition(SceneTransitionState.Black);
-                break;
+				break;
 			case CombatOutcome.Defeat:
 				//handle defeat screen
 				break;
@@ -51,7 +51,7 @@ public partial class GameManager : Node3D
 	{
 		_transitionToState = GameState.Combat;
 		_messenger.EmitSceneTransition(SceneTransitionState.Black);
-    }
+	}
 
 	private void HandleTransitionComplete()
 	{

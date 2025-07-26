@@ -55,11 +55,12 @@ public abstract partial class Unit : Node3D
 	[Export]
 	protected Array<Ability> _abilities = new Array<Ability>();
 
+	protected CombatDie _combatDie = new CombatDie();
+
 	protected Ability _currentAbility = null;
 	public Ability CurrentAbility { get { return _currentAbility; } }
 
-	//protected Dictionary<string, Texture2D> _unitTextureList = new Dictionary<string, Texture2D>();
-	//public Dictionary<string, Texture2D> UnitTextures { get { return  _unitTextureList; } private set { } }
+	private AbilityDisplay _abilityDisplay = null;
 
 	protected bool _drawTargetArrow = false;
 	public bool DrawTargetArrow { set { _drawTargetArrow = value; } }
@@ -76,6 +77,7 @@ public abstract partial class Unit : Node3D
 		_targetArrow = GetNode<TargetArrow>("target_arrow");
 		_spriteHighlight = GetNode<Sprite3D>("unit_select_spr");
 		_hpLabel = GetNode<HpDetails>("hp_label");
+		_abilityDisplay = GetNode<AbilityDisplay>("ability_display");
 
 		_currentHp = _maxHp;
 
@@ -94,6 +96,24 @@ public abstract partial class Unit : Node3D
 		}
 
 		ShowSpriteHighlight(false);
+
+
+		// TODO REFACTOR
+		for(int i = 0; i < _abilities.Count; i++)
+		{
+			switch (i)
+			{
+				case 0:
+					_combatDie.AddAbility(_abilities[0], 0.8f);
+					continue;
+				case 1:
+					_combatDie.AddAbility(_abilities[1], 0.2f);
+					continue;
+				case 2:
+					_combatDie.AddAbility(_abilities[2], 0.05f);
+					continue;
+			}
+		}
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -130,7 +150,14 @@ public abstract partial class Unit : Node3D
 	{
 		switch (state)
 		{
+			case TurnState.PlayerTurn:
+                //_combatDie.ShowOjbect();
+                _currentAbility = _combatDie.Roll();
+				_abilityDisplay.ChangeLabel(_currentAbility.AbilityTier);
+                _abilityDisplay.Show();
+                break;
 			case TurnState.InProgress:
+				_abilityDisplay.Hide();
 				HideTargetingUI();
 				break;
 		}
@@ -249,6 +276,8 @@ public abstract partial class Unit : Node3D
 		_messenger.EmitUnitDied(this);
 	}
 
+
+	// TODO Split UI
 	public void DrawTargetingUI()
 	{
 		_drawTargetArrow = true;

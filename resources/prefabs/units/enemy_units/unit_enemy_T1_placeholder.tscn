@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bcenjv0j7of13"]
+[gd_scene load_steps=18 format=3 uid="uid://bcenjv0j7of13"]
 
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/enemy/EnemyUnit.cs" id="1_l77xc"]
 [ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/units/player_units/delta/delta_idle.png" id="2_rly4x"]
@@ -10,18 +10,10 @@
 [ext_resource type="Texture2D" uid="uid://bb4k6b2edrnj7" path="res://resources/sprites/targetting_arrow/dotted_line.png" id="8_686cm"]
 [ext_resource type="Texture2D" uid="uid://byg5tuodni1xh" path="res://resources/sprites/targetting_arrow/arrowhead.png" id="9_4gywo"]
 [ext_resource type="PackedScene" uid="uid://bgif0302wsc6g" path="res://resources/prefabs/units/ability_placeholder.tscn" id="10_1wfeh"]
+[ext_resource type="Script" path="res://resources/prefabs/units/player_units/unit_delta/AbilityDisplay.cs" id="11_vneo4"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rqfqc"]
 size = Vector3(0.527005, 1.995, 0.107162)
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_ro4j2"]
-orientation = 2
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x0u1w"]
-cull_mode = 2
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_3xrok"]
-size = Vector3(1.9807, 1.98279, 1)
 
 [sub_resource type="Curve3D" id="Curve3D_qgumi"]
 
@@ -32,6 +24,16 @@ cull_mode = 2
 no_depth_test = true
 albedo_texture = ExtResource("8_686cm")
 texture_filter = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_maiji"]
+orientation = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p4eho"]
+cull_mode = 2
+shading_mode = 0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s20rk"]
+size = Vector3(1.9807, 1.98279, 0.113495)
 
 [node name="unit_enemy_placeholder" type="Node3D" node_paths=PackedStringArray("_abilities") groups=["EnemyUnit"]]
 script = ExtResource("1_l77xc")
@@ -75,22 +77,6 @@ text = "999/999"
 font_size = 82
 script = ExtResource("5_3lgw2")
 
-[node name="attack_btn" type="CSGMesh3D" parent="."]
-transform = Transform3D(0.428517, 0, 0, 0, 0.332149, 0, 0, 0, 1, -0.0098182, 2.54458, 0)
-mesh = SubResource("PlaneMesh_ro4j2")
-material = SubResource("StandardMaterial3D_x0u1w")
-
-[node name="Label3D" type="Label3D" parent="attack_btn"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00558233)
-text = "Attack"
-font_size = 117
-
-[node name="StaticBody3D" type="StaticBody3D" parent="attack_btn"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="attack_btn/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0087347, -0.032896, 0.0554594)
-shape = SubResource("BoxShape3D_3xrok")
-
 [node name="debug_target" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00397038, 3.13366, 0)
 text = "Target: Enemy"
@@ -131,6 +117,24 @@ texture = ExtResource("9_4gywo")
 _abilityDamage = 20.0
 _critChance = 10.0
 _abilityCritMult = 2.0
+
+[node name="ability_display" type="CSGMesh3D" parent="."]
+transform = Transform3D(0.428517, 0, 0, 0, 0.332149, 0, 0, 0, 1, -0.0098182, 2.54458, 0)
+mesh = SubResource("PlaneMesh_maiji")
+material = SubResource("StandardMaterial3D_p4eho")
+script = ExtResource("11_vneo4")
+
+[node name="label" type="Label3D" parent="ability_display"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00558233)
+text = "III"
+font_size = 362
+outline_size = 3
+
+[node name="StaticBody3D" type="StaticBody3D" parent="ability_display"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ability_display/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0087347, -0.0328965, -0.0397097)
+shape = SubResource("BoxShape3D_s20rk")
 
 [connection signal="mouse_entered" from="unit_col_bdy" to="." method="_on_static_body_3d_mouse_entered"]
 [connection signal="mouse_exited" from="unit_col_bdy" to="." method="_on_static_body_3d_mouse_exited"]
