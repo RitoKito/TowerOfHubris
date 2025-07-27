@@ -11,10 +11,10 @@ public partial class GameManager : Node3D
 	public override void _Ready()
 	{
 		_messenger = Messenger.Instance;
-		_messenger.OnLevelSelected += HandleLevelSelected;
+		_messenger.OnEnterCombat += HandleLevelSelected;
 		_messenger.OnTransitionComplete += HandleTransitionComplete;
 		_messenger.OnCombatSceneLoaded += HandleOnCombatSceneLoaded;
-		_messenger.OnCombatSceneConcluded += HandleCombatSceneConcluded;
+		_messenger.OnExitCombat += HandleCombatSceneConcluded;
 		_messenger.OnLevelTreeLoaded += HandleLevelTreeLoaded;
 
 		_gameState = GameState.LevelTree;

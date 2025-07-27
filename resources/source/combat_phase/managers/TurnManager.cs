@@ -43,6 +43,7 @@ public partial class TurnManager : Node3D
 	{
 		_turnCount++;
 		_turnState = TurnState.PlayerTurn;
+		_messenger.EmitNewTurn(_turnCount);
 		_messenger.EmitTurnStateChanged(TurnState);
 	}
 
@@ -59,7 +60,7 @@ public partial class TurnManager : Node3D
 			_messenger.EmitTurnStateChanged(TurnState);
 
 
-			_messenger.EmitCombatSceneConcluded(CombatOutcome.Victory);
+			_messenger.EmitExitCombat(CombatOutcome.Victory);
 		}
 		else if(_sceneManager.GetPlayerUnitsAlive().Count <= 0)
 		{
@@ -67,7 +68,7 @@ public partial class TurnManager : Node3D
             _messenger.EmitTurnStateChanged(TurnState);
 
 
-            _messenger.EmitCombatSceneConcluded(CombatOutcome.Defeat);
+            _messenger.EmitExitCombat(CombatOutcome.Defeat);
         }
 		else
 		{

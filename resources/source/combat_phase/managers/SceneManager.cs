@@ -56,7 +56,7 @@ public partial class SceneManager : Node3D
 	{
 
 		_messenger = Messenger.Instance;
-		_messenger.OnTurnStateChanged += HandleTurnStateChanged;
+		_messenger.OnNewTurn += HandleNewTurn;
 		_messenger.OnUnitDeath += HandleUnitDeath;
 		//_messenger.OnGameStateChanged += HandleGameStateChanged;
 
@@ -139,10 +139,9 @@ public partial class SceneManager : Node3D
 		}
 	}
 
-	private void HandleTurnStateChanged(TurnState state)
+	private void HandleNewTurn(int _turnCount)
 	{
-		if(state == TurnState.PlayerTurn)
-			TargetRandomPlayerUnits();
+		TargetRandomPlayerUnits();
 	}
 
 	private void HandleUnitDeath(Unit unit)
@@ -193,7 +192,7 @@ public partial class SceneManager : Node3D
 
 	public override void _ExitTree()
 	{
-		_messenger.OnTurnStateChanged -= HandleTurnStateChanged;
+		_messenger.OnNewTurn -= HandleNewTurn;
 		_messenger.OnUnitDeath -= HandleUnitDeath;
 	}
 }

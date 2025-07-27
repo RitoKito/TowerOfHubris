@@ -1,12 +1,13 @@
-[gd_scene load_steps=20 format=3 uid="uid://dpkbteb7pa8te"]
+[gd_scene load_steps=21 format=3 uid="uid://dpkbteb7pa8te"]
 
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/player/PlayerUnit.cs" id="1_800yu"]
 [ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/units/player_units/delta/delta_idle.png" id="2_o1rpa"]
 [ext_resource type="Texture2D" uid="uid://5y3ndtfj5o62" path="res://resources/sprites/units/player_units/delta/delta_idle_highlight.png" id="3_rpow4"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/UnitColliderBody.cs" id="4_womm4"]
+[ext_resource type="Script" path="res://resources/prefabs/units/player_units/unit_delta/UnitUIController.cs" id="5_ggth5"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/HpDetails.cs" id="5_sfct8"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/debug/DebugTargetLabel.cs" id="6_cmpcu"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/TargetArrow.cs" id="7_sv1cs"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/TargetingUI.cs" id="7_sv1cs"]
 [ext_resource type="Texture2D" uid="uid://bb4k6b2edrnj7" path="res://resources/sprites/targetting_arrow/dotted_line.png" id="8_vpfqv"]
 [ext_resource type="Texture2D" uid="uid://byg5tuodni1xh" path="res://resources/sprites/targetting_arrow/arrowhead.png" id="9_iloaq"]
 [ext_resource type="Script" path="res://resources/prefabs/units/player_units/unit_delta/AbilityDisplay.cs" id="10_bkeka"]
@@ -66,7 +67,10 @@ script = ExtResource("4_womm4")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0447506, 1.07914, -0.0441498)
 shape = SubResource("BoxShape3D_rqfqc")
 
-[node name="hp_label" type="Label3D" parent="."]
+[node name="unit_ui_controller" type="Node3D" parent="."]
+script = ExtResource("5_ggth5")
+
+[node name="hp_label" type="Label3D" parent="unit_ui_controller"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.275239, 0.0119177)
 pixel_size = 0.003
 render_priority = 1
@@ -74,18 +78,18 @@ text = "999/999"
 font_size = 82
 script = ExtResource("5_sfct8")
 
-[node name="debug_target" type="Label3D" parent="."]
+[node name="debug_target" type="Label3D" parent="unit_ui_controller"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00397038, 3.13366, 0)
 text = "Target: Enemy"
 font_size = 52
 script = ExtResource("6_cmpcu")
 
-[node name="target_arrow" type="Path3D" parent="."]
+[node name="targeting_ui" type="Path3D" parent="unit_ui_controller"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0537333, 1.13846, 0)
 curve = SubResource("Curve3D_qgumi")
 script = ExtResource("7_sv1cs")
 
-[node name="curve_polygon" type="CSGPolygon3D" parent="target_arrow"]
+[node name="curve_polygon" type="CSGPolygon3D" parent="unit_ui_controller/targeting_ui"]
 polygon = PackedVector2Array(0, 0.05, 0, 0, 0, 0)
 mode = 2
 path_node = NodePath("..")
@@ -99,30 +103,30 @@ path_u_distance = 2.45
 path_joined = false
 material = SubResource("StandardMaterial3D_w7lpv")
 
-[node name="target_curve" type="Node3D" parent="target_arrow"]
+[node name="target_curve" type="Node3D" parent="unit_ui_controller/targeting_ui"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.238168, 2.18043, 0)
 
-[node name="arrow_spr" type="Sprite3D" parent="target_arrow"]
+[node name="arrow_spr" type="Sprite3D" parent="unit_ui_controller/targeting_ui"]
 transform = Transform3D(0.731478, 0, 0, 0, 0.341561, 0, 0, 0, 1, 0, 0, 0)
 no_depth_test = true
 texture_filter = 0
 texture = ExtResource("9_iloaq")
 
-[node name="ability_display" type="CSGMesh3D" parent="."]
+[node name="ability_display" type="CSGMesh3D" parent="unit_ui_controller"]
 transform = Transform3D(0.428517, 0, 0, 0, 0.332149, 0, 0, 0, 1, -0.0098182, 2.54458, 0)
 mesh = SubResource("PlaneMesh_ro4j2")
 material = SubResource("StandardMaterial3D_x0u1w")
 script = ExtResource("10_bkeka")
 
-[node name="label" type="Label3D" parent="ability_display"]
+[node name="label" type="Label3D" parent="unit_ui_controller/ability_display"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00558233)
 text = "III"
 font_size = 362
 outline_size = 3
 
-[node name="StaticBody3D" type="StaticBody3D" parent="ability_display"]
+[node name="StaticBody3D" type="StaticBody3D" parent="unit_ui_controller/ability_display"]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ability_display/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="unit_ui_controller/ability_display/StaticBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0087347, -0.0328965, -0.0397097)
 shape = SubResource("BoxShape3D_3xrok")
 

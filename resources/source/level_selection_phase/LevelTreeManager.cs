@@ -86,7 +86,7 @@ public partial class LevelTreeManager : Node3D
 		//_currentLevel.ShowEligibleNext();
 
 		// Transition to Combat
-        _messenger.EmitLevelSelected();
+        _messenger.EmitEnterCombat();
     }
 
 	private void HandleMouseLeftClick(Dictionary rayCastResult)

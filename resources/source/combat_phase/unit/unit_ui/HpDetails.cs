@@ -13,15 +13,8 @@ public partial class HpDetails : Label3D
 	{
 	}
 
-	public void updateHpLabel(string value)
+	public void UpdateHpLabel(int currentHp, int maxHp)
 	{
-		this.Text = value;
-	}
-
-	public void faceCamera(Vector3 cameraPos)
-	{
-		Vector3 target = cameraPos;
-
-		LookAt(target);
+		this.Text = $"{currentHp}/{maxHp}";
 	}
 }

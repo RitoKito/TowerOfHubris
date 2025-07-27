@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/UnitColliderBody.cs" id="4_0dmwv"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/HpDetails.cs" id="5_31gbd"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/debug/DebugTargetLabel.cs" id="6_gabwu"]
-[ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/TargetArrow.cs" id="7_p5cwu"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/TargetingUI.cs" id="7_p5cwu"]
 [ext_resource type="Texture2D" uid="uid://bb4k6b2edrnj7" path="res://resources/sprites/targetting_arrow/dotted_line.png" id="8_tyrtc"]
 [ext_resource type="Texture2D" uid="uid://byg5tuodni1xh" path="res://resources/sprites/targetting_arrow/arrowhead.png" id="9_av8ly"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/abilities/Ability.cs" id="10_bt18r"]

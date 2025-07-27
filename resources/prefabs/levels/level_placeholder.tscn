@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://bmxwr384pvyx6"]
+[gd_scene load_steps=8 format=3 uid="uid://bmxwr384pvyx6"]
 
 [ext_resource type="Script" path="res://resources/source/combat_phase/managers/UnitSelectionManager.cs" id="1_fha01"]
 [ext_resource type="Script" path="res://resources/prefabs/levels/CSHeadManager.cs" id="1_jmkeh"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/managers/SceneManager.cs" id="2_6f53p"]
+[ext_resource type="PackedScene" uid="uid://baue8h1kkk2fp" path="res://resources/prefabs/levels/UI/combat_ui_manager.tscn" id="3_31aox"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/managers/ActionManager.cs" id="3_l2ig0"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/managers/TurnManager.cs" id="4_smpwj"]
 
@@ -17,6 +18,8 @@ script = ExtResource("1_jmkeh")
 
 [node name="scene_manager" type="Node3D" parent="managers"]
 script = ExtResource("2_6f53p")
+
+[node name="combat_ui_manager" parent="managers" instance=ExtResource("3_31aox")]
 
 [node name="unit_selection_manager" type="Node3D" parent="managers"]
 script = ExtResource("1_fha01")

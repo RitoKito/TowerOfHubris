@@ -18,8 +18,10 @@ public partial class EnemyUnit : Unit
 
 	public void TargetPlayerUnit(Unit target)
 	{
-		_enemyTarget = target;
+		//_enemyTarget = target;
+		//_unitUIManager.SetTargetCurveTarget = _enemyTarget;
+		//DrawTargetingCurve();
 
-		DrawTargetingCurve();
+		SetEnemyTarget(target);
 	}
 }

@@ -34,4 +34,9 @@ public partial class ResolveTurnButton : Button
 				break;
 		}
 	}
+
+    public override void _ExitTree()
+    {
+        _messenger.OnTurnStateChanged -= HandleTurnStateChanged;
+    }
 }

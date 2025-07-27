@@ -26,10 +26,11 @@ public partial class Messenger : Node, IMessenger
 	public event Action OnTransitionComplete;
     public event Action OnFadedToNormal;
 
-    public event Action OnLevelSelected;
+    public event Action OnEnterCombat;
     public event Action<GameState> OnGameStateChanged;
+	public event Action<int> OnNewTurn;
 	public event Action OnCombatSceneLoaded;
-	public event Action<CombatOutcome> OnCombatSceneConcluded;
+	public event Action<CombatOutcome> OnExitCombat;
 	public event Action OnLevelTreeLoaded;
 
 
@@ -125,9 +126,9 @@ public partial class Messenger : Node, IMessenger
 
 
 
-	public void EmitLevelSelected()
+	public void EmitEnterCombat()
 	{
-		OnLevelSelected?.Invoke();
+		OnEnterCombat?.Invoke();
 	}
 
 	public void EmitSceneTransition(SceneTransitionState state)
@@ -144,14 +145,19 @@ public partial class Messenger : Node, IMessenger
 		OnGameStateChanged?.Invoke(state);
 	}
 
+	public void EmitNewTurn(int turnCount)
+	{
+		OnNewTurn?.Invoke(turnCount);
+	}
+
     public void EmitCombatSceneLoaded()
 	{
 		OnCombatSceneLoaded?.Invoke();
 	}
 
-    public void EmitCombatSceneConcluded(CombatOutcome outcome)
+    public void EmitExitCombat(CombatOutcome outcome)
 	{
-		OnCombatSceneConcluded?.Invoke(outcome);
+		OnExitCombat?.Invoke(outcome);
 	}
 
 	public void EmitLevelTreeLoaded()

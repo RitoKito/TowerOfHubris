@@ -7,15 +7,14 @@ public abstract partial class Unit : Node3D
 {
 	protected IMessenger _messenger;
 	public IMessenger Messenger { get { return _messenger; } private set {} }
-
-	protected Sprite3D _spriteHighlight = null;
-	protected HpDetails _hpLabel = null;
-	protected TargetArrow _targetArrow = null;
+    private Sprite3D _spriteHighlight = null;
+    protected UnitUIController _unitUIManager = null;
 	protected Unit _enemyTarget = null;
+
 	// In case primary target dies before action executed
-	// it will be redirected to one of _fallbackUnits
+	// it will be redirected to one of _alternativeTagets
 	protected List<Unit> _alternativeTargets = new List<Unit>();
-	public IReadOnlyList<Unit> FallBackEnemyTargets {  get { return _alternativeTargets.AsReadOnly(); } }
+	public IReadOnlyList<Unit> AlternativeTargets {  get { return _alternativeTargets.AsReadOnly(); } }
 
 	// Tag variable set in package editor
 	[Export]
@@ -62,38 +61,23 @@ public abstract partial class Unit : Node3D
 
 	private AbilityDisplay _abilityDisplay = null;
 
-	protected bool _drawTargetArrow = false;
-	public bool DrawTargetArrow { set { _drawTargetArrow = value; } }
-
 	public void SetMessenger(IMessenger messenger)
 	{
 		_messenger = messenger;
 		_messenger.OnTurnStateChanged += HandleTurnStateChanged;
+		_messenger.OnNewTurn += HandleNewTurn;
 	}
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_targetArrow = GetNode<TargetArrow>("target_arrow");
-		_spriteHighlight = GetNode<Sprite3D>("unit_select_spr");
-		_hpLabel = GetNode<HpDetails>("hp_label");
-		_abilityDisplay = GetNode<AbilityDisplay>("ability_display");
+        _spriteHighlight = GetNode<Sprite3D>("unit_select_spr");
+        _unitUIManager = GetNode<UnitUIController>("unit_ui_controller");
 
-		_currentHp = _maxHp;
+        _currentHp = _maxHp;
 
-		_hpLabel.updateHpLabel($"{_currentHp}/{_maxHp}");
-
-		// TODO Make ability assignment into function
-		// Handle invalid ability lists
-		if (_abilities[0] != null)
-		{
-			//_currentAbility = _abilityList.GetValue(0) as Ability;
-			_currentAbility = _abilities[0];
-		}
-		else
-		{
-			GD.PrintErr($"Ability List of {_unitName} May Be Empty");
-		}
+		//_hpLabel.updateHpLabel($"{_currentHp}/{_maxHp}");
+		_unitUIManager.UpdateHpLabel((int)_currentHp, (int)_maxHp);
 
 		ShowSpriteHighlight(false);
 
@@ -119,24 +103,19 @@ public abstract partial class Unit : Node3D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		if (_drawTargetArrow)
-		{
-			_targetArrow.DrawTargetArrow();
-		}
 	}
 
 	public Unit GetEnemyTarget() { return _enemyTarget; }
 	public void SetEnemyTarget(Unit target)
 	{
 		_enemyTarget = target;
-		_drawTargetArrow = false;
-		_targetArrow.HideTargetingUI();
+		_unitUIManager.SetTargetCurveTarget = _enemyTarget;
+		_unitUIManager.HideTargetingUI();
 
 		if (_enemyTarget.GetEnemyTarget() == this)
 		{
-			// Bool param sets the curve to half
-			DrawTargetingCurve(true);
-			_enemyTarget.DrawTargetingCurve(true);
+			DrawTargetingCurve(drawHalf: true);
+			_enemyTarget.DrawTargetingCurve(drawHalf: true);
 		}
 		else
 		{
@@ -146,19 +125,19 @@ public abstract partial class Unit : Node3D
 		_messenger.EmitTargetSelected(this);
 	}
 
+	protected void HandleNewTurn(int _turnCount)
+	{
+        _currentAbility = _combatDie.Roll();
+		_unitUIManager.UpdateAbilityDisplay(_currentAbility.AbilityTier);
+    }
+
 	protected void HandleTurnStateChanged(TurnState state)
 	{
 		switch (state)
 		{
-			case TurnState.PlayerTurn:
-                //_combatDie.ShowOjbect();
-                _currentAbility = _combatDie.Roll();
-				_abilityDisplay.ChangeLabel(_currentAbility.AbilityTier);
-                _abilityDisplay.Show();
-                break;
 			case TurnState.InProgress:
-				_abilityDisplay.Hide();
-				HideTargetingUI();
+				_unitUIManager.HideAbilityDisplay();
+				_unitUIManager.HideTargetingUI();
 				break;
 		}
 	}
@@ -166,21 +145,6 @@ public abstract partial class Unit : Node3D
 	// When setting fallback target the UI is not needed
 	public void SelectAlternativeTarget()
 	{
-		/*Random rnd = new Random();
-
-		int targetIndex = rnd.Next(0, _alternativeTargets.Count);
-		Unit alternativeTarget = _alternativeTargets[targetIndex];
-
-		if (alternativeTarget.IsDead)
-		{
-			_alternativeTargets.Remove(alternativeTarget);
-			SelectAlternativeTarget(del);
-			return;
-		}
-
-		_enemyTarget = alternativeTarget;*/
-
-
 		foreach (Unit alternativeTarget in _alternativeTargets)
 		{
 			if (!alternativeTarget.IsDead)
@@ -203,35 +167,36 @@ public abstract partial class Unit : Node3D
 	{
 		if (_enemyTarget.GetEnemyTarget() == this)
 		{
-			_enemyTarget.DrawTargetingCurve(false);
+			_enemyTarget.DrawTargetingCurve(drawHalf: false);
 		}
 
 		_enemyTarget = null;
-		_messenger.EmitTargetDeselected(this);
+        _unitUIManager.SetTargetCurveTarget = null;
+        _messenger.EmitTargetDeselected(this);
 	}
 
-	public void ShowSpriteHighlight(bool state)
-	{
-		if (state)
-		{
-			_spriteHighlight.Visible = true;
-		}
-		else
-		{
-			_spriteHighlight.Visible = false;
-		}
-	}
+    public void ShowSpriteHighlight(bool show)
+    {
+        if (show)
+        {
+            _spriteHighlight.Visible = true;
+        }
+        else
+        {
+            _spriteHighlight.Visible = false;
+        }
+    }
 
-	public void UseAbility()
+    public void UseAbility()
 	{
 		if(_enemyTarget != null)
 		{
 			_enemyTarget.TakeDamage(CurrentAbility.CalculateDamageInstance());
-			GD.Print($"{_unitName} performed {_currentAbility.AbilityName}");
+			GD.Print($"{_unitName} performing {_currentAbility.AbilityName}");
 			_enemyTarget = null;
 		}
 
-		_targetArrow.HideTargetingUI();
+		_unitUIManager.HideTargetingUI();
 	}
 
 	public void TakeDamage((float damageValue, Array<Affinity> affinties) damageInstance)
@@ -263,8 +228,7 @@ public abstract partial class Unit : Node3D
 			Die();
 		}
 
-		// TODO simplify
-		_hpLabel.updateHpLabel($"{_currentHp}/{_maxHp}");
+		_unitUIManager.UpdateHpLabel((int)_currentHp, (int)_maxHp);
 	}
 
 	protected void Die()
@@ -276,27 +240,25 @@ public abstract partial class Unit : Node3D
 		_messenger.EmitUnitDied(this);
 	}
 
-
-	// TODO Split UI
 	public void DrawTargetingUI()
 	{
-		_drawTargetArrow = true;
+		_unitUIManager.DrawTargetArrow = true;
 	}
 
 	public void HideTargetingUI()
 	{
-		_drawTargetArrow = false;
-		_targetArrow.HideTargetingUI();
+        _unitUIManager.DrawTargetArrow = false;
+		_unitUIManager.HideTargetingUI();
 	}
 
 	public void DrawTargetingCurve(bool drawHalf = false) 
 	{
-		_targetArrow.DrawTargetCurve(_enemyTarget.GetTargetCurvePos(), drawHalf);
+		_unitUIManager.DrawTargetingCurve(drawHalf);
 	}
 
 	public Vector3 GetTargetCurvePos()
 	{
-		return _targetArrow.TargetCurvePos;
+		return _unitUIManager.GetTargetCurvePos();
 	}
 
 	//TODO Implement C# signals
@@ -313,5 +275,6 @@ public abstract partial class Unit : Node3D
 	public override void _ExitTree()
 	{
 		_messenger.OnTurnStateChanged -= HandleTurnStateChanged;
-	}
+        _messenger.OnNewTurn -= HandleNewTurn;
+    }
 }

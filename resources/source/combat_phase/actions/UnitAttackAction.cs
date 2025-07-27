@@ -31,10 +31,10 @@ public partial class UnitAttackAction : GameAction
 		_homePosition = creator.GlobalPosition;
 
 		_actionTarget = creator.GetEnemyTarget();
+        if (_actionTarget == null) { GD.PrintErr($"Unit's ({_creator}) Ability Is Missing Target"); }
 
-		_offset *= _homePosition.DirectionTo(_targetPosition);
+        _offset *= _homePosition.DirectionTo(_targetPosition);
 		_enemyTargetPosition = _actionTarget.GlobalPosition;
-		if(_actionTarget != null){ GD.PrintErr($"Unit's ({_creator}) Ability Is Missing Target");}
 		_targetPosition = _enemyTargetPosition - _offset;
 		_state = State.AwaitingDeletion;
 	}
