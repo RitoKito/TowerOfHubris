@@ -25,6 +25,10 @@ InputHandler="*res://resources/source/global_managers/InputHandler.cs"
 
 shapes/collision/shape_color=Color(0.974969, 0, 0.422882, 0.42)
 
+[display]
+
+window/stretch/mode="canvas_items"
+
 [dotnet]
 
 project/assembly_name="TowerOfBabel"

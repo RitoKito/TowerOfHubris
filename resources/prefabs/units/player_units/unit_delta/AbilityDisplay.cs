@@ -23,12 +23,12 @@ public partial class AbilityDisplay : CsgMesh3D
 			case 1:
 				_label.Text = "I";
 				break;
-            case 2:
-                _label.Text = "II";
-                break;
-            case 3:
-                _label.Text = "III";
-                break;
-        }
+			case 2:
+				_label.Text = "II";
+				break;
+			case 3:
+				_label.Text = "III";
+				break;
+		}
 	}
 }

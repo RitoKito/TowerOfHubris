@@ -3,6 +3,16 @@ public enum GameState
 	MainMenu,
 	LevelTree,
 	Combat,
+	Rewards,
+	Defeat,
+}
+
+public enum TurnState
+{
+	SceneInitialization,
+	PlayerTurn,
+	InProgress,
+	SceneComplete,
 }
 
 public enum CombatOutcome
@@ -11,8 +21,8 @@ public enum CombatOutcome
 	Defeat,
 }
 
-public enum SceneTransitionState
+public enum TransitionState
 {
-    Normal,
-    Black,
+	Normal,
+	Black,
 }

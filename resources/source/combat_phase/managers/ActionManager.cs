@@ -4,8 +4,6 @@ using System.Linq;
 
 public partial class ActionManager : Node3D
 {
-	public delegate void ActionDelegate();
-
 	private Messenger _messenger;
 	// List datastructure is used as it allows to remove 
 	// actions from any index
@@ -52,11 +50,9 @@ public partial class ActionManager : Node3D
 		switch (unit.Tag)
 		{
 			case UnitEnums.UnitTag.Player:
-				GD.Print("Removed");
 				_playerUnitQueue.Remove(unit);
 				break;
 			case UnitEnums.UnitTag.Enemy:
-				GD.Print("Removed");
 				_enemyUnitQueue.Remove(unit);
 				break;
 		}
@@ -96,6 +92,12 @@ public partial class ActionManager : Node3D
 		if (unit.GetEnemyTarget().IsDead)
 		{
 			unit.SelectAlternativeTarget();
+			if (unit.GetEnemyTarget() == null)
+			{
+				unitQueue.Remove(unit);
+				ProcessNextUnit(unitQueue);
+				return;
+			}
 		}
 
 		GameAction unitAction = new UnitAttackAction(unit, unit.Messenger);
@@ -122,5 +124,6 @@ public partial class ActionManager : Node3D
 		_messenger.OnTargetSelected -= HandleTargetSelected;
 		_messenger.OnTargetDeselected -= HandleTargetDeselected;
 		_messenger.OnActionCompleted -= HandleOnActionCompleted;
+		base._ExitTree();
 	}
 }

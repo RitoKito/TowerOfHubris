@@ -91,13 +91,13 @@ public partial class LevelNode : Node3D
 
 	public void ShowEligibleNext()
 	{
-        foreach (LevelNode node in _children)
+		foreach (LevelNode node in _children)
 		{
 			node.ShowEligiblePath();
 		}
-    }
+	}
 
-    public void ShowEligiblePath()
+	public void ShowEligiblePath()
 	{
 		StandardMaterial3D mat = new StandardMaterial3D();
 		mat.AlbedoColor = new Color(0, 1, 0);

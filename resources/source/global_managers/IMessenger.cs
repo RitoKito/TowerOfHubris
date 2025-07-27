@@ -1,6 +1,7 @@
 
 using Godot.Collections;
 using System;
+using System.Collections.Generic;
 
 public interface IMessenger
 {
@@ -20,12 +21,17 @@ public interface IMessenger
 	public event Action<int> OnNewTurn;
 
 
-	public event Action<SceneTransitionState> OnSceneTransition;
+	public event Action<TransitionState> OnSceneTransition;
 	public event Action OnTransitionComplete;
 
-    public event Action OnEnterCombat;
-    public event Action<GameState> OnGameStateChanged;
+	public event Action OnEnterCombat;
+	public event Action<GameState> OnGameStateChanged;
 	public event Action OnCombatSceneLoaded;
+	public event Action<List<StatusEffect>> OnPlayerStatusEffectsApply;
+
+
+	public event Action OnRewardScreen;
+	public event Action<StatusEffect> OnRewardSelected;
 	public event Action<CombatOutcome> OnExitCombat;
 	public event Action OnLevelTreeLoaded;
 
@@ -47,12 +53,18 @@ public interface IMessenger
 	public void EmitNewTurn(int turnCount);
 
 
-	public void EmitSceneTransition(SceneTransitionState state);
+	public void EmitSceneTransition(TransitionState state);
 	public void EmitTransitionComplete();
 
-    public void EmitEnterCombat();
-    public void EmitGameStateChanged(GameState state);
+
+	public void EmitEnterCombat();
+	public void EmitGameStateChanged(GameState state);
 	public void EmitCombatSceneLoaded();
+	public void EmitPlayerApplyStatusEffects(List<StatusEffect> effects);
+
+
+	public void EmitRewardScreen();
+	public void EmitRewardSelected(StatusEffect selectedReward);
 	public void EmitExitCombat(CombatOutcome outcome);
 	public void EmitLevelTreeLoaded();
 }

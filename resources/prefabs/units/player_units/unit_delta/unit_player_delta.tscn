@@ -1,9 +1,10 @@
-[gd_scene load_steps=21 format=3 uid="uid://dpkbteb7pa8te"]
+[gd_scene load_steps=22 format=3 uid="uid://dpkbteb7pa8te"]
 
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/player/PlayerUnit.cs" id="1_800yu"]
 [ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/units/player_units/delta/delta_idle.png" id="2_o1rpa"]
 [ext_resource type="Texture2D" uid="uid://5y3ndtfj5o62" path="res://resources/sprites/units/player_units/delta/delta_idle_highlight.png" id="3_rpow4"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/UnitColliderBody.cs" id="4_womm4"]
+[ext_resource type="Script" path="res://resources/prefabs/units/player_units/unit_delta/StatusEffectController.cs" id="5_8qtb3"]
 [ext_resource type="Script" path="res://resources/prefabs/units/player_units/unit_delta/UnitUIController.cs" id="5_ggth5"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/HpDetails.cs" id="5_sfct8"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/debug/DebugTargetLabel.cs" id="6_cmpcu"]
@@ -66,6 +67,9 @@ script = ExtResource("4_womm4")
 [node name="unit_col_shape" type="CollisionShape3D" parent="unit_col_bdy"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0447506, 1.07914, -0.0441498)
 shape = SubResource("BoxShape3D_rqfqc")
+
+[node name="status_effect_controller" type="Node3D" parent="."]
+script = ExtResource("5_8qtb3")
 
 [node name="unit_ui_controller" type="Node3D" parent="."]
 script = ExtResource("5_ggth5")

@@ -1,6 +1,7 @@
 using Godot;
 using Godot.Collections;
 using System;
+using System.Collections.Generic;
 
 public partial class Messenger : Node, IMessenger
 {
@@ -22,16 +23,23 @@ public partial class Messenger : Node, IMessenger
 	public event Action<TurnState> OnTurnStateChanged;
 
 
-	public event Action<SceneTransitionState> OnSceneTransition;
+	public event Action<TransitionState> OnSceneTransition;
 	public event Action OnTransitionComplete;
-    public event Action OnFadedToNormal;
+	public event Action OnFadedToNormal;
 
-    public event Action OnEnterCombat;
-    public event Action<GameState> OnGameStateChanged;
+	public event Action OnEnterCombat;
+	public event Action<GameState> OnGameStateChanged;
+
 	public event Action<int> OnNewTurn;
 	public event Action OnCombatSceneLoaded;
+	public event Action<List<StatusEffect>> OnPlayerStatusEffectsApply;
+
+	public event Action OnRewardScreen;
+	public event Action<StatusEffect> OnRewardSelected;
 	public event Action<CombatOutcome> OnExitCombat;
 	public event Action OnLevelTreeLoaded;
+
+
 
 
 	private bool _processingQueue = false;
@@ -131,31 +139,48 @@ public partial class Messenger : Node, IMessenger
 		OnEnterCombat?.Invoke();
 	}
 
-	public void EmitSceneTransition(SceneTransitionState state)
+	public void EmitSceneTransition(TransitionState state)
 	{
 		OnSceneTransition?.Invoke(state);
 	}
-    public void EmitTransitionComplete()
+	public void EmitTransitionComplete()
 	{
 		OnTransitionComplete?.Invoke();
 	}
 
-    public void EmitGameStateChanged(GameState state)
+	public void EmitGameStateChanged(GameState state)
 	{
 		OnGameStateChanged?.Invoke(state);
 	}
+
 
 	public void EmitNewTurn(int turnCount)
 	{
 		OnNewTurn?.Invoke(turnCount);
 	}
 
-    public void EmitCombatSceneLoaded()
+	public void EmitPlayerApplyStatusEffects(List<StatusEffect> effects)
+	{
+		OnPlayerStatusEffectsApply?.Invoke(effects);
+	}
+
+	public void EmitCombatSceneLoaded()
 	{
 		OnCombatSceneLoaded?.Invoke();
 	}
 
-    public void EmitExitCombat(CombatOutcome outcome)
+
+	public void EmitRewardScreen()
+	{
+		OnRewardScreen?.Invoke();
+	}
+
+	public void EmitRewardSelected(StatusEffect selectedReward)
+	{
+		OnRewardSelected?.Invoke(selectedReward);
+	}
+
+	public void EmitExitCombat(CombatOutcome outcome)
 	{
 		OnExitCombat?.Invoke(outcome);
 	}

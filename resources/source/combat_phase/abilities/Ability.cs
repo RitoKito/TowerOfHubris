@@ -29,6 +29,14 @@ public partial class Ability : Node
 	private float _abilityCritMult;
 	public float AbilityCritMult { get { return _abilityCritMult; } set { } }
 
+	// Crit mult applied to final instance of damage
+	private float _attackCritMult = 1;
+
+	[Export]
+	private string _description = "Description";
+
+	// animation
+
 	[Export]
 	private Array<Affinity> _affinities = new Array<Affinity>();
 	public Array<Affinity> Affinities { get { return _affinities; } }
@@ -49,51 +57,7 @@ public partial class Ability : Node
 		_affinities.Remove(affinity);
 	}
 
-	// Crit mult applied to final instance of damage
-	[Export]
-	private float _attackCritMult = 1;
-	// animation
 
-	public class AbilityBuilder
-	{
-		private Ability _ability = new Ability();
-
-		public AbilityBuilder SetId(int id) 
-		{
-			_ability.AbilityId = id;
-			return this;
-		}
-		public AbilityBuilder SetName(string name)
-		{
-			_ability.AbilityName= name;
-			return this;
-		}
-		public AbilityBuilder SetTier(int tier)
-		{
-			_ability.AbilityTier = tier;
-			return this;
-		}
-		public AbilityBuilder SetDamage(float damage)
-		{
-			_ability.AbilityDamage = damage;
-			return this;
-		}
-		public AbilityBuilder SetCritChance(float critChance)
-		{
-			_ability.CritChance = critChance;
-			return this;
-		}
-		public AbilityBuilder SetCritMult(float critMult)
-		{
-			_ability.AbilityCritMult = critMult;
-			return this;
-		}
-
-		public Ability Build()
-		{
-			return _ability;
-		}
-	}
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -103,6 +67,26 @@ public partial class Ability : Node
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+	}
+
+	public void ModifyBaseDamage(float delta)
+	{
+		_abilityDamage += delta;
+	}
+
+	public void ModifyCritChance(float delta) 
+	{
+		_critChance += delta;
+	}
+
+	public void ModifyCritMult(float delta)
+	{
+		_abilityCritMult += delta;
+	}
+
+	public void ModifyAttackCritMult(float delta)
+	{
+		_attackCritMult += delta;
 	}
 
 	public (float, Array<Affinity>) CalculateDamageInstance()
@@ -116,7 +100,7 @@ public partial class Ability : Node
 			finalCritMult = _abilityCritMult;
 		}
 
-		float damageFormula = _abilityDamage * finalCritMult;
+		float damageFormula = _abilityDamage * finalCritMult * _attackCritMult;
 		(float, Array<Affinity>) damageInstance = (damageFormula, _affinities);
 
 		return damageInstance;

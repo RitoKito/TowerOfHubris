@@ -23,7 +23,7 @@ public partial class UnitSelectionManager : Node3D
 
 		_sceneManager = GetParent().GetNode<SceneManager>("scene_manager");
 
-    }
+	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
@@ -83,5 +83,6 @@ public partial class UnitSelectionManager : Node3D
 	{
 		_messenger.OnMouseLeftClick += HandleMouseLeftClick;
 		_messenger.OnMouseLeftRelease += HandleMouseLeftRelease;
+		base._ExitTree();
 	}
 }

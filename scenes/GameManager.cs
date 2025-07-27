@@ -14,7 +14,8 @@ public partial class GameManager : Node3D
 		_messenger.OnEnterCombat += HandleLevelSelected;
 		_messenger.OnTransitionComplete += HandleTransitionComplete;
 		_messenger.OnCombatSceneLoaded += HandleOnCombatSceneLoaded;
-		_messenger.OnExitCombat += HandleCombatSceneConcluded;
+		//_messenger.OnExitCombat += HandleCombatSceneConcluded;
+		_messenger.OnRewardSelected += HandleOnRewardSelected;
 		_messenger.OnLevelTreeLoaded += HandleLevelTreeLoaded;
 
 		_gameState = GameState.LevelTree;
@@ -33,24 +34,30 @@ public partial class GameManager : Node3D
 		_messenger.EmitGameStateChanged(_gameState);
 	}
 
-	private void HandleCombatSceneConcluded(CombatOutcome outcome)
+	/*private void HandleCombatSceneConcluded(CombatOutcome outcome)
 	{
 		switch (outcome)
 		{
 			case CombatOutcome.Victory:
 				_transitionToState = GameState.LevelTree;
-				_messenger.EmitSceneTransition(SceneTransitionState.Black);
+				_messenger.EmitSceneTransition(TransitionState.Black);
 				break;
 			case CombatOutcome.Defeat:
 				//handle defeat screen
 				break;
 		}
+	}*/
+
+	private void HandleOnRewardSelected(StatusEffect rewardSelected)
+	{
+		_transitionToState = GameState.LevelTree;
+		_messenger.EmitSceneTransition(TransitionState.Black);
 	}
 
 	private void HandleLevelSelected()
 	{
 		_transitionToState = GameState.Combat;
-		_messenger.EmitSceneTransition(SceneTransitionState.Black);
+		_messenger.EmitSceneTransition(TransitionState.Black);
 	}
 
 	private void HandleTransitionComplete()
@@ -60,11 +67,11 @@ public partial class GameManager : Node3D
 
 	private void HandleOnCombatSceneLoaded()
 	{
-		_messenger.EmitSceneTransition(SceneTransitionState.Normal);
+		_messenger.EmitSceneTransition(TransitionState.Normal);
 	}
 
 	private void HandleLevelTreeLoaded()
 	{
-		_messenger.EmitSceneTransition(SceneTransitionState.Normal);
+		_messenger.EmitSceneTransition(TransitionState.Normal);
 	}
 }

@@ -1,0 +1,88 @@
+[gd_scene load_steps=2 format=3 uid="uid://cps7mnaxatao0"]
+
+[ext_resource type="Script" path="res://resources/prefabs/levels/UI/RewardContainer.cs" id="1_mah46"]
+
+[node name="reward_box" type="MarginContainer"]
+custom_minimum_size = Vector2(210, 210)
+offset_right = 210.0
+offset_bottom = 210.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 0
+script = ExtResource("1_mah46")
+
+[node name="border" type="ColorRect" parent="."]
+layout_mode = 2
+mouse_filter = 1
+color = Color(0.111197, 0.111197, 0.111197, 1)
+
+[node name="inner_box_container" type="MarginContainer" parent="border"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="inner_box" type="ColorRect" parent="border/inner_box_container"]
+layout_mode = 2
+mouse_filter = 1
+color = Color(0.237539, 0.237539, 0.237539, 1)
+
+[node name="items" type="MarginContainer" parent="border"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="border/items"]
+layout_mode = 2
+
+[node name="separator" type="Control" parent="border/items/VBoxContainer"]
+layout_mode = 2
+
+[node name="name_container" type="MarginContainer" parent="border/items/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 10
+
+[node name="name_label" type="RichTextLabel" parent="border/items/VBoxContainer/name_container"]
+custom_minimum_size = Vector2(180, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 1
+bbcode_enabled = true
+text = "[center]Boon Of Placeholder[center]"
+
+[node name="icon" type="ColorRect" parent="border/items/VBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 1
+
+[node name="description_container" type="MarginContainer" parent="border/items/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 10
+
+[node name="description_label" type="RichTextLabel" parent="border/items/VBoxContainer/description_container"]
+custom_minimum_size = Vector2(180, 80)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 1
+bbcode_enabled = true
+text = "[center]Grants the infinite power of placeholder and some other things[center]"
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

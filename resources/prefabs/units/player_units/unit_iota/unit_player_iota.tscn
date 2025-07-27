@@ -1,9 +1,10 @@
-[gd_scene load_steps=19 format=3 uid="uid://dptiqga2qqv8e"]
+[gd_scene load_steps=20 format=3 uid="uid://dptiqga2qqv8e"]
 
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/player/PlayerUnit.cs" id="1_gysfy"]
 [ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/units/player_units/delta/delta_idle.png" id="2_q14p1"]
 [ext_resource type="Texture2D" uid="uid://5y3ndtfj5o62" path="res://resources/sprites/units/player_units/delta/delta_idle_highlight.png" id="3_ubups"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/UnitColliderBody.cs" id="4_2ehur"]
+[ext_resource type="Script" path="res://resources/prefabs/units/player_units/unit_delta/StatusEffectController.cs" id="5_7bn2n"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/HpDetails.cs" id="5_gbrrc"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/debug/DebugTargetLabel.cs" id="6_0k145"]
 [ext_resource type="Script" path="res://resources/prefabs/units/player_units/unit_delta/UnitUIController.cs" id="6_axdgy"]
@@ -38,10 +39,12 @@ size = Vector3(1.9807, 1.98279, 0.113495)
 
 [node name="player_iota" type="Node3D" node_paths=PackedStringArray("_abilities") groups=["PlayerUnit"]]
 script = ExtResource("1_gysfy")
+_tag = null
 _id = 2
 _unitPos = 1
 _unitName = "Iota"
 _maxHp = 125.0
+_damageResistanceMultiplier = null
 _affinityWeaknesses = [5]
 _affinityStrengths = [3]
 _abilities = [NodePath("abilities/ability_placeholder1")]
@@ -67,6 +70,9 @@ script = ExtResource("4_2ehur")
 [node name="unit_col_shape" type="CollisionShape3D" parent="unit_col_bdy"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0447506, 1.07914, -0.0441498)
 shape = SubResource("BoxShape3D_rqfqc")
+
+[node name="status_effect_controller" type="Node3D" parent="."]
+script = ExtResource("5_7bn2n")
 
 [node name="unit_ui_controller" type="Node3D" parent="."]
 script = ExtResource("6_axdgy")
@@ -134,6 +140,7 @@ shape = SubResource("BoxShape3D_s8oi7")
 [node name="abilities" type="Node3D" parent="."]
 
 [node name="ability_placeholder1" parent="abilities" instance=ExtResource("10_abaaa")]
+_affinities = null
 
 [connection signal="mouse_entered" from="unit_col_bdy" to="." method="_on_static_body_3d_mouse_entered"]
 [connection signal="mouse_exited" from="unit_col_bdy" to="." method="_on_static_body_3d_mouse_exited"]

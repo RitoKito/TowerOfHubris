@@ -35,8 +35,9 @@ public partial class ResolveTurnButton : Button
 		}
 	}
 
-    public override void _ExitTree()
-    {
-        _messenger.OnTurnStateChanged -= HandleTurnStateChanged;
-    }
+	public override void _ExitTree()
+	{
+		_messenger.OnTurnStateChanged -= HandleTurnStateChanged;
+		base._ExitTree();
+	}
 }

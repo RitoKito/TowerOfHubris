@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://beg2sb5t6nxjf"]
+[gd_scene load_steps=20 format=3 uid="uid://beg2sb5t6nxjf"]
 
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/enemy/EnemyUnit.cs" id="1_qfwr0"]
 [ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/units/player_units/delta/delta_idle.png" id="2_0gvtu"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/UnitColliderBody.cs" id="4_3fpti"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/HpDetails.cs" id="5_12y24"]
 [ext_resource type="Script" path="res://resources/prefabs/units/player_units/unit_delta/UnitUIController.cs" id="5_54n0s"]
+[ext_resource type="Script" path="res://resources/prefabs/units/player_units/unit_delta/StatusEffectController.cs" id="5_uahwp"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/debug/DebugTargetLabel.cs" id="6_76c2v"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/TargetingUI.cs" id="7_mf143"]
 [ext_resource type="Texture2D" uid="uid://bb4k6b2edrnj7" path="res://resources/sprites/targetting_arrow/dotted_line.png" id="8_glu1u"]
@@ -68,6 +69,9 @@ script = ExtResource("4_3fpti")
 [node name="unit_col_shape" type="CollisionShape3D" parent="unit_col_bdy"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0447506, 1.07914, -0.0441498)
 shape = SubResource("BoxShape3D_rqfqc")
+
+[node name="status_effect_controller" type="Node3D" parent="."]
+script = ExtResource("5_uahwp")
 
 [node name="unit_ui_controller" type="Node3D" parent="."]
 script = ExtResource("5_54n0s")

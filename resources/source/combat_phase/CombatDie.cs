@@ -42,15 +42,15 @@ public partial class CombatDie : Node
 
 	public void ModifyWeight(Ability ability, float delta)
 	{
-        for (int i = 0; i < _entries.Count; i++)
-        {
-            if (_entries[i].ability == ability)
-            {
+		for (int i = 0; i < _entries.Count; i++)
+		{
+			if (_entries[i].ability == ability)
+			{
 				float newWeight = _entries[i].weight + delta;
-                return;
-            }
-        }
-    }
+				return;
+			}
+		}
+	}
 
 	public Ability Roll()
 	{
@@ -65,7 +65,7 @@ public partial class CombatDie : Node
 
 			if(roll <= cumulative)
 			{
-                switch (_entries[i].ability.AbilityTier)
+				switch (_entries[i].ability.AbilityTier)
 				{
 					case 1:
 						if (_entries.Count > 1)
@@ -74,20 +74,20 @@ public partial class CombatDie : Node
 
 							if(_entries.Count > 2)
 							{
-                                _entries[i + 2] = (_entries[i + 2].ability, _entries[i].weight + 0.3f);
-                            }
-                        }
-                        break;
+								_entries[i + 2] = (_entries[i + 2].ability, _entries[i].weight + 0.3f);
+							}
+						}
+						break;
 					case 2:
-                        _entries[i] = (_entries[i].ability, 0.3f);
-                        if (_entries.Count > 2)
-                        {
-                            _entries[i + 1] = (_entries[i + 1].ability, _entries[i].weight + 0.3f);
-                        }
-                        break;
+						_entries[i] = (_entries[i].ability, 0.3f);
+						if (_entries.Count > 2)
+						{
+							_entries[i + 1] = (_entries[i + 1].ability, _entries[i].weight + 0.3f);
+						}
+						break;
 					case 3:
-                        _entries[i] = (_entries[i].ability, 0.05f);
-                        break;
+						_entries[i] = (_entries[i].ability, 0.05f);
+						break;
 				}
 
 				return _entries[i].ability;

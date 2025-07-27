@@ -86,8 +86,8 @@ public partial class LevelTreeManager : Node3D
 		//_currentLevel.ShowEligibleNext();
 
 		// Transition to Combat
-        _messenger.EmitEnterCombat();
-    }
+		_messenger.EmitEnterCombat();
+	}
 
 	private void HandleMouseLeftClick(Dictionary rayCastResult)
 	{
@@ -110,28 +110,28 @@ public partial class LevelTreeManager : Node3D
 		}
 		else if(gameState == GameState.LevelTree)
 		{
-            RecycleCombatScene();
-            _currentTree.Enable();
+			RecycleCombatScene();
+			_currentTree.Enable();
 
-            if (_eligibleNextNode != null)
-            {
-                foreach (LevelNode unreachable in _eligibleNextNode)
-                {
-                    if (unreachable != _currentLevel)
-                    {
-                        unreachable.SetInvalidNode();
-                    }
-                }
-            }
+			if (_eligibleNextNode != null)
+			{
+				foreach (LevelNode unreachable in _eligibleNextNode)
+				{
+					if (unreachable != _currentLevel)
+					{
+						unreachable.SetInvalidNode();
+					}
+				}
+			}
 
-            _eligibleNextNode = _currentLevel.Children;
+			_eligibleNextNode = _currentLevel.Children;
 
-            _currentLevel.SelectNode();
-            _currentLevel.ShowEligibleNext();
+			_currentLevel.SelectNode();
+			_currentLevel.ShowEligibleNext();
 
-            _messenger.EmitLevelTreeLoaded();
-            _escalation += 20;
-        }
+			_messenger.EmitLevelTreeLoaded();
+			_escalation += 20;
+		}
 	}
 
 	private void LoadCombatScene()

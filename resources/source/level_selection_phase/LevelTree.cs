@@ -196,13 +196,13 @@ public partial class LevelTree : CsgBox3D
 
 				while (parent == null)
 				{
-                    //parentIndex = legalConnections[nodeIndex][parentIndexRef];
-                    parentIndex = legalConnections[nodeIndex][rnd.Next(0, legalConnections[nodeIndex].Count())];
+					//parentIndex = legalConnections[nodeIndex][parentIndexRef];
+					parentIndex = legalConnections[nodeIndex][rnd.Next(0, legalConnections[nodeIndex].Count())];
 					if (IsCross(parentIndex, nodeIndex, existingConnections) && !existingConnections.Contains((parentIndex, nodeIndex)))
 					{
-                        //parentIndexRef++;
-                        parentIndex = legalConnections[nodeIndex][rnd.Next(0, legalConnections[nodeIndex].Count())];
-                        continue;
+						//parentIndexRef++;
+						parentIndex = legalConnections[nodeIndex][rnd.Next(0, legalConnections[nodeIndex].Count())];
+						continue;
 					}
 
 					parent = tree[depthLayer][parentIndex];

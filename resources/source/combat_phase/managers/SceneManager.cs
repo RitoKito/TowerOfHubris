@@ -168,8 +168,6 @@ public partial class SceneManager : Node3D
 
 	public void HandleGameStateChanged(GameState state)
 	{
-		GD.Print("TO");
-
 		switch (state)
 		{
 			case GameState.LevelTree:
@@ -194,5 +192,6 @@ public partial class SceneManager : Node3D
 	{
 		_messenger.OnNewTurn -= HandleNewTurn;
 		_messenger.OnUnitDeath -= HandleUnitDeath;
+		base._ExitTree();
 	}
 }

@@ -7,14 +7,10 @@ public abstract partial class Unit : Node3D
 {
 	protected IMessenger _messenger;
 	public IMessenger Messenger { get { return _messenger; } private set {} }
-    private Sprite3D _spriteHighlight = null;
-    protected UnitUIController _unitUIManager = null;
-	protected Unit _enemyTarget = null;
+	protected Sprite3D _spriteHighlight = null;
+	protected UnitUIController _unitUIManager = null;
+	protected StatusEffectController _statusEffectController = null;
 
-	// In case primary target dies before action executed
-	// it will be redirected to one of _alternativeTagets
-	protected List<Unit> _alternativeTargets = new List<Unit>();
-	public IReadOnlyList<Unit> AlternativeTargets {  get { return _alternativeTargets.AsReadOnly(); } }
 
 	// Tag variable set in package editor
 	[Export]
@@ -32,6 +28,7 @@ public abstract partial class Unit : Node3D
 	protected string _unitName = "The Mighty Placeholder";
 	public string UnitName {  get { return _unitName; }}
 
+
 	[Export]
 	protected float _maxHp = 999;
 	public float MaxHp { get { return _maxHp; } }
@@ -40,6 +37,7 @@ public abstract partial class Unit : Node3D
 
 	protected bool _isDead = false;
 	public bool IsDead {  get { return _isDead; } private set { } }
+
 
 	// Damage Resistance is in % form
 	[Export]
@@ -51,6 +49,7 @@ public abstract partial class Unit : Node3D
 	[Export]
 	protected Array<Affinity> _affinityStrengths = new Array<Affinity>();
 
+
 	[Export]
 	protected Array<Ability> _abilities = new Array<Ability>();
 
@@ -60,6 +59,13 @@ public abstract partial class Unit : Node3D
 	public Ability CurrentAbility { get { return _currentAbility; } }
 
 	private AbilityDisplay _abilityDisplay = null;
+
+	
+	protected Unit _enemyTarget = null;
+	// In case primary target dies before action executed
+	// it will be redirected to one of _alternativeTagets
+	protected List<Unit> _alternativeTargets = new List<Unit>();
+	public IReadOnlyList<Unit> AlternativeTargets { get { return _alternativeTargets.AsReadOnly(); } }
 
 	public void SetMessenger(IMessenger messenger)
 	{
@@ -71,12 +77,11 @@ public abstract partial class Unit : Node3D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-        _spriteHighlight = GetNode<Sprite3D>("unit_select_spr");
-        _unitUIManager = GetNode<UnitUIController>("unit_ui_controller");
+		_spriteHighlight = GetNode<Sprite3D>("unit_select_spr");
+		_unitUIManager = GetNode<UnitUIController>("unit_ui_controller");
+		_statusEffectController = GetNode<StatusEffectController>("status_effect_controller");
 
-        _currentHp = _maxHp;
-
-		//_hpLabel.updateHpLabel($"{_currentHp}/{_maxHp}");
+		_currentHp = _maxHp;
 		_unitUIManager.UpdateHpLabel((int)_currentHp, (int)_maxHp);
 
 		ShowSpriteHighlight(false);
@@ -105,6 +110,13 @@ public abstract partial class Unit : Node3D
 	{
 	}
 
+	public void ModifyMaxHP(float delta)
+	{
+		_maxHp += delta;
+		_currentHp = _maxHp;
+		_unitUIManager.UpdateHpLabel((int)_currentHp, (int)_maxHp);
+	}
+
 	public Unit GetEnemyTarget() { return _enemyTarget; }
 	public void SetEnemyTarget(Unit target)
 	{
@@ -123,23 +135,6 @@ public abstract partial class Unit : Node3D
 		}
 
 		_messenger.EmitTargetSelected(this);
-	}
-
-	protected void HandleNewTurn(int _turnCount)
-	{
-        _currentAbility = _combatDie.Roll();
-		_unitUIManager.UpdateAbilityDisplay(_currentAbility.AbilityTier);
-    }
-
-	protected void HandleTurnStateChanged(TurnState state)
-	{
-		switch (state)
-		{
-			case TurnState.InProgress:
-				_unitUIManager.HideAbilityDisplay();
-				_unitUIManager.HideTargetingUI();
-				break;
-		}
 	}
 
 	// When setting fallback target the UI is not needed
@@ -171,23 +166,23 @@ public abstract partial class Unit : Node3D
 		}
 
 		_enemyTarget = null;
-        _unitUIManager.SetTargetCurveTarget = null;
-        _messenger.EmitTargetDeselected(this);
+		_unitUIManager.SetTargetCurveTarget = null;
+		_messenger.EmitTargetDeselected(this);
 	}
 
-    public void ShowSpriteHighlight(bool show)
-    {
-        if (show)
-        {
-            _spriteHighlight.Visible = true;
-        }
-        else
-        {
-            _spriteHighlight.Visible = false;
-        }
-    }
+	public void ShowSpriteHighlight(bool show)
+	{
+		if (show)
+		{
+			_spriteHighlight.Visible = true;
+		}
+		else
+		{
+			_spriteHighlight.Visible = false;
+		}
+	}
 
-    public void UseAbility()
+	public void UseAbility()
 	{
 		if(_enemyTarget != null)
 		{
@@ -240,6 +235,7 @@ public abstract partial class Unit : Node3D
 		_messenger.EmitUnitDied(this);
 	}
 
+
 	public void DrawTargetingUI()
 	{
 		_unitUIManager.DrawTargetArrow = true;
@@ -247,7 +243,7 @@ public abstract partial class Unit : Node3D
 
 	public void HideTargetingUI()
 	{
-        _unitUIManager.DrawTargetArrow = false;
+		_unitUIManager.DrawTargetArrow = false;
 		_unitUIManager.HideTargetingUI();
 	}
 
@@ -259,6 +255,26 @@ public abstract partial class Unit : Node3D
 	public Vector3 GetTargetCurvePos()
 	{
 		return _unitUIManager.GetTargetCurvePos();
+	}
+
+	protected void HandleNewTurn(int _turnCount)
+	{
+		//if (!IsInstanceValid(this))
+		//	return;
+
+		_currentAbility = _combatDie.Roll();
+		_unitUIManager.UpdateAbilityDisplay(_currentAbility.AbilityTier);
+	}
+
+	protected void HandleTurnStateChanged(TurnState state)
+	{
+		switch (state)
+		{
+			case TurnState.InProgress:
+				_unitUIManager.HideAbilityDisplay();
+				_unitUIManager.HideTargetingUI();
+				break;
+		}
 	}
 
 	//TODO Implement C# signals
@@ -275,6 +291,8 @@ public abstract partial class Unit : Node3D
 	public override void _ExitTree()
 	{
 		_messenger.OnTurnStateChanged -= HandleTurnStateChanged;
-        _messenger.OnNewTurn -= HandleNewTurn;
-    }
+		_messenger.OnNewTurn -= HandleNewTurn;
+
+		base._ExitTree();
+	}
 }

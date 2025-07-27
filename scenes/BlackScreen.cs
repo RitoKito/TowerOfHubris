@@ -5,13 +5,13 @@ public partial class BlackScreen : Control
 {
 	private Messenger _messenger;
 	private AnimationPlayer _animationPlayer;
-	private SceneTransitionState _currentState;
+	private TransitionState _currentState;
 
 	private const string ANIMATION_TO_BLACK = "fade_to_black";
-    private const string ANIMATION_TO_NORMAL = "fade_to_normal";
+	private const string ANIMATION_TO_NORMAL = "fade_to_normal";
 
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
 	{
 		_messenger = Messenger.Instance;
 		_messenger.OnSceneTransition += HandleSceneTransition;
@@ -21,7 +21,7 @@ public partial class BlackScreen : Control
 		_animationPlayer.AnimationFinished += HandleOnAnimationFinished;
 
 		//SetState(CurrentState.Normal);
-		SetState(SceneTransitionState.Normal);
+		SetState(TransitionState.Normal);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -29,14 +29,14 @@ public partial class BlackScreen : Control
 	{
 	}
 
-	private void SetState(SceneTransitionState state)
+	private void SetState(TransitionState state)
 	{
 		switch (state)
 		{
-			case SceneTransitionState.Normal:
+			case TransitionState.Normal:
 				_animationPlayer.Play(ANIMATION_TO_NORMAL);
 				break;
-			case SceneTransitionState.Black:
+			case TransitionState.Black:
 				_animationPlayer.Play(ANIMATION_TO_BLACK);
 				break;
 		}
@@ -44,15 +44,15 @@ public partial class BlackScreen : Control
 		_currentState = state;
 	}
 
-	public void HandleSceneTransition(SceneTransitionState state)
+	public void HandleSceneTransition(TransitionState state)
 	{
 		switch(state)
 		{
-			case SceneTransitionState.Normal:
-				SetState(SceneTransitionState.Normal);
+			case TransitionState.Normal:
+				SetState(TransitionState.Normal);
 				break;
-			case SceneTransitionState.Black:
-				SetState(SceneTransitionState.Black);
+			case TransitionState.Black:
+				SetState(TransitionState.Black);
 				break;
 		}
 	}
@@ -60,8 +60,6 @@ public partial class BlackScreen : Control
 
 	private void HandleOnAnimationFinished(StringName animName)
 	{
-		GD.Print(animName);
-
 		/*		if (_currentState == CurrentState.Black) 
 				{ 
 					//_currentState = CurrentState.Black;
@@ -75,7 +73,7 @@ public partial class BlackScreen : Control
 				}
 				GD.Print("Fin");*/
 
-		GD.Print("Concluded");
+		GD.Print($"{animName} Transition Concluded");
 		_messenger.EmitTransitionComplete();
-    }
+	}
 }

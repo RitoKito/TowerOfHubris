@@ -1,14 +1,6 @@
 using Godot;
 using System;
 
-public enum TurnState
-{
-	SceneInitialization,
-	PlayerTurn,
-	InProgress,
-	SceneComplete,
-}
-
 public partial class TurnManager : Node3D
 {
 	private Messenger _messenger;
@@ -26,8 +18,8 @@ public partial class TurnManager : Node3D
 		_messenger = Messenger.Instance;
 		_sceneManager = GetParent().GetNode<SceneManager>("scene_manager");
 
-        //_messenger.OnResolveTurn += HandleTurnInProgress;
-        _messenger.OnTurnResolved += HandleTurnResolved;
+		//_messenger.OnResolveTurn += HandleTurnInProgress;
+		_messenger.OnTurnResolved += HandleTurnResolved;
 		_messenger.OnTurnInProgress += HandleTurnInProgress;
 
 		_turnState = TurnState.SceneInitialization;
@@ -58,18 +50,17 @@ public partial class TurnManager : Node3D
 		{
 			_turnState = TurnState.SceneComplete;
 			_messenger.EmitTurnStateChanged(TurnState);
-
-
-			_messenger.EmitExitCombat(CombatOutcome.Victory);
+			_messenger.EmitRewardScreen();
+			//_messenger.EmitExitCombat(CombatOutcome.Victory);
 		}
 		else if(_sceneManager.GetPlayerUnitsAlive().Count <= 0)
 		{
-            _turnState = TurnState.SceneComplete;
-            _messenger.EmitTurnStateChanged(TurnState);
+			_turnState = TurnState.SceneComplete;
+			_messenger.EmitTurnStateChanged(TurnState);
 
 
-            _messenger.EmitExitCombat(CombatOutcome.Defeat);
-        }
+			_messenger.EmitExitCombat(CombatOutcome.Defeat);
+		}
 		else
 		{
 			BeginNewTurn();
@@ -80,5 +71,6 @@ public partial class TurnManager : Node3D
 	{
 		_messenger.OnTurnResolved -= HandleTurnResolved;
 		_messenger.OnTurnInProgress -= HandleTurnInProgress;
+		base._ExitTree();
 	}
 }

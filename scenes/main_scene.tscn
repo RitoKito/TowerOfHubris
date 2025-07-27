@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://c6uqidn550wus"]
+[gd_scene load_steps=10 format=3 uid="uid://c6uqidn550wus"]
 
-[ext_resource type="Script" path="res://scenes/GameManager.cs" id="1_44bra"]
+[ext_resource type="Script" path="res://scenes/GameManager.cs" id="1_2kbew"]
 [ext_resource type="Script" path="res://scenes/UIManager.cs" id="2_xur1g"]
 [ext_resource type="Script" path="res://scenes/BlackScreen.cs" id="4_2kb83"]
 [ext_resource type="PackedScene" uid="uid://4qd4vij7ird5" path="res://resources/prefabs/camera/cam_gimbal.tscn" id="4_e7g0d"]
+[ext_resource type="Script" path="res://scenes/StatusEffectManager.cs" id="5_y5ao7"]
 
 [sub_resource type="Animation" id="Animation_r0sda"]
 length = 0.001
@@ -58,7 +59,7 @@ _data = {
 }
 
 [node name="Root" type="Node3D"]
-script = ExtResource("1_44bra")
+script = ExtResource("1_2kbew")
 
 [node name="UIManager" type="Control" parent="."]
 layout_mode = 3
@@ -98,3 +99,6 @@ libraries = {
 
 [node name="cam_gimbal" parent="." instance=ExtResource("4_e7g0d")]
 transform = Transform3D(1, 0, 0, 0, 0.97237, 0.233445, 0, -0.233445, 0.97237, 0, 25.715, -14.055)
+
+[node name="status_effect_manager" type="Node3D" parent="."]
+script = ExtResource("5_y5ao7")
