@@ -3,9 +3,11 @@ using Godot.Collections;
 
 public partial class InputHandler : Node3D
 {
+
+	// TODO UI BUS
 	public static InputHandler Instance { get; private set; }
 
-	private Messenger _messenger;
+	private EventBus _eventBus;
 	private Camera3D _cameraObj;
 
 	private bool _inputEnabled = true;
@@ -23,10 +25,8 @@ public partial class InputHandler : Node3D
 	public override void _Ready()
 	{
 		Instance = this;
-		_messenger = Messenger.Instance;
+		_eventBus = EventBus.Instance;
 		_cameraObj = GetViewport().GetCamera3D();
-
-		_messenger.OnTurnStateChanged += HandleTurnStateChanged;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -47,7 +47,7 @@ public partial class InputHandler : Node3D
 			if(_objectFromLeftClick != null )
 			{
 				_clickedOnCollider = true;
-				_messenger.EmitMouseLeftClicked(_objectFromLeftClick);
+				_eventBus.EmitMouseLeftClicked(_objectFromLeftClick);
 			}
 		}
 
@@ -73,7 +73,7 @@ public partial class InputHandler : Node3D
 			_clickedOnCollider = false;
 			_objectFromLeftClick = null;
 			Dictionary objectFromMouseLeftRelease = Utils.ShootRayCast(_cameraObj);
-			_messenger.EmitMouseLeftReleased(objectFromMouseLeftRelease);
+			_eventBus.EmitMouseLeftReleased(objectFromMouseLeftRelease);
 		}
 	}
 
@@ -96,5 +96,10 @@ public partial class InputHandler : Node3D
 				break;
 			
 		}
+	}
+
+	public override void _ExitTree()
+	{
+		base._ExitTree();
 	}
 }

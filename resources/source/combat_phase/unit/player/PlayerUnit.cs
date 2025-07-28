@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public partial class PlayerUnit : Unit
 {
@@ -8,7 +9,13 @@ public partial class PlayerUnit : Unit
 	public override void _Ready()
 	{
 		base._Ready();
-		_messenger.OnPlayerStatusEffectsApply += HandlePlayerStatusEffectApply;
+		//_eventBus.OnPlayerStatusEffectsApply += HandlePlayerStatusEffectApply;
+	}
+
+	public override void Init(TurnManager turnManager, IEventBus messenger)
+	{
+		base.Init(turnManager, messenger);
+		_eventBus.OnPlayerStatusEffectsApply += HandlePlayerStatusEffectApply;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -17,17 +24,19 @@ public partial class PlayerUnit : Unit
 		base._Process(delta);
 	}
 
-	private void HandlePlayerStatusEffectApply(List<StatusEffect> statusEffects)
+	private async Task HandlePlayerStatusEffectApply(List<StatusEffect> statusEffects)
 	{
 		foreach (StatusEffect effect in statusEffects)
 		{
 			_statusEffectController.AddStatusEffect(effect);
 		}
+
+		await Task.Yield();
 	}
 
 	public override void _ExitTree()
 	{
-		_messenger.OnPlayerStatusEffectsApply -= HandlePlayerStatusEffectApply;
+		_eventBus.OnPlayerStatusEffectsApply -= HandlePlayerStatusEffectApply;
 		base._ExitTree();
 	}
 }

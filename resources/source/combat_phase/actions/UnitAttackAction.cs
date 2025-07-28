@@ -22,11 +22,11 @@ public partial class UnitAttackAction : GameAction
 	private Vector3 _targetPosition;
 	private Vector3 destinationThreshold = new Vector3(0.01f, 0, 0);
 
-	public UnitAttackAction(Unit creator, IMessenger messenger)
+	public UnitAttackAction(ActionManager actionManager, Unit creator)
 	{
 		Name = $"{creator.UnitName} Performing {creator.CurrentAbility.AbilityName}";
 
-		_messenger = messenger;
+		_actionManager = actionManager;
 		_creator = creator;
 		_homePosition = creator.GlobalPosition;
 
@@ -74,7 +74,7 @@ public partial class UnitAttackAction : GameAction
 			if(_creator.GlobalPosition.DistanceTo(_homePosition) <= 0.02f)
 			{
 				_creator.GlobalPosition = _homePosition;
-				_messenger.EmitActionCompleted(this);
+				_actionManager.ActionComplete(this);
 				_state = State.Completed;
 			}
 		}

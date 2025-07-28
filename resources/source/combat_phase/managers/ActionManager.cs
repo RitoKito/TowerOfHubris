@@ -1,10 +1,12 @@
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 public partial class ActionManager : Node3D
 {
-	private Messenger _messenger;
+	private EventBus _eventBus;
+	private TurnManager _turnManager;
 	// List datastructure is used as it allows to remove 
 	// actions from any index
 	private List<Unit> _playerUnitQueue = new List<Unit>();
@@ -15,12 +17,13 @@ public partial class ActionManager : Node3D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_messenger = Messenger.Instance;
+		_turnManager = GetParent().GetNode<TurnManager>("turn_manager");
+		_turnManager.OnTurnStateChanged += HandleOnTurnStateChanged;
 
-		_messenger.OnTurnInProgress += QueueUnitActions;
-		_messenger.OnTargetSelected += HandleTargetSelected;
-		_messenger.OnTargetDeselected += HandleTargetDeselected;
-		_messenger.OnActionCompleted += HandleOnActionCompleted;
+		_eventBus = EventBus.Instance;
+
+		_eventBus.OnTargetSelected += HandleTargetSelected;
+		_eventBus.OnTargetDeselected += HandleTargetDeselected;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -58,7 +61,7 @@ public partial class ActionManager : Node3D
 		}
 	}
 
-	private void HandleOnActionCompleted(GameAction action)
+	public void ActionComplete(GameAction action)
 	{
 		_combinedUnitQueue.Remove(action.Creator);
 		ProcessNextUnit(_combinedUnitQueue);
@@ -68,7 +71,7 @@ public partial class ActionManager : Node3D
 	{
 		if (unitQueue.Count == 0)
 		{
-			_messenger.EmitTurnResolved();
+			_turnManager.TurnResolved();
 			return;
 		}
 
@@ -100,13 +103,11 @@ public partial class ActionManager : Node3D
 			}
 		}
 
-		GameAction unitAction = new UnitAttackAction(unit, unit.Messenger);
+		GameAction unitAction = new UnitAttackAction(this, unit);
 
 		AddChild(unitAction);
 		unitAction.Execute();
 	}
-
-
 
 	private void QueueUnitActions()
 	{
@@ -118,12 +119,20 @@ public partial class ActionManager : Node3D
 		ProcessNextUnit(_combinedUnitQueue);
 	}
 
+	private async Task HandleOnTurnStateChanged(TurnState state)
+	{
+		if(state == TurnState.InProgress)
+			QueueUnitActions();
+
+		await Task.Yield();
+	}
+
 	public override void _ExitTree()
 	{
-		_messenger.OnTurnInProgress -= QueueUnitActions;
-		_messenger.OnTargetSelected -= HandleTargetSelected;
-		_messenger.OnTargetDeselected -= HandleTargetDeselected;
-		_messenger.OnActionCompleted -= HandleOnActionCompleted;
+		_turnManager.OnTurnStateChanged -= HandleOnTurnStateChanged;
+
+		_eventBus.OnTargetSelected -= HandleTargetSelected;
+		_eventBus.OnTargetDeselected -= HandleTargetDeselected;
 		base._ExitTree();
 	}
 }

@@ -2,11 +2,15 @@ using Godot;
 using Godot.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 public abstract partial class Unit : Node3D
 {
-	protected IMessenger _messenger;
-	public IMessenger Messenger { get { return _messenger; } private set {} }
+	protected IEventBus _eventBus;
+	public IEventBus Messenger { get { return _eventBus; } private set {} }
+
+	protected TurnManager _turnManager;
+
 	protected Sprite3D _spriteHighlight = null;
 	protected UnitUIController _unitUIManager = null;
 	protected StatusEffectController _statusEffectController = null;
@@ -67,11 +71,12 @@ public abstract partial class Unit : Node3D
 	protected List<Unit> _alternativeTargets = new List<Unit>();
 	public IReadOnlyList<Unit> AlternativeTargets { get { return _alternativeTargets.AsReadOnly(); } }
 
-	public void SetMessenger(IMessenger messenger)
+	public virtual void Init(TurnManager turnManager, IEventBus messenger)
 	{
-		_messenger = messenger;
-		_messenger.OnTurnStateChanged += HandleTurnStateChanged;
-		_messenger.OnNewTurn += HandleNewTurn;
+		_eventBus = messenger;
+		_turnManager = turnManager;
+		_turnManager.OnTurnStateChanged += HandleTurnStateChanged;
+		_turnManager.OnNewTurn += HandleNewTurn;
 	}
 
 	// Called when the node enters the scene tree for the first time.
@@ -134,7 +139,7 @@ public abstract partial class Unit : Node3D
 			DrawTargetingCurve();
 		}
 
-		_messenger.EmitTargetSelected(this);
+		_eventBus.EmitTargetSelected(this);
 	}
 
 	// When setting fallback target the UI is not needed
@@ -167,7 +172,7 @@ public abstract partial class Unit : Node3D
 
 		_enemyTarget = null;
 		_unitUIManager.SetTargetCurveTarget = null;
-		_messenger.EmitTargetDeselected(this);
+		_eventBus.EmitTargetDeselected(this);
 	}
 
 	public void ShowSpriteHighlight(bool show)
@@ -232,7 +237,7 @@ public abstract partial class Unit : Node3D
 
 		// TODO Make Dead Sprite
 		Hide();
-		_messenger.EmitUnitDied(this);
+		_eventBus.EmitUnitDied(this);
 	}
 
 
@@ -257,16 +262,18 @@ public abstract partial class Unit : Node3D
 		return _unitUIManager.GetTargetCurvePos();
 	}
 
-	protected void HandleNewTurn(int _turnCount)
+	protected async Task HandleNewTurn(int turnCount)
 	{
 		//if (!IsInstanceValid(this))
 		//	return;
 
 		_currentAbility = _combatDie.Roll();
 		_unitUIManager.UpdateAbilityDisplay(_currentAbility.AbilityTier);
+
+		await Task.Yield();
 	}
 
-	protected void HandleTurnStateChanged(TurnState state)
+	protected async Task HandleTurnStateChanged(TurnState state)
 	{
 		switch (state)
 		{
@@ -275,6 +282,8 @@ public abstract partial class Unit : Node3D
 				_unitUIManager.HideTargetingUI();
 				break;
 		}
+
+		await Task.Yield();
 	}
 
 	//TODO Implement C# signals
@@ -290,8 +299,8 @@ public abstract partial class Unit : Node3D
 
 	public override void _ExitTree()
 	{
-		_messenger.OnTurnStateChanged -= HandleTurnStateChanged;
-		_messenger.OnNewTurn -= HandleNewTurn;
+		_turnManager.OnTurnStateChanged -= HandleTurnStateChanged;
+		_turnManager.OnNewTurn -= HandleNewTurn;
 
 		base._ExitTree();
 	}

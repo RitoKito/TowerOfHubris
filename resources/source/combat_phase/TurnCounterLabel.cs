@@ -3,14 +3,14 @@ using System;
 
 public partial class TurnCounterLabel : Label
 {
-	/*private Messenger _messenger;
+	/*private Messenger _eventBus;
 	private TurnManager _turnManager;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_messenger = Messenger.Instance;
-		_messenger.OnTurnStateChanged += HandleTurnStateChanged;
+		_eventBus = Messenger.Instance;
+		_eventBus.OnTurnStateChanged += HandleTurnStateChanged;
 		//UpdateTurnCount(TurnManager.Instance.TurnCount);
 	}
 

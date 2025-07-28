@@ -12,6 +12,7 @@ public enum TurnState
 	SceneInitialization,
 	PlayerTurn,
 	InProgress,
+	TurnResolved,
 	SceneComplete,
 }
 

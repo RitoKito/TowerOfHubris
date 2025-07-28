@@ -1,24 +1,25 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class GameManager : Node3D
 {
-	private Messenger _messenger = null;
+	private EventBus _eventBus = null;
+	private UIManager _uiManager = null;
 
 	private GameState _gameState;
 	private GameState _transitionToState;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_messenger = Messenger.Instance;
-		_messenger.OnEnterCombat += HandleLevelSelected;
-		_messenger.OnTransitionComplete += HandleTransitionComplete;
-		_messenger.OnCombatSceneLoaded += HandleOnCombatSceneLoaded;
-		//_messenger.OnExitCombat += HandleCombatSceneConcluded;
-		_messenger.OnRewardSelected += HandleOnRewardSelected;
-		_messenger.OnLevelTreeLoaded += HandleLevelTreeLoaded;
+		_eventBus = EventBus.Instance;
+		_uiManager = GetNode<UIManager>("ui_manager");
 
-		_gameState = GameState.LevelTree;
+		_eventBus.OnEnterCombat += HandleOnEnterCombat;
+		_eventBus.OnRewardSelected += HandleOnRewardSelected;
+
+
+		SetGameState(GameState.LevelTree);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -26,52 +27,31 @@ public partial class GameManager : Node3D
 	{
 	}
 
-	private void SetGameState()
+	private async void SetGameState(GameState state)
 	{
-		if(_gameState == _transitionToState) {  return; }
+		_gameState = state;
 
-		_gameState = _transitionToState;
-		_messenger.EmitGameStateChanged(_gameState);
+		await _uiManager.PlayFadeToBlack();
+
+		_eventBus.EmitGameStateChanged(_gameState);
+
+		await _uiManager.PlayFadeToNormal();
 	}
 
-	/*private void HandleCombatSceneConcluded(CombatOutcome outcome)
+	private async Task HandleOnRewardSelected(StatusEffect rewardSelected)
 	{
-		switch (outcome)
-		{
-			case CombatOutcome.Victory:
-				_transitionToState = GameState.LevelTree;
-				_messenger.EmitSceneTransition(TransitionState.Black);
-				break;
-			case CombatOutcome.Defeat:
-				//handle defeat screen
-				break;
-		}
-	}*/
-
-	private void HandleOnRewardSelected(StatusEffect rewardSelected)
-	{
-		_transitionToState = GameState.LevelTree;
-		_messenger.EmitSceneTransition(TransitionState.Black);
+		SetGameState(GameState.LevelTree);
+		await Task.Yield();
 	}
 
-	private void HandleLevelSelected()
+	private async Task HandleOnEnterCombat()
 	{
-		_transitionToState = GameState.Combat;
-		_messenger.EmitSceneTransition(TransitionState.Black);
+		SetGameState(GameState.Combat);
+		await Task.Yield();
 	}
 
 	private void HandleTransitionComplete()
 	{
-		SetGameState();
-	}
-
-	private void HandleOnCombatSceneLoaded()
-	{
-		_messenger.EmitSceneTransition(TransitionState.Normal);
-	}
-
-	private void HandleLevelTreeLoaded()
-	{
-		_messenger.EmitSceneTransition(TransitionState.Normal);
+		//SetGameState();
 	}
 }

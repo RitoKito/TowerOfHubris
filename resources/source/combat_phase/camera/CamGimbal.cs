@@ -5,7 +5,7 @@ public partial class CamGimbal : Node3D
 {
 	public static CamGimbal Instance { get; private set; }
 
-	private IMessenger _messenger;
+	private IEventBus _eventBus;
 	private Camera3D _cameraObj;
 	private InputHandler _inputHandler;
 
@@ -50,11 +50,11 @@ public partial class CamGimbal : Node3D
 	{
 		Instance = this;
 
-		_messenger = Messenger.Instance;
+		_eventBus = EventBus.Instance;
 		_cameraObj = GetViewport().GetCamera3D();
 		_inputHandler = InputHandler.Instance;
 
-		_messenger.OnGameStateChanged += HandleGameStateChanged;
+		_eventBus.OnGameStateChanged += HandleGameStateChanged;
 
 		SetLevelTreeCam();
 	}

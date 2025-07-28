@@ -1,39 +1,22 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public partial class SceneManager : Node3D
 {
-	//public static SceneManager Instance { get; private set; }
-
-	private Messenger _messenger;
+	private TurnManager _turnManager;
+	private EventBus _eventBus;
 
 	private readonly List<PlayerUnit> _playerUnits = new List<PlayerUnit>();
 	private List<PlayerUnit> _alivePlayerUnits = new List<PlayerUnit>();
+	private int _playerUnitsAlive = 0;
 
 	private readonly List<EnemyUnit> _enemyUnits = new List<EnemyUnit>();
 	private List<EnemyUnit> _aliveEnemyUnits = new List<EnemyUnit>();
-	public IReadOnlyList<EnemyUnit> GetEnemyUnitsAlive()
-	{
-		return _aliveEnemyUnits.AsReadOnly();
-	}
-
-	public IReadOnlyList<PlayerUnit> GetPlayerUnitsAlive()
-	{
-		return _alivePlayerUnits.AsReadOnly();
-	}
-
-	private readonly List<Unit> _allUnits = new List<Unit>();
-
-	private int _playerUnitsAlive = 0;
 	private int _enemyUnitsAlive = 0;
 
-	public IReadOnlyList<Unit> GetAllUnits()
-	{
-		return _allUnits.AsReadOnly();
-	}
-
-	private bool _processingTask = false;
+	private readonly List<Unit> _allUnits = new List<Unit>();
 
 	public void AppendPlayerUnit(PlayerUnit unit)
 	{
@@ -44,6 +27,22 @@ public partial class SceneManager : Node3D
 		_enemyUnits.Add(unit);
 	}
 
+	public IReadOnlyList<EnemyUnit> GetEnemyUnitsAlive()
+	{
+		return _aliveEnemyUnits.AsReadOnly();
+	}
+
+	public IReadOnlyList<PlayerUnit> GetPlayerUnitsAlive()
+	{
+		return _alivePlayerUnits.AsReadOnly();
+	}
+
+	public IReadOnlyList<Unit> GetAllUnits()
+	{
+		return _allUnits.AsReadOnly();
+	}
+
+
 	private Unit GetRandomPlayerUnit()
 	{
 		Random rnd = new Random();
@@ -52,14 +51,13 @@ public partial class SceneManager : Node3D
 	}
 
 	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
+	public async override void _Ready()
 	{
+		_turnManager = GetParent().GetNode<TurnManager>("turn_manager");
+		_turnManager.OnNewTurn += HandleNewTurn;
 
-		_messenger = Messenger.Instance;
-		_messenger.OnNewTurn += HandleNewTurn;
-		_messenger.OnUnitDeath += HandleUnitDeath;
-		//_messenger.OnGameStateChanged += HandleGameStateChanged;
-
+		_eventBus = EventBus.Instance;
+		_eventBus.OnUnitDeath += HandleUnitDeath;
 
 		InstantiatePlayerUnits();
 		_alivePlayerUnits.AddRange(_playerUnits);
@@ -80,14 +78,12 @@ public partial class SceneManager : Node3D
 			GD.PrintErr("Warning! No enemy units registered in the scene!");
 		}
 
-		_messenger.EmitCombatSceneLoaded();
+		await _eventBus.EmitCombatSceneLoaded();
 	}
 
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
+	public override void _Process(double delta) {}
 
 	private void InstantiatePlayerUnits()
 	{
@@ -101,6 +97,7 @@ public partial class SceneManager : Node3D
 		{
 			if (playerUnit != null)
 			{
+				playerUnit.Init(_turnManager, _eventBus);
 				AppendPlayerUnit(playerUnit);
 			}
 		}
@@ -118,6 +115,7 @@ public partial class SceneManager : Node3D
 		{
 			if (enemyUnit != null)
 			{
+				enemyUnit.Init(_turnManager, _eventBus);
 				AppendEnemyUnit(enemyUnit);
 			}
 		}
@@ -134,17 +132,18 @@ public partial class SceneManager : Node3D
 			if (!unit.IsDead)
 			{
 				unit.TargetPlayerUnit(GetRandomPlayerUnit());
-				_messenger.EmitTargetSelected(unit);
+				_eventBus.EmitTargetSelected(unit);
 			}
 		}
 	}
 
-	private void HandleNewTurn(int _turnCount)
+	private async Task HandleNewTurn(int _turnCount)
 	{
 		TargetRandomPlayerUnits();
+		await Task.Yield();
 	}
 
-	private void HandleUnitDeath(Unit unit)
+	private async void HandleUnitDeath(Unit unit)
 	{
 		if (unit.GetGroups().Contains("PlayerUnit"))
 		{
@@ -152,7 +151,7 @@ public partial class SceneManager : Node3D
 			_alivePlayerUnits.Remove(unit as PlayerUnit);
 			if(_playerUnitsAlive <= 0)
 			{
-				GD.Print("Player Lost");
+				GD.Print("Defeat");
 			}
 		}
 		else if (unit.GetGroups().Contains("EnemyUnit"))
@@ -161,9 +160,11 @@ public partial class SceneManager : Node3D
 			_aliveEnemyUnits.Remove(unit as EnemyUnit);
 			if (_enemyUnitsAlive <= 0)
 			{
-				GD.Print("Player Won");
+				GD.Print("Victory");
 			}
 		}
+
+		await Task.Yield();
 	}
 
 	public void HandleGameStateChanged(GameState state)
@@ -190,8 +191,8 @@ public partial class SceneManager : Node3D
 
 	public override void _ExitTree()
 	{
-		_messenger.OnNewTurn -= HandleNewTurn;
-		_messenger.OnUnitDeath -= HandleUnitDeath;
+		_turnManager.OnNewTurn -= HandleNewTurn;
+		_eventBus.OnUnitDeath -= HandleUnitDeath;
 		base._ExitTree();
 	}
 }

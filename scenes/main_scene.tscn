@@ -1,8 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://c6uqidn550wus"]
+[gd_scene load_steps=9 format=3 uid="uid://c6uqidn550wus"]
 
 [ext_resource type="Script" path="res://scenes/GameManager.cs" id="1_2kbew"]
 [ext_resource type="Script" path="res://scenes/UIManager.cs" id="2_xur1g"]
-[ext_resource type="Script" path="res://scenes/BlackScreen.cs" id="4_2kb83"]
 [ext_resource type="PackedScene" uid="uid://4qd4vij7ird5" path="res://resources/prefabs/camera/cam_gimbal.tscn" id="4_e7g0d"]
 [ext_resource type="Script" path="res://scenes/StatusEffectManager.cs" id="5_y5ao7"]
 
@@ -61,7 +60,7 @@ _data = {
 [node name="Root" type="Node3D"]
 script = ExtResource("1_2kbew")
 
-[node name="UIManager" type="Control" parent="."]
+[node name="ui_manager" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -71,7 +70,7 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("2_xur1g")
 
-[node name="back_screen" type="Control" parent="UIManager"]
+[node name="back_screen" type="Control" parent="ui_manager"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -79,9 +78,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-script = ExtResource("4_2kb83")
 
-[node name="black_screen_rect" type="ColorRect" parent="UIManager/back_screen"]
+[node name="black_screen_rect" type="ColorRect" parent="ui_manager/back_screen"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -91,8 +89,8 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
-[node name="animation_player" type="AnimationPlayer" parent="UIManager/back_screen"]
-root_node = NodePath("../black_screen_rect")
+[node name="animation_player" type="AnimationPlayer" parent="ui_manager"]
+root_node = NodePath("../back_screen/black_screen_rect")
 libraries = {
 "": SubResource("AnimationLibrary_1ovvu")
 }

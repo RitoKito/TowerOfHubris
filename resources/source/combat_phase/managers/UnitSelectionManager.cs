@@ -1,22 +1,29 @@
 using Godot;
 using Godot.Collections;
+using System.Threading.Tasks;
 
 public partial class UnitSelectionManager : Node3D
 {
-	private Messenger _messenger;
+	private EventBus _eventBus;
 	private SceneManager _sceneManager;
+	private TurnManager _turnManager;
 	private InputHandler _inputHandler;
 
 	private Camera3D _cameraObj;
 	private Unit _selectedPlayerUnit;
 	private Dictionary _clickedObject;
 
+	private bool _selectionEnabled = true;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_messenger = Messenger.Instance;
-		_messenger.OnMouseLeftClick += HandleMouseLeftClick;
-		_messenger.OnMouseLeftRelease += HandleMouseLeftRelease;
+		_turnManager = GetParent().GetNode<TurnManager>("turn_manager");
+		_turnManager.OnTurnStateChanged += HandleOnTurnStateChanged;
+
+		_eventBus = EventBus.Instance;
+		_eventBus.OnMouseLeftClick += HandleMouseLeftClick;
+		_eventBus.OnMouseLeftRelease += HandleMouseLeftRelease;
 
 		_inputHandler = InputHandler.Instance;
 		_cameraObj = GetViewport().GetCamera3D();
@@ -32,6 +39,9 @@ public partial class UnitSelectionManager : Node3D
 
 	private void HandleMouseLeftClick(Dictionary rayCastResult)
 	{
+		if(!_selectionEnabled)
+			return;
+
 		Node collider = (Node)rayCastResult["collider"];
 
 		if (collider.GetGroups().Contains("PlayerUnit"))
@@ -79,10 +89,28 @@ public partial class UnitSelectionManager : Node3D
 		_selectedPlayerUnit = null;
 	}
 
+	private async Task HandleOnTurnStateChanged(TurnState state)
+	{
+		switch (state)
+		{
+			case TurnState.InProgress:
+				_selectionEnabled = false;
+				break;
+			case TurnState.PlayerTurn:
+				_selectionEnabled = true;
+				break;
+		}
+
+		await Task.Yield();
+	}
+
+
 	public override void _ExitTree()
 	{
-		_messenger.OnMouseLeftClick += HandleMouseLeftClick;
-		_messenger.OnMouseLeftRelease += HandleMouseLeftRelease;
+		_turnManager.OnTurnStateChanged -= HandleOnTurnStateChanged;
+
+		_eventBus.OnMouseLeftClick -= HandleMouseLeftClick;
+		_eventBus.OnMouseLeftRelease -= HandleMouseLeftRelease;
 		base._ExitTree();
 	}
 }

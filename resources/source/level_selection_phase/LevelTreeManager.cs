@@ -7,7 +7,7 @@ public partial class LevelTreeManager : Node3D
 {
 	public static LevelTreeManager Instance { get; private set; }
 
-	private Messenger _messenger = null;
+	private EventBus _eventBus = null;
 
 	private LevelTree _currentTree = null;
 	private IList<LevelNode> _eligibleNextNode = null;
@@ -29,9 +29,9 @@ public partial class LevelTreeManager : Node3D
 		else if (Instance != this)
 			Free();
 
-		_messenger = Messenger.Instance;
-		_messenger.OnMouseLeftClick += HandleMouseLeftClick;
-		_messenger.OnGameStateChanged += HandleGameStateChanged;
+		_eventBus = EventBus.Instance;
+		_eventBus.OnMouseLeftClick += HandleMouseLeftClick;
+		_eventBus.OnGameStateChanged += HandleGameStateChanged;
 
 		_currentTree = InstantiateLevelTree() as LevelTree;
 		_currentLevel = _currentTree.RootNode as LevelNode;
@@ -66,7 +66,7 @@ public partial class LevelTreeManager : Node3D
 		return levelTree;
 	}
 
-	private void HandleLevelNodeSelected(LevelNode levelNode)
+	private async void HandleLevelNodeSelected(LevelNode levelNode)
 	{
 		_currentLevel = levelNode;
 		/*if (_eligibleNextNode != null)
@@ -86,7 +86,7 @@ public partial class LevelTreeManager : Node3D
 		//_currentLevel.ShowEligibleNext();
 
 		// Transition to Combat
-		_messenger.EmitEnterCombat();
+		await _eventBus.EmitEnterCombat();
 	}
 
 	private void HandleMouseLeftClick(Dictionary rayCastResult)
@@ -102,7 +102,7 @@ public partial class LevelTreeManager : Node3D
 		}
 	}
 
-	private void HandleGameStateChanged(GameState gameState)
+	private async void HandleGameStateChanged(GameState gameState)
 	{
 		if(gameState == GameState.Combat)
 		{
@@ -110,7 +110,11 @@ public partial class LevelTreeManager : Node3D
 		}
 		else if(gameState == GameState.LevelTree)
 		{
-			RecycleCombatScene();
+			if(_currentCombatScene != null)
+			{
+				RecycleCombatScene();
+			}
+
 			_currentTree.Enable();
 
 			if (_eligibleNextNode != null)
@@ -129,7 +133,8 @@ public partial class LevelTreeManager : Node3D
 			_currentLevel.SelectNode();
 			_currentLevel.ShowEligibleNext();
 
-			_messenger.EmitLevelTreeLoaded();
+			await _eventBus.EmitLevelTreeLoaded();
+
 			_escalation += 20;
 		}
 	}

@@ -3,7 +3,7 @@ using System;
 
 public partial class RewardContainer : MarginContainer
 {
-	private Messenger _messenger = null;
+	private EventBus _eventBus = null;
 
 	private ColorRect _border;
 	private Color _defaultColor;
@@ -19,7 +19,7 @@ public partial class RewardContainer : MarginContainer
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_messenger = Messenger.Instance;
+		_eventBus = EventBus.Instance;
 
 		_border = GetNode<ColorRect>("border");
 		_rewardName = GetNode<RichTextLabel>("border/items/VBoxContainer/name_container/name_label");
@@ -55,13 +55,13 @@ public partial class RewardContainer : MarginContainer
 		_rewardDescription.Text = $"[center]{reward.Description}[center]";
 	}
 
-	public override void _GuiInput(InputEvent @event)
+	public async override void _GuiInput(InputEvent @event)
 	{
 		if(@event is InputEventMouseButton mouseEvent 
 			&& mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed)
 		{
 			GD.Print("Selected Reward");
-			_messenger.EmitRewardSelected(_reward);
+			await _eventBus.EmitRewardSelected(_reward);
 		}
 	}
 }

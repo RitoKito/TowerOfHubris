@@ -63,3 +63,5 @@ collision_mask = 2
 [node name="CollisionShape3D" type="CollisionShape3D" parent="background_mouse_collider"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 shape = SubResource("BoxShape3D_crgnk")
+
+[node name="Node3D" type="Node3D" parent="."]

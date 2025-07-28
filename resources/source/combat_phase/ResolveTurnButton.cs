@@ -2,14 +2,17 @@ using Godot;
 
 public partial class ResolveTurnButton : Button
 {
-	private Messenger _messenger;
+	//TODO EVENT BUS FOR UI
+	private EventBus _eventBus;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_messenger = Messenger.Instance;
+		_eventBus = EventBus.Instance;
+		_eventBus.OnTurnInProgress += HandleOnTurnOnProgress;
+		_eventBus.OnNewTurn += HandleOnTurnResolved;
 
-		_messenger.OnTurnStateChanged += HandleTurnStateChanged;
+		Disabled = true;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -19,25 +22,24 @@ public partial class ResolveTurnButton : Button
 
 	public override void _Pressed()
 	{
-		Messenger.Instance.EmitTurnInProgress();
+		EventBus.Instance.EmitExecuteTurn();
 	}
 
-	private void HandleTurnStateChanged(TurnState state)
+	private void HandleOnTurnOnProgress()
 	{
-		switch (state)
-		{
-			case TurnState.PlayerTurn:
-				Disabled = false;
-				break;
-			case TurnState.InProgress:
-				Disabled = true;
-				break;
-		}
+		Disabled = true;
+	}
+
+
+	private void HandleOnTurnResolved(int turnCount) 
+	{
+		Disabled = false;
 	}
 
 	public override void _ExitTree()
 	{
-		_messenger.OnTurnStateChanged -= HandleTurnStateChanged;
+		_eventBus.OnTurnInProgress -= HandleOnTurnOnProgress;
+		_eventBus.OnNewTurn -= HandleOnTurnResolved;
 		base._ExitTree();
 	}
 }

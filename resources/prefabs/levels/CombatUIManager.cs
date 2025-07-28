@@ -1,19 +1,19 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class CombatUIManager : Control
 {
-	private Messenger _messenger;
+	private EventBus _eventBus;
 
 	private Label _turnCounterLabel;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_messenger = Messenger.Instance;
-		_messenger.OnCombatSceneLoaded += HandleCombatSceneLoaded;
-		_messenger.OnNewTurn += HandleNewTurn;
-		_messenger.OnExitCombat += HandleExitCombat;
+		_eventBus = EventBus.Instance;
+		_eventBus.OnNewTurn += HandleOnNewTurn;
+		_eventBus.OnCombatSceneLoaded += HandleCombatSceneLoaded;
 
 		_turnCounterLabel = GetNode<Label>("turn_counter/HBoxContainer/turn_counter_label");
 	}
@@ -23,14 +23,15 @@ public partial class CombatUIManager : Control
 	{
 	}
 
-	public void HandleNewTurn(int turnCount)
+	private void HandleOnNewTurn(int turnCount)
 	{
 		_turnCounterLabel.Text = $"Turn: {turnCount}";
 	}
 
-	private void HandleCombatSceneLoaded()
+	private async Task HandleCombatSceneLoaded()
 	{
 		Show();
+		await Task.Yield();
 	}
 
 	private void HandleExitCombat(CombatOutcome outcome)
@@ -40,9 +41,8 @@ public partial class CombatUIManager : Control
 
 	public override void _ExitTree()
 	{
-		_messenger.OnCombatSceneLoaded -= HandleCombatSceneLoaded;
-		_messenger.OnNewTurn -= HandleNewTurn;
-		_messenger.OnExitCombat -= HandleExitCombat;
+		_eventBus.OnNewTurn -= HandleOnNewTurn;
+		_eventBus.OnCombatSceneLoaded -= HandleCombatSceneLoaded;
 		base._ExitTree();
 	}
 }

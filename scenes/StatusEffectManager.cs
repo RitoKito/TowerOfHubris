@@ -1,17 +1,18 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public partial class StatusEffectManager : Node3D
 {
-	private Messenger _meesenger = null;
+	private EventBus _meesenger = null;
 
 	private List<StatusEffect> _playerStatusEffects = new List<StatusEffect>();
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_meesenger = Messenger.Instance;
+		_meesenger = EventBus.Instance;
 		_meesenger.OnCombatSceneLoaded += HandleOnCombatSceneLoaded;
 		_meesenger.OnRewardSelected += HandleOnRewardSelected;
 
@@ -43,13 +44,15 @@ public partial class StatusEffectManager : Node3D
 	}
 
 
-	public void HandleOnCombatSceneLoaded()
+	public async Task HandleOnCombatSceneLoaded()
 	{
-		_meesenger.EmitPlayerApplyStatusEffects(_playerStatusEffects);
+		await _meesenger.EmitPlayerApplyStatusEffects(_playerStatusEffects);
+		await Task.Yield();
 	}
 
-	public void HandleOnRewardSelected(StatusEffect selectedReward)
+	public async Task HandleOnRewardSelected(StatusEffect selectedReward)
 	{
 		AddStatusEffect(selectedReward);
+		await Task.Yield();
 	}
 }

@@ -3,19 +3,19 @@ using System;
 
 public partial class AcknowledgeContext : IDisposable
 {
-	private IMessenger _messenger;
+	private IEventBus _eventBus;
 	private bool _acknowledged;
 	private string _receiver;
 
-	public AcknowledgeContext(IMessenger messenger)
+	public AcknowledgeContext(IEventBus messenger)
 	{
-		_messenger = messenger;
+		_eventBus = messenger;
 	}
 
 	public void Acknowledge()
 	{
 		_acknowledged = true;
-		//_messenger.EmitActionAcked();
+		//_eventBus.EmitActionAcked();
 	}
 
 	public void Dispose() 

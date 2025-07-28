@@ -28,11 +28,6 @@ public partial class UnitContainerEnemy : UnitContainer
 			Node enemyUnitInstance = enemyUnitPrefab.Instantiate();
 			Unit enemyUnit = enemyUnitInstance as Unit;
 
-			//Messenger dependency injection
-			enemyUnit.SetMessenger(Messenger.Instance);
-
-			//_unitPosArray variable is populated in the editor
-			// by dragging child node objects
 			_unitPosArray[i].AddChild(enemyUnit);
 			_unitArray[i] = enemyUnit;
 		}
