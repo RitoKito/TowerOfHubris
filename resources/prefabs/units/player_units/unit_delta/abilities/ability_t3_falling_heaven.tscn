@@ -9,4 +9,4 @@ _abilityName = "Falling Heaven"
 _abilityTier = 3
 _abilityDamage = 150.0
 _critChance = 50.0
-_abilityCritMult = 1.5
+_abilityCritMult = 2.5

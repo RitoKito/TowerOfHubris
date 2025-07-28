@@ -1,0 +1,110 @@
+[gd_scene load_steps=3 format=3 uid="uid://hku34cjmyp1c"]
+
+[ext_resource type="Script" path="res://resources/prefabs/units/unit_ui/UnitDetails.cs" id="1_evypw"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_g0i5w"]
+viewport_path = NodePath("SubViewport")
+
+[node name="unit_details_3d" type="Sprite3D"]
+top_level = true
+billboard = 1
+no_depth_test = true
+texture_filter = 0
+render_priority = 2
+texture = SubResource("ViewportTexture_g0i5w")
+script = ExtResource("1_evypw")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+canvas_item_default_texture_filter = 0
+size = Vector2i(310, 160)
+
+[node name="unit_details" type="Control" parent="SubViewport"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="border_container" type="MarginContainer" parent="SubViewport/unit_details"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="border" type="ColorRect" parent="SubViewport/unit_details/border_container"]
+custom_minimum_size = Vector2(310, 160)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.051971, 0.051971, 0.051971, 1)
+
+[node name="fill_box_container" type="MarginContainer" parent="SubViewport/unit_details/border_container/border"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="fill_box" type="ColorRect" parent="SubViewport/unit_details/border_container/border/fill_box_container"]
+custom_minimum_size = Vector2(300, 150)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.0885599, 0.0885599, 0.0885599, 1)
+
+[node name="item_container" type="MarginContainer" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="separator" type="Control" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer"]
+layout_mode = 2
+
+[node name="unit_name_label" type="RichTextLabel" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer"]
+custom_minimum_size = Vector2(290, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "The Mighty Placeholder T1"
+fit_content = true
+scroll_active = false
+
+[node name="unit_hp_label" type="RichTextLabel" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer"]
+custom_minimum_size = Vector2(290, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "1000/1000HP"
+fit_content = true
+scroll_active = false
+
+[node name="separator2" type="Control" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="unit_weakness_label" type="RichTextLabel" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer"]
+custom_minimum_size = Vector2(290, 34.355)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "AAAAAAAAAAAAAAAAA"
+fit_content = true
+scroll_active = false

@@ -3,7 +3,7 @@ using System;
 
 public partial class AbilityDisplay : CsgMesh3D
 {
-	private Label3D _label;
+	private Label3D _label = null;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()

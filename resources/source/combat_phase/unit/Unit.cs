@@ -12,7 +12,7 @@ public abstract partial class Unit : Node3D
 	protected TurnManager _turnManager;
 
 	protected Sprite3D _spriteHighlight = null;
-	protected UnitUIController _unitUIManager = null;
+	protected UnitUIController _uiController = null;
 	protected StatusEffectController _statusEffectController = null;
 
 
@@ -83,11 +83,12 @@ public abstract partial class Unit : Node3D
 	public override void _Ready()
 	{
 		_spriteHighlight = GetNode<Sprite3D>("unit_select_spr");
-		_unitUIManager = GetNode<UnitUIController>("unit_ui_controller");
+		_uiController = GetNode<UnitUIController>("unit_ui_controller");
 		_statusEffectController = GetNode<StatusEffectController>("status_effect_controller");
 
 		_currentHp = _maxHp;
-		_unitUIManager.UpdateHpLabel((int)_currentHp, (int)_maxHp);
+		_uiController.UpdateHpLabel((int)_currentHp, (int)_maxHp);
+		_uiController.UpdateUnitDetailsNameLabel(_unitName);
 
 		ShowSpriteHighlight(false);
 
@@ -119,15 +120,15 @@ public abstract partial class Unit : Node3D
 	{
 		_maxHp += delta;
 		_currentHp = _maxHp;
-		_unitUIManager.UpdateHpLabel((int)_currentHp, (int)_maxHp);
+		_uiController.UpdateHpLabel((int)_currentHp, (int)_maxHp);
 	}
 
 	public Unit GetEnemyTarget() { return _enemyTarget; }
 	public void SetEnemyTarget(Unit target)
 	{
 		_enemyTarget = target;
-		_unitUIManager.SetTargetCurveTarget = _enemyTarget;
-		_unitUIManager.HideTargetingUI();
+		_uiController.SetTargetCurveTarget = _enemyTarget;
+		_uiController.HideTargetingUI();
 
 		if (_enemyTarget.GetEnemyTarget() == this)
 		{
@@ -171,7 +172,7 @@ public abstract partial class Unit : Node3D
 		}
 
 		_enemyTarget = null;
-		_unitUIManager.SetTargetCurveTarget = null;
+		_uiController.SetTargetCurveTarget = null;
 		_eventBus.EmitTargetDeselected(this);
 	}
 
@@ -196,7 +197,7 @@ public abstract partial class Unit : Node3D
 			_enemyTarget = null;
 		}
 
-		_unitUIManager.HideTargetingUI();
+		_uiController.HideTargetingUI();
 	}
 
 	public void TakeDamage((float damageValue, Array<Affinity> affinties) damageInstance)
@@ -228,7 +229,7 @@ public abstract partial class Unit : Node3D
 			Die();
 		}
 
-		_unitUIManager.UpdateHpLabel((int)_currentHp, (int)_maxHp);
+		_uiController.UpdateHpLabel((int)_currentHp, (int)_maxHp);
 	}
 
 	protected void Die()
@@ -243,23 +244,23 @@ public abstract partial class Unit : Node3D
 
 	public void DrawTargetingUI()
 	{
-		_unitUIManager.DrawTargetArrow = true;
+		_uiController.DrawTargetArrow = true;
 	}
 
 	public void HideTargetingUI()
 	{
-		_unitUIManager.DrawTargetArrow = false;
-		_unitUIManager.HideTargetingUI();
+		_uiController.DrawTargetArrow = false;
+		_uiController.HideTargetingUI();
 	}
 
 	public void DrawTargetingCurve(bool drawHalf = false) 
 	{
-		_unitUIManager.DrawTargetingCurve(drawHalf);
+		_uiController.DrawTargetingCurve(drawHalf);
 	}
 
 	public Vector3 GetTargetCurvePos()
 	{
-		return _unitUIManager.GetTargetCurvePos();
+		return _uiController.GetTargetCurvePos();
 	}
 
 	protected async Task HandleNewTurn(int turnCount)
@@ -268,7 +269,8 @@ public abstract partial class Unit : Node3D
 		//	return;
 
 		_currentAbility = _combatDie.Roll();
-		_unitUIManager.UpdateAbilityDisplay(_currentAbility.AbilityTier);
+		_uiController.UpdateAbilityDisplay(_currentAbility.AbilityTier);
+		_uiController.UpdateAbilityDetails(_currentAbility);
 
 		await Task.Yield();
 	}
@@ -278,9 +280,13 @@ public abstract partial class Unit : Node3D
 		switch (state)
 		{
 			case TurnState.InProgress:
-				_unitUIManager.HideAbilityDisplay();
-				_unitUIManager.HideTargetingUI();
+				_uiController.HideAbilityDisplay();
+				_uiController.HideTargetingUI();
+				_uiController.SuppressUI = true;
 				break;
+			case TurnState.PlayerTurn:
+                _uiController.SuppressUI = false;
+                break;
 		}
 
 		await Task.Yield();
@@ -289,12 +295,17 @@ public abstract partial class Unit : Node3D
 	//TODO Implement C# signals
 	protected void _on_static_body_3d_mouse_entered()
 	{
-		ShowSpriteHighlight(true);
+		if (_uiController.SuppressUI)
+			return;
+
+			ShowSpriteHighlight(true);
+			_uiController.ShowUnitDetails();
 	}
 
 	protected void _on_static_body_3d_mouse_exited()
 	{
 		ShowSpriteHighlight(false);
+		_uiController.HideUnitDetails();
 	}
 
 	public override void _ExitTree()

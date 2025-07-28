@@ -36,8 +36,6 @@ public partial class LevelTreeManager : Node3D
 		_currentTree = InstantiateLevelTree() as LevelTree;
 		_currentLevel = _currentTree.RootNode as LevelNode;
 
-
-		HandleLevelNodeSelected(_currentLevel);
 		_currentLevel.ShowEligibleNext();
 		_currentLevel.SelectNode();
 		_eligibleNextNode = _currentLevel.Children;
@@ -69,23 +67,7 @@ public partial class LevelTreeManager : Node3D
 	private async void HandleLevelNodeSelected(LevelNode levelNode)
 	{
 		_currentLevel = levelNode;
-		/*if (_eligibleNextNode != null)
-		{
-			foreach (LevelNode unreachable in _eligibleNextNode)
-			{
-				if (unreachable != _currentLevel)
-				{
-					unreachable.SetInvalidNode();
-				}
-			}
-		}
-
-		_eligibleNextNode = levelNode.Children;*/
-
 		_currentLevel.SelectNode();
-		//_currentLevel.ShowEligibleNext();
-
-		// Transition to Combat
 		await _eventBus.EmitEnterCombat();
 	}
 
@@ -98,7 +80,9 @@ public partial class LevelTreeManager : Node3D
 			LevelNode levelNode = (LevelNode)colliderObj.GetParent();
 
 			if (_eligibleNextNode != null && _eligibleNextNode.Contains(levelNode))
-				HandleLevelNodeSelected(levelNode);
+			{
+                HandleLevelNodeSelected(levelNode);
+			}
 		}
 	}
 
@@ -141,6 +125,9 @@ public partial class LevelTreeManager : Node3D
 
 	private void LoadCombatScene()
 	{
+		if (_currentCombatScene != null)
+			return;
+
 		_currentTree.Disable();
 		_currentCombatScene = InstantiateLevel(PathConstants.PLACEHOLDER_LEVEL);
 	}
@@ -149,7 +136,7 @@ public partial class LevelTreeManager : Node3D
 	{
 		_currentCombatScene.QueueFree();
 		_currentCombatScene = null;
-	}
+    }
 
 
 }
