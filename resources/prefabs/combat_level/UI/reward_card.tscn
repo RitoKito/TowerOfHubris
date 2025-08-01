@@ -1,0 +1,104 @@
+[gd_scene load_steps=5 format=3 uid="uid://cps7mnaxatao0"]
+
+[ext_resource type="Script" path="res://resources/source/combat_phase/combat_ui/RewardCard.cs" id="1_1yg86"]
+[ext_resource type="StyleBox" uid="uid://bmuedg76qv1bs" path="res://resources/prefabs/transitions/reward_card_material.tres" id="2_rodyb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6vtg8"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_frxy1"]
+bg_color = Color(0.145098, 0.133333, 0.172549, 1)
+border_color = Color(0, 0, 0, 1)
+corner_radius_bottom_right = 1024
+corner_radius_bottom_left = 1024
+corner_detail = 1
+anti_aliasing = false
+anti_aliasing_size = 3.765
+
+[node name="reward_card_container" type="MarginContainer"]
+offset_right = 200.0
+offset_bottom = 300.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_filter = 0
+script = ExtResource("1_1yg86")
+
+[node name="card_background" type="Panel" parent="."]
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("2_rodyb")
+
+[node name="vbox_container" type="VBoxContainer" parent="card_background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="separator" type="Control" parent="card_background/vbox_container"]
+custom_minimum_size = Vector2(0, 13.89)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="icon_holder" type="Panel" parent="card_background/vbox_container"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_6vtg8")
+
+[node name="icon" type="Sprite2D" parent="card_background/vbox_container"]
+position = Vector2(100, 50)
+
+[node name="name_margin_container" type="MarginContainer" parent="card_background/vbox_container"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="name_label" type="RichTextLabel" parent="card_background/vbox_container/name_margin_container"]
+custom_minimum_size = Vector2(180, 20)
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+text = "[center]This is a name[center]"
+
+[node name="separator2" type="Control" parent="card_background/vbox_container"]
+custom_minimum_size = Vector2(0, 4.06)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="separator_line" type="Panel" parent="card_background/vbox_container"]
+custom_minimum_size = Vector2(180, 2)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_frxy1")
+
+[node name="separator3" type="Control" parent="card_background/vbox_container"]
+custom_minimum_size = Vector2(0, 42.915)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="description_margin_container" type="MarginContainer" parent="card_background/vbox_container"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 2
+
+[node name="description_label" type="RichTextLabel" parent="card_background/vbox_container/description_margin_container"]
+custom_minimum_size = Vector2(180, 93.98)
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+text = "[center]This is a description of an ability that does various things it can also do this and that but generally it does this and that[center]"
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

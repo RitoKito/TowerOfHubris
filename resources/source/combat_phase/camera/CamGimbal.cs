@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class CamGimbal : Node3D
 {
@@ -24,9 +25,9 @@ public partial class CamGimbal : Node3D
 	private float _cameraMaxY = 3.5f;
 	private float _maxCamAngle = Mathf.DegToRad(-20f);
 
-	private Vector3 _levelTreePos = new Vector3(0f, 25f, -15f);
+	private Vector3 _levelTreePos = new Vector3(0f, 27f, -15f);
 	private Vector3 _levelTreeRot = Vector3.Zero;
-	private Vector3 _combatPos = new Vector3(0f, 1.815f, 5.81f);
+	private Vector3 _combatPos = new Vector3(0f, 1.815f, 4.9f);
 	private Vector3 _combatRot = new Vector3(-13.5f, 0, 0);
 
 	private bool _inCombat = false;
@@ -149,7 +150,7 @@ public partial class CamGimbal : Node3D
 		}
 	}
 
-	private void HandleGameStateChanged(GameState state)
+	private async Task HandleGameStateChanged(GameState state)
 	{
 		switch(state)
 		{
@@ -162,6 +163,8 @@ public partial class CamGimbal : Node3D
 				_inCombat = true;
 				break;
 		}
+
+		await Task.Yield();
 	}
 
 

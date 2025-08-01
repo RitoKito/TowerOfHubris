@@ -1,8 +1,8 @@
 [gd_scene load_steps=17 format=3 uid="uid://blnfviihfbpwp"]
 
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/Unit.cs" id="1_6mb3f"]
-[ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/units/player_units/delta/delta_idle.png" id="2_df7p1"]
-[ext_resource type="Texture2D" uid="uid://5y3ndtfj5o62" path="res://resources/sprites/units/player_units/delta/delta_idle_highlight.png" id="3_wwvip"]
+[ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/units/player_units/delta/old/delta_idle.png" id="2_df7p1"]
+[ext_resource type="Texture2D" uid="uid://5y3ndtfj5o62" path="res://resources/sprites/units/player_units/delta/old/delta_idle_highlight.png" id="3_wwvip"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/UnitColliderBody.cs" id="4_0dmwv"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/HpDetails.cs" id="5_31gbd"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/debug/DebugTargetLabel.cs" id="6_gabwu"]

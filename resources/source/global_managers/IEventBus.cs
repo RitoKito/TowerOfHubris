@@ -22,14 +22,19 @@ public interface IEventBus
 	public event Action OnTurnInProgress;
 	public event Action<int> OnNewTurn;
 
-	public event Action<GameState> OnGameStateChanged;
+	public event Func<GameState, Task> OnGameStateChanged;
+
+	public event Func<Task> OnEnterGame;
+
 	public event Func<Task> OnLevelTreeLoaded;
+
 	public event Func<Task> OnEnterCombat;
 	public event Func<Task> OnCombatSceneLoaded;
 	public event Func<List<StatusEffect>, Task> OnPlayerStatusEffectsApply;
 	public event Func<Task> OnRewardSelection;
 	public event Func<StatusEffect, Task> OnRewardSelected;
 
+	public event Func<StatusEffect, Task> OnPermanentEffectAdded;
 
 	public void EmitMouseLeftClicked(Dictionary clickedObject);
 	public void EmitMouseLeftReleased(Dictionary clickedObject);
@@ -45,11 +50,17 @@ public interface IEventBus
 	public void EmitNewTurn(int turnCount);
 
 
-	public void EmitGameStateChanged(GameState state);
+	public Task EmitGameStateChanged(GameState state);
+
+	public Task EmitEnterGame();
+
 	public Task EmitLevelTreeLoaded();
+
 	public Task EmitEnterCombat();
 	public Task EmitCombatSceneLoaded();
 	public Task EmitPlayerApplyStatusEffects(List<StatusEffect> effects);
 	public Task EmitRewardSelection();
 	public Task EmitRewardSelected(StatusEffect selectedReward);
+
+	public Task EmitPermanentEffectAdded(StatusEffect selectedPermanentEffect);
 }

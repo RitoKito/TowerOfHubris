@@ -7,6 +7,7 @@ public partial class UnitContainerPlayer : UnitContainer
 	{
 		foreach (string path in PathConstants.PLAYER_UNITS)
 		{
+			GD.Print(path);
 			PackedScene playerUnitPrefab = GD.Load<PackedScene>(path);
 			Node playerUnitInstance = playerUnitPrefab.Instantiate();
 			Unit playerUnit = playerUnitInstance as Unit;

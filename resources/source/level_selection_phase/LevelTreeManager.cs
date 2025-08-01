@@ -2,6 +2,7 @@ using Godot;
 using Godot.Collections;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public partial class LevelTreeManager : Node3D
 {
@@ -32,13 +33,6 @@ public partial class LevelTreeManager : Node3D
 		_eventBus = EventBus.Instance;
 		_eventBus.OnMouseLeftClick += HandleMouseLeftClick;
 		_eventBus.OnGameStateChanged += HandleGameStateChanged;
-
-		_currentTree = InstantiateLevelTree() as LevelTree;
-		_currentLevel = _currentTree.RootNode as LevelNode;
-
-		_currentLevel.ShowEligibleNext();
-		_currentLevel.SelectNode();
-		_eligibleNextNode = _currentLevel.Children;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -81,12 +75,12 @@ public partial class LevelTreeManager : Node3D
 
 			if (_eligibleNextNode != null && _eligibleNextNode.Contains(levelNode))
 			{
-                HandleLevelNodeSelected(levelNode);
+				HandleLevelNodeSelected(levelNode);
 			}
 		}
 	}
 
-	private async void HandleGameStateChanged(GameState gameState)
+	private async Task HandleGameStateChanged(GameState gameState)
 	{
 		if(gameState == GameState.Combat)
 		{
@@ -94,6 +88,16 @@ public partial class LevelTreeManager : Node3D
 		}
 		else if(gameState == GameState.LevelTree)
 		{
+			if(_currentTree == null)
+			{
+				_currentTree = InstantiateLevelTree() as LevelTree;
+				_currentLevel = _currentTree.RootNode as LevelNode;
+
+				_currentLevel.ShowEligibleNext();
+				_currentLevel.SelectNode();
+				_eligibleNextNode = _currentLevel.Children;
+			}
+
 			if(_currentCombatScene != null)
 			{
 				RecycleCombatScene();
@@ -121,6 +125,8 @@ public partial class LevelTreeManager : Node3D
 
 			_escalation += 20;
 		}
+
+		await Task.Yield();
 	}
 
 	private void LoadCombatScene()
@@ -136,7 +142,7 @@ public partial class LevelTreeManager : Node3D
 	{
 		_currentCombatScene.QueueFree();
 		_currentCombatScene = null;
-    }
+	}
 
 
 }

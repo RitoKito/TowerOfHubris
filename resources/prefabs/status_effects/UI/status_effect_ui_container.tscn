@@ -1,0 +1,34 @@
+[gd_scene load_steps=2 format=3 uid="uid://dacet6qjfgtou"]
+
+[ext_resource type="Script" path="res://resources/source/StatusEffectUIContainer.cs" id="1_ogu6g"]
+
+[node name="status_effect_ui_container" type="MarginContainer"]
+offset_right = 30.0
+offset_bottom = 30.0
+size_flags_horizontal = 4
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_right = 0
+script = ExtResource("1_ogu6g")
+
+[node name="placeholder_rect" type="ColorRect" parent="."]
+visible = false
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+color = Color(0.843137, 0.0392157, 0.152941, 1)
+
+[node name="effect_icon" type="Sprite2D" parent="."]
+position = Vector2(15, 15)
+
+[node name="stack_count_container" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="stack_count_label" type="RichTextLabel" parent="stack_count_container"]
+custom_minimum_size = Vector2(30, 15)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/default_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/normal_font_size = 10
+bbcode_enabled = true

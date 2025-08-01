@@ -285,8 +285,8 @@ public abstract partial class Unit : Node3D
 				_uiController.SuppressUI = true;
 				break;
 			case TurnState.PlayerTurn:
-                _uiController.SuppressUI = false;
-                break;
+				_uiController.SuppressUI = false;
+				break;
 		}
 
 		await Task.Yield();

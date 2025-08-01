@@ -15,20 +15,26 @@ public partial class EventBus : Node, IEventBus
 	public event Action<Unit> OnTargetDeselected;
 	public event Action<Unit> OnUnitDeath;
 
-
+	//Signals for UI components only
+	//Scene components delegated by
+	//TurnManager
 	public event Action OnExecuteTurn;
 	public event Action OnTurnInProgress;
 	public event Action<int> OnNewTurn;
 
-	public event Action<GameState> OnGameStateChanged;
+	public event Func<GameState, Task> OnGameStateChanged;
+
+	public event Func<Task> OnEnterGame;
+
 	public event Func<Task> OnLevelTreeLoaded;
+
 	public event Func<Task> OnEnterCombat;
 	public event Func<Task> OnCombatSceneLoaded;
 	public event Func<List<StatusEffect>, Task> OnPlayerStatusEffectsApply;
 	public event Func<Task> OnRewardSelection;
 	public event Func<StatusEffect, Task> OnRewardSelected;
 
-	private bool _processingQueue = false;
+	public event Func<StatusEffect, Task> OnPermanentEffectAdded;
 
 	public override void _Ready()
 	{
@@ -85,9 +91,34 @@ public partial class EventBus : Node, IEventBus
 	}
 
 
-	public void EmitGameStateChanged(GameState state)
+	public async Task EmitGameStateChanged(GameState state)
 	{
-		OnGameStateChanged?.Invoke(state);
+		if (OnGameStateChanged == null)
+			return;
+
+		var handlers = OnGameStateChanged.GetInvocationList();
+
+		List<Task> tasks = new List<Task>();
+
+		foreach (Func<GameState, Task> handler in handlers)
+			tasks.Add(handler.Invoke(state));
+
+		await Task.WhenAll(tasks);
+	}
+
+	public async Task EmitEnterGame()
+	{
+		if (OnEnterGame == null)
+			return;
+
+		var handlers = OnEnterGame.GetInvocationList();
+
+		List<Task> tasks = new List<Task>();
+
+		foreach (Func<Task> handler in handlers)
+			tasks.Add(handler.Invoke());
+
+		await Task.WhenAll(tasks);
 	}
 
 	public async Task EmitLevelTreeLoaded()
@@ -104,6 +135,7 @@ public partial class EventBus : Node, IEventBus
 
 		await Task.WhenAll(tasks);
 	}
+
 
 	public async Task EmitEnterCombat()
 	{
@@ -180,5 +212,20 @@ public partial class EventBus : Node, IEventBus
 		await Task.WhenAll(tasks);
 	}
 
+	
+	public async Task EmitPermanentEffectAdded(StatusEffect statusEffect)
+	{
+		if (OnPermanentEffectAdded == null)
+			return;
+
+		var handlers = OnPermanentEffectAdded.GetInvocationList();
+
+		List<Task> tasks = new List<Task>();
+
+		foreach (Func<StatusEffect, Task> handler in handlers)
+			tasks.Add(handler.Invoke(statusEffect));
+
+		await Task.WhenAll(tasks);
+	}
 
 }

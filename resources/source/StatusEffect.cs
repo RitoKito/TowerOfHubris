@@ -4,10 +4,10 @@ using System;
 public abstract partial class StatusEffect : Node
 {
 	protected int _id = -1;
-	protected virtual int Id => _id;
+	public virtual int Id => _id;
 
 	protected Sprite2D _icon = null;
-	protected virtual Sprite2D Icon => _icon;
+	public virtual Texture2D IconTexture => _icon.Texture;
 
 	protected string _effectName = "Placeholder Blessing";
 	public virtual string EffectName => _effectName;
@@ -15,7 +15,7 @@ public abstract partial class StatusEffect : Node
 	protected string _description = "No Description";
 	public virtual string Description => _description;
 
-	protected int _duration = 99;
+	protected int _duration = 999;
 	protected virtual int Duration => _duration;
 
 	public bool IsExpired => _duration <= 0;
@@ -23,7 +23,8 @@ public abstract partial class StatusEffect : Node
 	protected bool _stackable = false;
 	public virtual bool Stackable => _stackable;
 
-	protected int _stackCount = 0;
+	protected int _stackCount = 1;
+	public int StackCount => _stackCount;
 
 
 

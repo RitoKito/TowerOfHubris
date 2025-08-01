@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://da8axfdvo5q6w"]
+
+[ext_resource type="Script" path="res://resources/source/combat_phase/combat_ui/RewardSelectionUI.cs" id="1_343nt"]
+[ext_resource type="PackedScene" uid="uid://cps7mnaxatao0" path="res://resources/prefabs/combat_level/UI/reward_card.tscn" id="2_ymi3v"]
+
+[node name="reward_selection_ui" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+script = ExtResource("1_343nt")
+
+[node name="rewards" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="rewards"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = -75
+
+[node name="MarginContainer" type="MarginContainer" parent="rewards/VBoxContainer"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="rewards/VBoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 26
+bbcode_enabled = true
+text = "[center]Select One[center]"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="rewards/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 110
+
+[node name="reward_card_0" parent="rewards/VBoxContainer/HBoxContainer" instance=ExtResource("2_ymi3v")]
+layout_mode = 2
+
+[node name="reward_card_1" parent="rewards/VBoxContainer/HBoxContainer" instance=ExtResource("2_ymi3v")]
+layout_mode = 2
+
+[node name="reward_card_2" parent="rewards/VBoxContainer/HBoxContainer" instance=ExtResource("2_ymi3v")]
+layout_mode = 2

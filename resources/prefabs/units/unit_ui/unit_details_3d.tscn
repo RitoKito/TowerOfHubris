@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://hku34cjmyp1c"]
 
-[ext_resource type="Script" path="res://resources/prefabs/units/unit_ui/UnitDetails.cs" id="1_evypw"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/UnitDetails.cs" id="1_evypw"]
 
 [sub_resource type="ViewportTexture" id="ViewportTexture_g0i5w"]
 viewport_path = NodePath("SubViewport")

@@ -1,0 +1,69 @@
+[gd_scene load_steps=4 format=3 uid="uid://d3b31dxbp1nrf"]
+
+[ext_resource type="Script" path="res://resources/source/MainMenuUI.cs" id="1_1qbdw"]
+[ext_resource type="Script" path="res://resources/source/EnterButton.cs" id="2_mftg6"]
+[ext_resource type="Script" path="res://scenes/ExitButton.cs" id="3_immcu"]
+
+[node name="main_menu" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1qbdw")
+
+[node name="background_image" type="Control" parent="."]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="black_screen_rect" type="ColorRect" parent="background_image"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+
+[node name="menu_buttons_container" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/margin_bottom = 60
+
+[node name="VBoxContainer" type="VBoxContainer" parent="menu_buttons_container"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="enter_button" type="RichTextLabel" parent="menu_buttons_container/VBoxContainer"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[center]Enter[center]"
+fit_content = true
+script = ExtResource("2_mftg6")
+
+[node name="separator" type="Control" parent="menu_buttons_container/VBoxContainer"]
+custom_minimum_size = Vector2(0, 23.44)
+layout_mode = 2
+
+[node name="exit_button" type="RichTextLabel" parent="menu_buttons_container/VBoxContainer"]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "[center]Exit[center]"
+fit_content = true
+script = ExtResource("3_immcu")
+
+[connection signal="mouse_entered" from="menu_buttons_container/VBoxContainer/enter_button" to="menu_buttons_container/VBoxContainer/enter_button" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="menu_buttons_container/VBoxContainer/enter_button" to="menu_buttons_container/VBoxContainer/enter_button" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="menu_buttons_container/VBoxContainer/exit_button" to="menu_buttons_container/VBoxContainer/exit_button" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="menu_buttons_container/VBoxContainer/exit_button" to="menu_buttons_container/VBoxContainer/exit_button" method="_on_mouse_exited"]

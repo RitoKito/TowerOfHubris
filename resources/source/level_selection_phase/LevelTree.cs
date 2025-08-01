@@ -62,7 +62,7 @@ public partial class LevelTree : CsgBox3D
 	// TODO Add boss nodes automatically generated
 	private void GenerateTree(Random rnd)
 	{
-		PackedScene nodePrefab = GD.Load<PackedScene>("res://resources/prefabs/levels/level_node.tscn");
+		PackedScene nodePrefab = GD.Load<PackedScene>(PathConstants.LEVEL_NODE);
 		Node rootNodeInstance = nodePrefab.Instantiate();
 		LevelNode rootNodeScript = rootNodeInstance as LevelNode;
 		_rootNode = rootNodeScript;

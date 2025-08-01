@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://con5l45b7myna"]
+
+[ext_resource type="Script" path="res://resources/prefabs/status_effects/GlobalStatusEffectUIManager.cs" id="1_y2tpo"]
+
+[node name="global_status_effect_ui" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_y2tpo")
+
+[node name="status_effect_container" type="MarginContainer" parent="."]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="background" type="ColorRect" parent="status_effect_container"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+color = Color(0.0509804, 0.0509804, 0.0509804, 0.372549)
+
+[node name="margin_container" type="MarginContainer" parent="status_effect_container"]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+
+[node name="hbox_container" type="HBoxContainer" parent="status_effect_container/margin_container"]
+layout_mode = 2

@@ -1,9 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://c6uqidn550wus"]
+[gd_scene load_steps=13 format=3 uid="uid://c6uqidn550wus"]
 
-[ext_resource type="Script" path="res://scenes/GameManager.cs" id="1_2kbew"]
-[ext_resource type="Script" path="res://scenes/UIManager.cs" id="2_xur1g"]
+[ext_resource type="Script" path="res://resources/source/global_managers/GameManager.cs" id="1_2kbew"]
+[ext_resource type="Script" path="res://resources/source/global_managers/UIManager.cs" id="2_xur1g"]
+[ext_resource type="Script" path="res://resources/source/MainMenuUI.cs" id="3_s8dli"]
+[ext_resource type="Script" path="res://resources/source/EnterButton.cs" id="4_a4app"]
 [ext_resource type="PackedScene" uid="uid://4qd4vij7ird5" path="res://resources/prefabs/camera/cam_gimbal.tscn" id="4_e7g0d"]
-[ext_resource type="Script" path="res://scenes/StatusEffectManager.cs" id="5_y5ao7"]
+[ext_resource type="Script" path="res://scenes/ExitButton.cs" id="5_gtm5u"]
+[ext_resource type="Script" path="res://resources/source/global_managers/GlobalStatusEffectManager.cs" id="5_y5ao7"]
+[ext_resource type="PackedScene" uid="uid://con5l45b7myna" path="res://resources/prefabs/status_effects/global_status_effect_ui.tscn" id="6_84hsa"]
 
 [sub_resource type="Animation" id="Animation_r0sda"]
 length = 0.001
@@ -70,16 +74,34 @@ grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("2_xur1g")
 
-[node name="back_screen" type="Control" parent="ui_manager"]
+[node name="animation_player" type="AnimationPlayer" parent="ui_manager"]
+root_node = NodePath("../back_screen_transition/black_screen_rect")
+libraries = {
+"": SubResource("AnimationLibrary_1ovvu")
+}
+
+[node name="global_status_effect_ui" parent="ui_manager" instance=ExtResource("6_84hsa")]
+layout_mode = 2
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="main_menu" type="MarginContainer" parent="ui_manager"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("3_s8dli")
+
+[node name="background_image" type="Control" parent="ui_manager/main_menu"]
+layout_mode = 2
 mouse_filter = 2
 
-[node name="black_screen_rect" type="ColorRect" parent="ui_manager/back_screen"]
+[node name="black_screen_rect" type="ColorRect" parent="ui_manager/main_menu/background_image"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -89,14 +111,69 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
-[node name="animation_player" type="AnimationPlayer" parent="ui_manager"]
-root_node = NodePath("../back_screen/black_screen_rect")
-libraries = {
-"": SubResource("AnimationLibrary_1ovvu")
-}
+[node name="menu_buttons_container" type="MarginContainer" parent="ui_manager/main_menu"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/margin_bottom = 60
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ui_manager/main_menu/menu_buttons_container"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="enter_button" type="RichTextLabel" parent="ui_manager/main_menu/menu_buttons_container/VBoxContainer"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[center]Enter[center]"
+fit_content = true
+script = ExtResource("4_a4app")
+
+[node name="separator" type="Control" parent="ui_manager/main_menu/menu_buttons_container/VBoxContainer"]
+custom_minimum_size = Vector2(0, 23.44)
+layout_mode = 2
+
+[node name="exit_button" type="RichTextLabel" parent="ui_manager/main_menu/menu_buttons_container/VBoxContainer"]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "[center]Exit[center]"
+fit_content = true
+script = ExtResource("5_gtm5u")
+
+[node name="back_screen_transition" type="Control" parent="ui_manager"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="black_screen_rect" type="ColorRect" parent="ui_manager/back_screen_transition"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
 
 [node name="cam_gimbal" parent="." instance=ExtResource("4_e7g0d")]
 transform = Transform3D(1, 0, 0, 0, 0.97237, 0.233445, 0, -0.233445, 0.97237, 0, 25.715, -14.055)
 
 [node name="status_effect_manager" type="Node3D" parent="."]
 script = ExtResource("5_y5ao7")
+
+[connection signal="mouse_entered" from="ui_manager/main_menu/menu_buttons_container/VBoxContainer/enter_button" to="ui_manager/main_menu/menu_buttons_container/VBoxContainer/enter_button" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="ui_manager/main_menu/menu_buttons_container/VBoxContainer/enter_button" to="ui_manager/main_menu/menu_buttons_container/VBoxContainer/enter_button" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="ui_manager/main_menu/menu_buttons_container/VBoxContainer/exit_button" to="ui_manager/main_menu/menu_buttons_container/VBoxContainer/exit_button" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="ui_manager/main_menu/menu_buttons_container/VBoxContainer/exit_button" to="ui_manager/main_menu/menu_buttons_container/VBoxContainer/exit_button" method="_on_mouse_exited"]

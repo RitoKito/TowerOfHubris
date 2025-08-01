@@ -1,0 +1,103 @@
+[gd_scene load_steps=13 format=3 uid="uid://bmxwr384pvyx6"]
+
+[ext_resource type="Script" path="res://resources/source/combat_phase/combat_managers/UnitSelectionManager.cs" id="1_fha01"]
+[ext_resource type="PackedScene" uid="uid://da8axfdvo5q6w" path="res://resources/prefabs/menus/reward_selection_ui.tscn" id="1_ivmmf"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/combat_managers/CSHeadManager.cs" id="1_jmkeh"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/combat_managers/SceneManager.cs" id="2_6f53p"]
+[ext_resource type="PackedScene" uid="uid://baue8h1kkk2fp" path="res://resources/prefabs/combat_level/UI/combat_ui.tscn" id="3_31aox"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/combat_managers/ActionManager.cs" id="3_l2ig0"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/combat_managers/TurnManager.cs" id="4_smpwj"]
+[ext_resource type="Texture2D" uid="uid://c3p3tgx1gndqq" path="res://resources/sprites/floor.png" id="8_k3urn"]
+[ext_resource type="PackedScene" uid="uid://d0omb5m07hol2" path="res://edge_of_galaxy.tscn" id="9_mcpqd"]
+[ext_resource type="Texture2D" uid="uid://d0hy8frpb5o8s" path="res://resources/sprites/office.png" id="10_1bc4p"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_crgnk"]
+size = Vector3(100, 100, 0.111328)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qckc2"]
+albedo_texture = ExtResource("8_k3urn")
+uv1_scale = Vector3(1, 0.595, 1)
+uv1_offset = Vector3(0, 1.03, 0)
+texture_filter = 0
+
+[node name="level_placeholder" type="Node3D"]
+
+[node name="reward_selection_ui" parent="." instance=ExtResource("1_ivmmf")]
+
+[node name="managers" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0210505, 0, -0.0001297)
+script = ExtResource("1_jmkeh")
+
+[node name="scene_manager" type="Node3D" parent="managers"]
+script = ExtResource("2_6f53p")
+
+[node name="combat_ui_manager" parent="managers" instance=ExtResource("3_31aox")]
+
+[node name="unit_selection_manager" type="Node3D" parent="managers"]
+script = ExtResource("1_fha01")
+
+[node name="action_manager" type="Node3D" parent="managers"]
+script = ExtResource("3_l2ig0")
+
+[node name="turn_manager" type="Node3D" parent="managers"]
+script = ExtResource("4_smpwj")
+
+[node name="light_source" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.978509, 0.206204, 0, -0.206204, 0.978509, 0, 0.641662, 0)
+
+[node name="Node3D2" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.495, -0.32)
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Node3D2"]
+transform = Transform3D(0.900121, 0.43564, 0, -0.42098, 0.869831, -0.257234, -0.112061, 0.231542, 0.966349, 0, 1.96105, -4.90723)
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="Node3D2"]
+transform = Transform3D(0.900121, 0.43564, 4.66309e-10, -0.265695, 0.54898, 0.792481, 0.345236, -0.713329, 0.609896, 5.12244, 4.01544, -5.54307)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="Node3D2"]
+transform = Transform3D(0.355513, -0.0419312, 0.933731, 0.426656, -0.881559, -0.202035, 0.83161, 0.470208, -0.295515, -7.81438, 5.02215, -11.1941)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="Node3D2"]
+transform = Transform3D(0.355513, -0.0419312, 0.933731, 0.426656, -0.881559, -0.202035, 0.83161, 0.470208, -0.295515, -11.5433, 11.3872, -15.6923)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="Node3D2"]
+transform = Transform3D(0.355513, -0.0419312, 0.933731, 0.426656, -0.881559, -0.202035, 0.83161, 0.470208, -0.295515, 5.06721, 10.8557, -11.2516)
+
+[node name="background_mouse_collider" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.792978)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="background_mouse_collider"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+shape = SubResource("BoxShape3D_crgnk")
+
+[node name="ground" type="Node3D" parent="."]
+
+[node name="ground_placeholder" type="CSGBox3D" parent="ground"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, -0.495, -0.32)
+visible = false
+material_override = SubResource("StandardMaterial3D_qckc2")
+size = Vector3(20, 1, 20)
+
+[node name="ground_placeholder2" type="CSGBox3D" parent="ground"]
+transform = Transform3D(-1.76521e-08, 0, -1, 0, 1, 0, 0.403833, 0, -4.37114e-08, -1.13356e-07, -0.495, 2.27329)
+material_override = SubResource("StandardMaterial3D_qckc2")
+size = Vector3(20, 1, 20)
+
+[node name="ground_placeholder3" type="CSGBox3D" parent="ground"]
+transform = Transform3D(-1.76521e-08, 0, -1, 0, 1, 0, 0.403833, 0, -4.37114e-08, -19.9645, -0.495, 2.27329)
+material_override = SubResource("StandardMaterial3D_qckc2")
+size = Vector3(20, 1, 20)
+
+[node name="ground_placeholder4" type="CSGBox3D" parent="ground"]
+transform = Transform3D(-1.76521e-08, 0, -1, 0, 1, 0, 0.403833, 0, -4.37114e-08, 19.987, -0.495, 2.27329)
+material_override = SubResource("StandardMaterial3D_qckc2")
+size = Vector3(20, 1, 20)
+
+[node name="WorldEnvironment" parent="." instance=ExtResource("9_mcpqd")]
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(2.44524, 0, 0, 0, 1.5302, 0, 0, 0, 1, 0, 7.56941, -2.3098)
+visible = false
+texture = ExtResource("10_1bc4p")

@@ -1,18 +1,18 @@
 [gd_scene load_steps=24 format=3 uid="uid://beg2sb5t6nxjf"]
 
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/enemy/EnemyUnit.cs" id="1_qfwr0"]
-[ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/units/player_units/delta/delta_idle.png" id="2_0gvtu"]
-[ext_resource type="Texture2D" uid="uid://5y3ndtfj5o62" path="res://resources/sprites/units/player_units/delta/delta_idle_highlight.png" id="3_nd3es"]
+[ext_resource type="Texture2D" uid="uid://cp82mehcmy7b" path="res://resources/sprites/units/player_units/delta/old/delta_idle.png" id="2_0gvtu"]
+[ext_resource type="Texture2D" uid="uid://5y3ndtfj5o62" path="res://resources/sprites/units/player_units/delta/old/delta_idle_highlight.png" id="3_nd3es"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/UnitColliderBody.cs" id="4_3fpti"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/HpDetails.cs" id="5_12y24"]
-[ext_resource type="Script" path="res://resources/prefabs/units/player_units/unit_delta/UnitUIController.cs" id="5_54n0s"]
-[ext_resource type="Script" path="res://resources/prefabs/units/player_units/unit_delta/StatusEffectController.cs" id="5_uahwp"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/UnitUIController.cs" id="5_54n0s"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit/StatusEffectController.cs" id="5_uahwp"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/debug/DebugTargetLabel.cs" id="6_76c2v"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/TargetingUI.cs" id="7_mf143"]
-[ext_resource type="Texture2D" uid="uid://bb4k6b2edrnj7" path="res://resources/sprites/targetting_arrow/dotted_line.png" id="8_glu1u"]
 [ext_resource type="Texture2D" uid="uid://byg5tuodni1xh" path="res://resources/sprites/targetting_arrow/arrowhead.png" id="9_j7ja1"]
+[ext_resource type="Texture2D" uid="uid://bj0gh6sk5dpuh" path="res://resources/dotted_line3.png" id="10_14og1"]
 [ext_resource type="PackedScene" uid="uid://bgif0302wsc6g" path="res://resources/prefabs/units/ability_placeholder.tscn" id="10_ke2de"]
-[ext_resource type="Script" path="res://resources/prefabs/units/player_units/unit_delta/AbilityDisplay.cs" id="11_ercs7"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/AbilityDisplay.cs" id="11_ercs7"]
 [ext_resource type="PackedScene" uid="uid://hku34cjmyp1c" path="res://resources/prefabs/units/unit_ui/unit_details_3d.tscn" id="13_p4vsg"]
 [ext_resource type="PackedScene" uid="uid://djgaig2bmoi6y" path="res://resources/prefabs/units/unit_ui/ability_details_3d.tscn" id="14_loaej"]
 
@@ -21,12 +21,13 @@ size = Vector3(0.527005, 1.995, 0.107162)
 
 [sub_resource type="Curve3D" id="Curve3D_oq1sl"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g3p3e"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rk6py"]
 render_priority = -1
 transparency = 1
 cull_mode = 2
 no_depth_test = true
-albedo_texture = ExtResource("8_glu1u")
+albedo_color = Color(0.603035, 0.132297, 0.236216, 1)
+albedo_texture = ExtResource("10_14og1")
 texture_filter = 0
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_n07f4"]
@@ -115,7 +116,7 @@ path_local = true
 path_continuous_u = true
 path_u_distance = 2.45
 path_joined = false
-material = SubResource("StandardMaterial3D_g3p3e")
+material = SubResource("StandardMaterial3D_rk6py")
 
 [node name="target_curve" type="Node3D" parent="unit_ui_controller/targeting_ui"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.238168, 2.18043, 0)
@@ -161,5 +162,5 @@ _abilityCritMult = 2.0
 
 [connection signal="mouse_entered" from="unit_col_bdy" to="." method="_on_static_body_3d_mouse_entered"]
 [connection signal="mouse_exited" from="unit_col_bdy" to="." method="_on_static_body_3d_mouse_exited"]
-[connection signal="mouse_entered" from="unit_ui_controller/ability_display/ability_static_body" to="status_effect_controller" method="_on_ability_static_body_mouse_entered"]
+[connection signal="mouse_entered" from="unit_ui_controller/ability_display/ability_static_body" to="unit_ui_controller" method="_on_ability_static_body_mouse_entered"]
 [connection signal="mouse_exited" from="unit_ui_controller/ability_display/ability_static_body" to="unit_ui_controller" method="_on_ability_static_body_mouse_exited"]
