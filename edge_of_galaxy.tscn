@@ -13,6 +13,10 @@ background_mode = 2
 background_energy_multiplier = 4.25
 sky = SubResource("Sky_8htjt")
 sky_rotation = Vector3(0.0453786, -2.18166, 0.401426)
+glow_enabled = true
+glow_intensity = 7.45
+fog_light_energy = 1.5
+volumetric_fog_density = 0.0
 
 [node name="WorldEnvironment" type="WorldEnvironment"]
 environment = SubResource("Environment_h48l1")

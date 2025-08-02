@@ -36,7 +36,7 @@ public partial class RewardCard : Control
 		//Hardcoded reward for now
 		// TODO implement random reward generation
 		// when rewards implemented
-		SetReward(new PowerOfPlaceholder());
+		//SetReward(new PowerOfPlaceholder());
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

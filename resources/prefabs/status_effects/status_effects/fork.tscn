@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxn5u3btkd6bw"]
+
+[ext_resource type="Script" path="res://resources/prefabs/status_effects/status_effects/scripts/StatusEffectSpork.cs" id="1_o64rb"]
+
+[node name="Fork" type="Node"]
+script = ExtResource("1_o64rb")

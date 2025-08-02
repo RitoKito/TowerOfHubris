@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://d3b31dxbp1nrf"]
 
-[ext_resource type="Script" path="res://resources/source/MainMenuUI.cs" id="1_1qbdw"]
-[ext_resource type="Script" path="res://resources/source/EnterButton.cs" id="2_mftg6"]
+[ext_resource type="Script" path="res://resources/source/ui/MainMenuUI.cs" id="1_1qbdw"]
+[ext_resource type="Script" path="res://resources/source/ui/EnterButton.cs" id="2_mftg6"]
 [ext_resource type="Script" path="res://scenes/ExitButton.cs" id="3_immcu"]
 
 [node name="main_menu" type="MarginContainer"]

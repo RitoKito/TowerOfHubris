@@ -1,0 +1,166 @@
+[gd_scene load_steps=24 format=3 uid="uid://pb25qk8g16wn"]
+
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit/enemy/EnemyUnit.cs" id="1_8r0om"]
+[ext_resource type="Texture2D" uid="uid://ba13l0qt56cnl" path="res://resources/sprites/units/enemy_units/defence_mechanism/def_mechanism_t3.png" id="2_n1mt8"]
+[ext_resource type="Texture2D" uid="uid://bldoyqube582j" path="res://resources/sprites/units/enemy_units/defence_mechanism/def_mechanism_select.png" id="3_74itk"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit/UnitColliderBody.cs" id="4_4p18f"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit/StatusEffectController.cs" id="5_gqs42"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/UnitUIController.cs" id="6_ao35c"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/HpDetails.cs" id="7_peetw"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/debug/DebugTargetLabel.cs" id="8_3ajo6"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/TargetingUI.cs" id="9_raeio"]
+[ext_resource type="Texture2D" uid="uid://bqaskj5g1peeq" path="res://resources/sprites/targetting_arrow/dotted_line3.png" id="10_r1yne"]
+[ext_resource type="Texture2D" uid="uid://k82ginw4341w" path="res://resources/sprites/targetting_arrow/arrowhead.png" id="11_l2vpg"]
+[ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/AbilityDisplay.cs" id="12_cvlpb"]
+[ext_resource type="PackedScene" uid="uid://hku34cjmyp1c" path="res://resources/prefabs/units/unit_ui/unit_details_3d.tscn" id="13_b06q3"]
+[ext_resource type="PackedScene" uid="uid://djgaig2bmoi6y" path="res://resources/prefabs/units/unit_ui/ability_details_3d.tscn" id="14_hn0hr"]
+[ext_resource type="PackedScene" uid="uid://bgif0302wsc6g" path="res://resources/prefabs/units/ability_placeholder.tscn" id="15_ceme6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rqfqc"]
+size = Vector3(0.527005, 1.995, 0.107162)
+
+[sub_resource type="Curve3D" id="Curve3D_ig0fa"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f2tpl"]
+render_priority = -1
+transparency = 1
+cull_mode = 2
+no_depth_test = true
+albedo_color = Color(0.603035, 0.132297, 0.236216, 1)
+albedo_texture = ExtResource("10_r1yne")
+texture_filter = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_lx516"]
+orientation = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f0512"]
+cull_mode = 2
+shading_mode = 0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5huws"]
+size = Vector3(1.9807, 1.98279, 0.113495)
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_l6pug"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_fa63l"]
+viewport_path = NodePath("SubViewport")
+
+[node name="unit_enemy_placeholder" type="Node3D" node_paths=PackedStringArray("_abilities") groups=["EnemyUnit"]]
+script = ExtResource("1_8r0om")
+_tag = 1
+_id = 10
+_unitName = "Deviant Android T3"
+_maxHp = 250.0
+_abilities = [NodePath("abilities/ability_1")]
+
+[node name="unit_sprite" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.701322, 0, 0)
+offset = Vector2(81, 260)
+flip_h = true
+pixel_size = 0.005
+texture_filter = 0
+texture = ExtResource("2_n1mt8")
+
+[node name="unit_select_spr" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.701322, 0, -0.00128102)
+offset = Vector2(81, 260)
+flip_h = true
+modulate = Color(1, 0, 0, 1)
+pixel_size = 0.005
+texture_filter = 0
+render_priority = -1
+texture = ExtResource("3_74itk")
+
+[node name="unit_col_bdy" type="StaticBody3D" parent="." groups=["EnemyUnit"]]
+script = ExtResource("4_4p18f")
+
+[node name="unit_col_shape" type="CollisionShape3D" parent="unit_col_bdy"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0447506, 1.07914, -0.0441498)
+shape = SubResource("BoxShape3D_rqfqc")
+
+[node name="status_effect_controller" type="Node3D" parent="."]
+script = ExtResource("5_gqs42")
+
+[node name="unit_ui_controller" type="Node3D" parent="."]
+script = ExtResource("6_ao35c")
+
+[node name="hp_label" type="Label3D" parent="unit_ui_controller"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.275239, 0.0119177)
+pixel_size = 0.003
+render_priority = 1
+text = "999/999"
+font_size = 82
+script = ExtResource("7_peetw")
+
+[node name="debug_target" type="Label3D" parent="unit_ui_controller"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00397038, 3.13366, 0)
+text = "Target: Enemy"
+font_size = 52
+script = ExtResource("8_3ajo6")
+
+[node name="targeting_ui" type="Path3D" parent="unit_ui_controller"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0537333, 1.13846, 0)
+curve = SubResource("Curve3D_ig0fa")
+script = ExtResource("9_raeio")
+
+[node name="curve_polygon" type="CSGPolygon3D" parent="unit_ui_controller/targeting_ui"]
+polygon = PackedVector2Array(0, 0.05, 0, 0, 0, 0)
+mode = 2
+path_node = NodePath("..")
+path_interval_type = 0
+path_interval = 0.1
+path_simplify_angle = 0.1
+path_rotation = 2
+path_local = true
+path_continuous_u = true
+path_u_distance = 2.45
+path_joined = false
+material = SubResource("StandardMaterial3D_f2tpl")
+
+[node name="target_curve" type="Node3D" parent="unit_ui_controller/targeting_ui"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.238168, 2.18043, 0)
+
+[node name="arrow_spr" type="Sprite3D" parent="unit_ui_controller/targeting_ui"]
+transform = Transform3D(0.731478, 0, 0, 0, 0.341561, 0, 0, 0, 1, 0, 0, 0)
+no_depth_test = true
+texture_filter = 0
+texture = ExtResource("11_l2vpg")
+
+[node name="ability_display" type="CSGMesh3D" parent="unit_ui_controller"]
+transform = Transform3D(0.428517, 0, 0, 0, 0.332149, 0, 0, 0, 1, -0.0098182, 2.54458, 0)
+mesh = SubResource("PlaneMesh_lx516")
+material = SubResource("StandardMaterial3D_f0512")
+script = ExtResource("12_cvlpb")
+
+[node name="label" type="Label3D" parent="unit_ui_controller/ability_display"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.00558233)
+text = "III"
+font_size = 362
+outline_size = 3
+
+[node name="ability_static_body" type="StaticBody3D" parent="unit_ui_controller/ability_display"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="unit_ui_controller/ability_display/ability_static_body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0087347, -0.0328965, -0.0397097)
+shape = SubResource("BoxShape3D_5huws")
+
+[node name="unit_details_3d" parent="unit_ui_controller" instance=ExtResource("13_b06q3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+texture = SubResource("ViewportTexture_l6pug")
+
+[node name="ability_details_3d" parent="unit_ui_controller" instance=ExtResource("14_hn0hr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.1, 0)
+texture = SubResource("ViewportTexture_fa63l")
+
+[node name="abilities" type="Node3D" parent="."]
+
+[node name="ability_1" parent="abilities" instance=ExtResource("15_ceme6")]
+_abilityDamage = 20.0
+_critChance = 10.0
+_abilityCritMult = 2.0
+
+[connection signal="mouse_entered" from="unit_col_bdy" to="." method="_on_static_body_3d_mouse_entered"]
+[connection signal="mouse_exited" from="unit_col_bdy" to="." method="_on_static_body_3d_mouse_exited"]
+[connection signal="mouse_entered" from="unit_ui_controller/ability_display/ability_static_body" to="unit_ui_controller" method="_on_ability_static_body_mouse_entered"]
+[connection signal="mouse_exited" from="unit_ui_controller/ability_display/ability_static_body" to="unit_ui_controller" method="_on_ability_static_body_mouse_exited"]

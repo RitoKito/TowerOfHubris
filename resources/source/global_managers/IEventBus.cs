@@ -36,6 +36,8 @@ public interface IEventBus
 
 	public event Func<StatusEffect, Task> OnPermanentEffectAdded;
 
+	public event Func<List<StatusEffect>, Task> OnAssignRewards;
+
 	public void EmitMouseLeftClicked(Dictionary clickedObject);
 	public void EmitMouseLeftReleased(Dictionary clickedObject);
 
@@ -63,4 +65,6 @@ public interface IEventBus
 	public Task EmitRewardSelected(StatusEffect selectedReward);
 
 	public Task EmitPermanentEffectAdded(StatusEffect selectedPermanentEffect);
+
+	public Task EmitAssignRewards(List<StatusEffect> effects);
 }

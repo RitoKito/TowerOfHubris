@@ -1,13 +1,14 @@
-[gd_scene load_steps=13 format=3 uid="uid://c6uqidn550wus"]
+[gd_scene load_steps=14 format=3 uid="uid://c6uqidn550wus"]
 
 [ext_resource type="Script" path="res://resources/source/global_managers/GameManager.cs" id="1_2kbew"]
 [ext_resource type="Script" path="res://resources/source/global_managers/UIManager.cs" id="2_xur1g"]
-[ext_resource type="Script" path="res://resources/source/MainMenuUI.cs" id="3_s8dli"]
-[ext_resource type="Script" path="res://resources/source/EnterButton.cs" id="4_a4app"]
+[ext_resource type="Script" path="res://resources/source/ui/MainMenuUI.cs" id="3_s8dli"]
+[ext_resource type="Script" path="res://resources/source/ui/EnterButton.cs" id="4_a4app"]
 [ext_resource type="PackedScene" uid="uid://4qd4vij7ird5" path="res://resources/prefabs/camera/cam_gimbal.tscn" id="4_e7g0d"]
 [ext_resource type="Script" path="res://scenes/ExitButton.cs" id="5_gtm5u"]
 [ext_resource type="Script" path="res://resources/source/global_managers/GlobalStatusEffectManager.cs" id="5_y5ao7"]
 [ext_resource type="PackedScene" uid="uid://con5l45b7myna" path="res://resources/prefabs/status_effects/global_status_effect_ui.tscn" id="6_84hsa"]
+[ext_resource type="Script" path="res://scenes/RewardGenerator.cs" id="9_l2l5f"]
 
 [sub_resource type="Animation" id="Animation_r0sda"]
 length = 0.001
@@ -172,6 +173,9 @@ transform = Transform3D(1, 0, 0, 0, 0.97237, 0.233445, 0, -0.233445, 0.97237, 0,
 
 [node name="status_effect_manager" type="Node3D" parent="."]
 script = ExtResource("5_y5ao7")
+
+[node name="reward_generator" type="Node3D" parent="."]
+script = ExtResource("9_l2l5f")
 
 [connection signal="mouse_entered" from="ui_manager/main_menu/menu_buttons_container/VBoxContainer/enter_button" to="ui_manager/main_menu/menu_buttons_container/VBoxContainer/enter_button" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="ui_manager/main_menu/menu_buttons_container/VBoxContainer/enter_button" to="ui_manager/main_menu/menu_buttons_container/VBoxContainer/enter_button" method="_on_mouse_exited"]

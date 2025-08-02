@@ -36,6 +36,8 @@ public partial class EventBus : Node, IEventBus
 
 	public event Func<StatusEffect, Task> OnPermanentEffectAdded;
 
+	public event Func<List<StatusEffect>, Task> OnAssignRewards;
+
 	public override void _Ready()
 	{
 		if (Instance == null)
@@ -228,4 +230,18 @@ public partial class EventBus : Node, IEventBus
 		await Task.WhenAll(tasks);
 	}
 
+	public async Task EmitAssignRewards(List<StatusEffect> rewards)
+	{
+		if (OnAssignRewards == null)
+			return;
+
+		var handlers = OnAssignRewards.GetInvocationList();
+
+		List<Task> tasks = new List<Task>();
+
+		foreach (Func<List<StatusEffect>, Task> handler in handlers)
+			tasks.Add(handler.Invoke(rewards));
+
+		await Task.WhenAll(tasks);
+	}
 }

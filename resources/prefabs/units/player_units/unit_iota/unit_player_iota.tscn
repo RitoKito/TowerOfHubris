@@ -9,9 +9,9 @@
 [ext_resource type="Script" path="res://resources/source/combat_phase/debug/DebugTargetLabel.cs" id="6_0k145"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/UnitUIController.cs" id="6_axdgy"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/TargetingUI.cs" id="7_beiwo"]
-[ext_resource type="Texture2D" uid="uid://byg5tuodni1xh" path="res://resources/sprites/targetting_arrow/arrowhead.png" id="9_n2f8c"]
+[ext_resource type="Texture2D" uid="uid://k82ginw4341w" path="res://resources/sprites/targetting_arrow/arrowhead.png" id="9_n2f8c"]
 [ext_resource type="PackedScene" uid="uid://bgif0302wsc6g" path="res://resources/prefabs/units/ability_placeholder.tscn" id="10_abaaa"]
-[ext_resource type="Texture2D" uid="uid://bj0gh6sk5dpuh" path="res://resources/dotted_line3.png" id="10_m50dv"]
+[ext_resource type="Texture2D" uid="uid://bqaskj5g1peeq" path="res://resources/sprites/targetting_arrow/dotted_line3.png" id="10_dxiu1"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/AbilityDisplay.cs" id="11_mutno"]
 [ext_resource type="PackedScene" uid="uid://hku34cjmyp1c" path="res://resources/prefabs/units/unit_ui/unit_details_3d.tscn" id="13_ysqcp"]
 [ext_resource type="PackedScene" uid="uid://djgaig2bmoi6y" path="res://resources/prefabs/units/unit_ui/ability_details_3d.tscn" id="14_y2f1k"]
@@ -26,8 +26,8 @@ render_priority = -1
 transparency = 1
 cull_mode = 2
 no_depth_test = true
-albedo_color = Color(0.172549, 0.772549, 0, 1)
-albedo_texture = ExtResource("10_m50dv")
+albedo_color = Color(0, 0.643137, 0.0901961, 1)
+albedo_texture = ExtResource("10_dxiu1")
 uv1_scale = Vector3(-5.885, -5.885, -5.885)
 texture_filter = 0
 
@@ -122,6 +122,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.238168, 2.18043, 0)
 
 [node name="arrow_spr" type="Sprite3D" parent="unit_ui_controller/targeting_ui"]
 transform = Transform3D(0.731478, 0, 0, 0, 0.341561, 0, 0, 0, 1, 0, 0, 0)
+modulate = Color(0, 0.643137, 0.0901961, 1)
 no_depth_test = true
 texture_filter = 0
 texture = ExtResource("9_n2f8c")

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dsf1tptyg47qh"]
+
+[ext_resource type="Script" path="res://resources/prefabs/status_effects/status_effects/scripts/StatusEffectToothpick.cs" id="1_1lujv"]
+
+[node name="ToothPick" type="Node"]
+script = ExtResource("1_1lujv")

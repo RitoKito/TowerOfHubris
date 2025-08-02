@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dacet6qjfgtou"]
 
-[ext_resource type="Script" path="res://resources/source/StatusEffectUIContainer.cs" id="1_ogu6g"]
+[ext_resource type="Script" path="res://resources/source/ui/StatusEffectUIContainer.cs" id="1_ogu6g"]
 
 [node name="status_effect_ui_container" type="MarginContainer"]
 offset_right = 30.0

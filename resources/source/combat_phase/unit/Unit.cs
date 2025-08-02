@@ -123,6 +123,11 @@ public abstract partial class Unit : Node3D
 		_uiController.UpdateHpLabel((int)_currentHp, (int)_maxHp);
 	}
 
+	public Ability GetAbility(int index)
+	{
+		return _abilities[index];
+	}
+
 	public Unit GetEnemyTarget() { return _enemyTarget; }
 	public void SetEnemyTarget(Unit target)
 	{
@@ -224,7 +229,7 @@ public abstract partial class Unit : Node3D
 		float totalDamage = damageInstance.damageValue * weaknessMultiplier * streghtMultiplier * _damageResistanceMultiplier;
 		_currentHp -= totalDamage;
 
-		if (_currentHp <= 0)
+		if (_currentHp < 1)
 		{
 			Die();
 		}

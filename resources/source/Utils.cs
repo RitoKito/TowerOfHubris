@@ -1,5 +1,7 @@
 using Godot;
 using Godot.Collections;
+using System.Collections.Generic;
+using System;
 
 public static partial class Utils
 {
@@ -21,5 +23,24 @@ public static partial class Utils
 		}
 
 		return null;
+	}
+
+	public static List<int> GetThreeUniqueRandomNumbers(int min, int max)
+	{
+		List<int> numbers = new();
+		for (int i = min; i < max; i++)
+			numbers.Add(i);
+
+		if (numbers.Count < 3)
+			throw new ArgumentException("Range must contain at least 3 unique numbers.");
+
+		Random rng = new();
+		for (int i = numbers.Count - 1; i > 0; i--)
+		{
+			int j = rng.Next(i + 1);
+			(numbers[i], numbers[j]) = (numbers[j], numbers[i]);
+		}
+
+		return numbers.GetRange(0, 3);
 	}
 }

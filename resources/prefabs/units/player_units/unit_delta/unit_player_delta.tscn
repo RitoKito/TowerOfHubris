@@ -9,10 +9,10 @@
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/HpDetails.cs" id="5_sfct8"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/debug/DebugTargetLabel.cs" id="6_cmpcu"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/TargetingUI.cs" id="7_sv1cs"]
-[ext_resource type="Texture2D" uid="uid://byg5tuodni1xh" path="res://resources/sprites/targetting_arrow/arrowhead.png" id="9_iloaq"]
+[ext_resource type="Texture2D" uid="uid://k82ginw4341w" path="res://resources/sprites/targetting_arrow/arrowhead.png" id="9_iloaq"]
+[ext_resource type="Texture2D" uid="uid://bqaskj5g1peeq" path="res://resources/sprites/targetting_arrow/dotted_line3.png" id="10_2wtu2"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/AbilityDisplay.cs" id="10_bkeka"]
 [ext_resource type="PackedScene" uid="uid://d17sff2ou344i" path="res://resources/prefabs/units/player_units/unit_delta/abilities/ability_t1_sword_slash.tscn" id="10_ggwa5"]
-[ext_resource type="Texture2D" uid="uid://bj0gh6sk5dpuh" path="res://resources/dotted_line3.png" id="10_krrbn"]
 [ext_resource type="PackedScene" uid="uid://1ktphjpkniet" path="res://resources/prefabs/units/player_units/unit_delta/abilities/ability_t2_flying_strike.tscn" id="11_ht6de"]
 [ext_resource type="PackedScene" uid="uid://bs02p5mqwrih3" path="res://resources/prefabs/units/player_units/unit_delta/abilities/ability_t3_falling_heaven.tscn" id="12_awwdc"]
 [ext_resource type="PackedScene" uid="uid://hku34cjmyp1c" path="res://resources/prefabs/units/unit_ui/unit_details_3d.tscn" id="13_dogtw"]
@@ -28,8 +28,8 @@ render_priority = -1
 transparency = 1
 cull_mode = 2
 no_depth_test = true
-albedo_color = Color(0.172549, 0.772549, 0, 1)
-albedo_texture = ExtResource("10_krrbn")
+albedo_color = Color(0, 0.643137, 0.0901961, 1)
+albedo_texture = ExtResource("10_2wtu2")
 uv1_scale = Vector3(-5.885, -5.885, -5.885)
 texture_filter = 0
 
@@ -122,6 +122,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.238168, 2.18043, 0)
 
 [node name="arrow_spr" type="Sprite3D" parent="unit_ui_controller/targeting_ui"]
 transform = Transform3D(0.731478, 0, 0, 0, 0.341561, 0, 0, 0, 1, 0, 0, 0)
+modulate = Color(0, 0.643137, 0.0901961, 1)
 no_depth_test = true
 texture_filter = 0
 texture = ExtResource("9_iloaq")
