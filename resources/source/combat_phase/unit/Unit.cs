@@ -124,7 +124,7 @@ public abstract partial class Unit : Node3D
 					_combatDie.AddAbility(_abilities[1], 0.2f);
 					continue;
 				case 2:
-					_combatDie.AddAbility(_abilities[2], 0.05f);
+					_combatDie.AddAbility(_abilities[2], 0.1f);
 					continue;
 			}
 		}

@@ -31,6 +31,8 @@ public partial class PlayerUnit : Unit
 			_statusEffectController.AddStatusEffect(effect);
 		}
 
+		//_uiController.UpdateAbilityDetails(_currentAbility);
+
 		await Task.Yield();
 	}
 

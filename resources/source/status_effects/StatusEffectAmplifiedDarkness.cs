@@ -9,8 +9,8 @@ public partial class StatusEffectAmplifiedDarkness : StatusEffect
 	public override string Description => $"Increases all Stats by {_statIncrease}%.";
 	public override bool Stackable => true;
 	private float _statIncrease = 2;
-	private float _damageIncrease = 50; // percent
-	private float _critMultIncrease = 5;
+	private float _damageIncrease = 5; // percent
+	private float _critMultIncrease = 0.05f;
 	private float _critChanceIncrease = 5;
 
 	// Called when the node enters the scene tree for the first time.

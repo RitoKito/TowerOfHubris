@@ -32,12 +32,15 @@ public partial class EnemyUnit : Unit
 		SetEnemyTarget(target);
 	}
 
+	// TODO: Counter race condition
 	private async Task HandleOnEnemyStatusEffectsApply(List<StatusEffect> statusEffects)
 	{
 		foreach (StatusEffect effect in statusEffects)
 		{
 			_statusEffectController.AddStatusEffect(effect);
 		}
+
+		_uiController.UpdateAbilityDetails(_currentAbility);
 
 		await Task.Yield();
 	}

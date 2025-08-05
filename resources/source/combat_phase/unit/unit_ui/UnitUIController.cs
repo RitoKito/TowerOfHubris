@@ -92,8 +92,8 @@ public partial class UnitUIController : Node3D
 	{
 		_abilityDetails.UpdateNameLabel(currentAbility.AbilityName);
 		//Placeholder text
-		_abilityDetails.UpdateDescriptionLabel($"Deals {currentAbility.AbilityDamage} damage to the target");
-		_abilityDetails.UpdateCritLabel($"CR: {(int)currentAbility.CritChance}% | CD: {(int)currentAbility.AbilityCritMult*100}%");
+		_abilityDetails.UpdateDescriptionLabel($"Deals {Math.Round(currentAbility.AbilityDamage, 1)} damage to the target");
+		_abilityDetails.UpdateCritLabel($"CR: {Math.Round(currentAbility.CritChance, 1)}% | CD: {Math.Round(currentAbility.AbilityCritMult*100, 1)}%");
 		//Placeholder
 		//_abilityDetails.UpdateStatusEffectLabel("-");
 		//_abilityDetails.UpdateAffinityLabel("-");
