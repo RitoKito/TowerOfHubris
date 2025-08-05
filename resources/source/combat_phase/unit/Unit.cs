@@ -1,5 +1,6 @@
 using Godot;
 using Godot.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,9 +12,17 @@ public abstract partial class Unit : Node3D
 
 	protected TurnManager _turnManager;
 
+	protected Sprite3D _unitSprite = null;
 	protected Sprite3D _spriteHighlight = null;
+	protected Sprite3D _spriteDead = null;
 	protected UnitUIController _uiController = null;
 	protected StatusEffectController _statusEffectController = null;
+	protected AnimationPlayer _animationPlayer = null;
+	protected AudioStreamPlayer2D _audioStreamPlayer = null;
+	protected AudioStream[] _sounds = new AudioStream[]
+	{
+		GD.Load<AudioStream>(PathConstants.AUDIO_HIT0),
+	};
 
 
 	// Tag variable set in package editor
@@ -56,6 +65,7 @@ public abstract partial class Unit : Node3D
 
 	[Export]
 	protected Array<Ability> _abilities = new Array<Ability>();
+	public Array<Ability> Abilities { get { return _abilities; } }
 
 	protected CombatDie _combatDie = new CombatDie();
 
@@ -82,16 +92,25 @@ public abstract partial class Unit : Node3D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		_damageResistanceMultiplier = Mathf.Clamp(_damageResistanceMultiplier, 0, 90);
+
+		_unitSprite = GetNode<Sprite3D>("unit_sprite");
 		_spriteHighlight = GetNode<Sprite3D>("unit_select_spr");
+		_spriteDead = GetNode<Sprite3D>("unit_dead_spr");
+
 		_uiController = GetNode<UnitUIController>("unit_ui_controller");
 		_statusEffectController = GetNode<StatusEffectController>("status_effect_controller");
+
+		_animationPlayer = GetNode<AnimationPlayer>("animation_player");
+		_audioStreamPlayer = GetNode<AudioStreamPlayer2D>("audio_player_2d");
 
 		_currentHp = _maxHp;
 		_uiController.UpdateHpLabel((int)_currentHp, (int)_maxHp);
 		_uiController.UpdateUnitDetailsNameLabel(_unitName);
+		_uiController.UpdateDamageResLabel(_damageResistanceMultiplier);
 
+		ShowSpriteDead(false);
 		ShowSpriteHighlight(false);
-
 
 		// TODO REFACTOR
 		for(int i = 0; i < _abilities.Count; i++)
@@ -123,9 +142,25 @@ public abstract partial class Unit : Node3D
 		_uiController.UpdateHpLabel((int)_currentHp, (int)_maxHp);
 	}
 
+	public void ModifyMaxHPPercent(float delta)
+	{
+		_maxHp *= (1 + delta/100);
+		_currentHp = _maxHp;
+		_uiController.UpdateHpLabel((int)_currentHp, (int)_maxHp);
+	}
+
+	public void ModifyDamageResistance(float delta)
+	{
+		_damageResistanceMultiplier += delta/100;
+		_uiController.UpdateDamageResLabel(_damageResistanceMultiplier);
+	}
+
 	public Ability GetAbility(int index)
 	{
-		return _abilities[index];
+		if (index < _abilities.Count)
+			return _abilities[index];
+		else
+			return null;
 	}
 
 	public Unit GetEnemyTarget() { return _enemyTarget; }
@@ -193,6 +228,20 @@ public abstract partial class Unit : Node3D
 		}
 	}
 
+	public void ShowSpriteDead(bool show)
+	{
+		if (show)
+		{
+			_unitSprite.Visible = false;
+			_spriteDead.Visible = true;
+		}
+		else
+		{
+			_unitSprite.Visible = true;
+			_spriteDead.Visible = false;
+		}
+	}
+
 	public void UseAbility()
 	{
 		if(_enemyTarget != null)
@@ -207,6 +256,7 @@ public abstract partial class Unit : Node3D
 
 	public void TakeDamage((float damageValue, Array<Affinity> affinties) damageInstance)
 	{
+		// Weakness and affinities are not used at the moment
 		float weaknessMultiplier = 1;
 		float streghtMultiplier = 1;
 		int numberOfWeakAffintiies = _affinityWeaknesses.Intersect(damageInstance.affinties).Count();
@@ -223,11 +273,21 @@ public abstract partial class Unit : Node3D
 			streghtMultiplier = 1 - (numberOfStrongAffinties / 10f);
 		}
 
-
-
 		_damageResistanceMultiplier = (100 - _damageResistanceMultiplier) / 100;
 		float totalDamage = damageInstance.damageValue * weaknessMultiplier * streghtMultiplier * _damageResistanceMultiplier;
 		_currentHp -= totalDamage;
+
+		if(_animationPlayer != null)
+			_animationPlayer.Play("take_damage");
+
+		// Only 1 sound for now
+		if (_audioStreamPlayer != null)
+		{
+			var randomIdx = GD.Randi() % _sounds.Length;
+			_audioStreamPlayer.Stream = _sounds[randomIdx];
+			_audioStreamPlayer.Play();
+		}
+
 
 		if (_currentHp < 1)
 		{
@@ -240,9 +300,12 @@ public abstract partial class Unit : Node3D
 	protected void Die()
 	{
 		_isDead = true;
+		_uiController.HideHPDetails();
+		_uiController.HideAbilityDisplay();
+		_uiController.SuppressUI = true;
 
 		// TODO Make Dead Sprite
-		Hide();
+		ShowSpriteDead(true);
 		_eventBus.EmitUnitDied(this);
 	}
 
@@ -270,8 +333,8 @@ public abstract partial class Unit : Node3D
 
 	protected async Task HandleNewTurn(int turnCount)
 	{
-		//if (!IsInstanceValid(this))
-		//	return;
+		if (_isDead)
+			return;
 
 		_currentAbility = _combatDie.Roll();
 		_uiController.UpdateAbilityDisplay(_currentAbility.AbilityTier);
@@ -300,7 +363,7 @@ public abstract partial class Unit : Node3D
 	//TODO Implement C# signals
 	protected void _on_static_body_3d_mouse_entered()
 	{
-		if (_uiController.SuppressUI)
+		if (_uiController.SuppressUI || _isDead)
 			return;
 
 			ShowSpriteHighlight(true);

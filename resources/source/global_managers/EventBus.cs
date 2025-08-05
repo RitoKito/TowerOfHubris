@@ -31,12 +31,20 @@ public partial class EventBus : Node, IEventBus
 	public event Func<Task> OnEnterCombat;
 	public event Func<Task> OnCombatSceneLoaded;
 	public event Func<List<StatusEffect>, Task> OnPlayerStatusEffectsApply;
+	public event Func<List<StatusEffect>, Task> OnEnemyStatusEffectsApply;
 	public event Func<Task> OnRewardSelection;
 	public event Func<StatusEffect, Task> OnRewardSelected;
 
-	public event Func<StatusEffect, Task> OnPermanentEffectAdded;
+	public event Func<StatusEffect, Task> OnPlayerPermanentEffectAdded;
+	public event Func<StatusEffect, Task> OnEnemyPermanentEffectAdded;
 
 	public event Func<List<StatusEffect>, Task> OnAssignRewards;
+
+	public event Func<int, Task> OnNewFloor;
+
+	public event Func<Task> OnDefeat;
+
+	public event Func<Task> OnRestart;
 
 	public override void _Ready()
 	{
@@ -184,6 +192,21 @@ public partial class EventBus : Node, IEventBus
 		await Task.WhenAll(tasks);
 	}
 
+	public async Task EmitEnemyApplyStatusEffects(List<StatusEffect> effects)
+	{
+		if (OnEnemyStatusEffectsApply == null)
+			return;
+
+		var handlers = OnEnemyStatusEffectsApply.GetInvocationList();
+
+		List<Task> tasks = new List<Task>();
+
+		foreach (Func<List<StatusEffect>, Task> handler in handlers)
+			tasks.Add(handler.Invoke(effects));
+
+		await Task.WhenAll(tasks);
+	}
+
 	public async Task EmitRewardSelection()
 	{
 		if (OnRewardSelection == null)
@@ -215,12 +238,27 @@ public partial class EventBus : Node, IEventBus
 	}
 
 	
-	public async Task EmitPermanentEffectAdded(StatusEffect statusEffect)
+	public async Task EmitPlayerPermanentEffectAdded(StatusEffect statusEffect)
 	{
-		if (OnPermanentEffectAdded == null)
+		if (OnPlayerPermanentEffectAdded == null)
 			return;
 
-		var handlers = OnPermanentEffectAdded.GetInvocationList();
+		var handlers = OnPlayerPermanentEffectAdded.GetInvocationList();
+
+		List<Task> tasks = new List<Task>();
+
+		foreach (Func<StatusEffect, Task> handler in handlers)
+			tasks.Add(handler.Invoke(statusEffect));
+
+		await Task.WhenAll(tasks);
+	}
+
+	public async Task EmitEnemyPermanentEffectAdded(StatusEffect statusEffect)
+	{
+		if (OnEnemyPermanentEffectAdded == null)
+			return;
+
+		var handlers = OnEnemyPermanentEffectAdded.GetInvocationList();
 
 		List<Task> tasks = new List<Task>();
 
@@ -241,6 +279,51 @@ public partial class EventBus : Node, IEventBus
 
 		foreach (Func<List<StatusEffect>, Task> handler in handlers)
 			tasks.Add(handler.Invoke(rewards));
+
+		await Task.WhenAll(tasks);
+	}
+
+	public async Task EmitNewFloor(int currentFloor)
+	{
+		if (OnNewFloor == null)
+			return;
+
+		var handlers = OnNewFloor.GetInvocationList();
+
+		List<Task> tasks = new List<Task>();
+
+		foreach (Func<int, Task> handler in handlers)
+			tasks.Add(handler.Invoke(currentFloor));
+
+		await Task.WhenAll(tasks);
+	}
+
+	public async Task EmitDefeat()
+	{
+		if (OnDefeat == null)
+			return;
+
+		var handlers = OnDefeat.GetInvocationList();
+
+		List<Task> tasks = new List<Task>();
+
+		foreach (Func<Task> handler in handlers)
+			tasks.Add(handler.Invoke());
+
+		await Task.WhenAll(tasks);
+	}
+
+	public async Task EmitRestart()
+	{
+		if (OnRestart == null)
+			return;
+
+		var handlers = OnRestart.GetInvocationList();
+
+		List<Task> tasks = new List<Task>();
+
+		foreach (Func<Task> handler in handlers)
+			tasks.Add(handler.Invoke());
 
 		await Task.WhenAll(tasks);
 	}

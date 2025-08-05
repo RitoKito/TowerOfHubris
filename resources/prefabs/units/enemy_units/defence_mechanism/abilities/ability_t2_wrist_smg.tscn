@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://p7gbx6quyifq"]
+
+[ext_resource type="Script" path="res://resources/source/combat_phase/abilities/Ability.cs" id="1_h1eq3"]
+
+[node name="ability_t2_wrist_smg" type="Node3D"]
+script = ExtResource("1_h1eq3")
+_abilityId = 6
+_abilityName = "Wrist SMG"
+_abilityTier = 2
+_abilityDamage = 50.0
+_critChance = 50.0
+_abilityCritMult = 1.1
+_description = null
+_affinities = null

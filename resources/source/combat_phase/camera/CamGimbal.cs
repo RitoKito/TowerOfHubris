@@ -6,9 +6,10 @@ public partial class CamGimbal : Node3D
 {
 	public static CamGimbal Instance { get; private set; }
 
-	private IEventBus _eventBus;
-	private Camera3D _cameraObj;
-	private InputHandler _inputHandler;
+	private IEventBus _eventBus = null;
+	private Camera3D _cameraObj = null;
+	private InputHandler _inputHandler = null;
+	private AnimationPlayer _camAnimationPlayer = null;
 
 	[Export] private float _rotationSpeed = 0.05f;
 	private float _mouseMotionY = 0;
@@ -27,8 +28,12 @@ public partial class CamGimbal : Node3D
 
 	private Vector3 _levelTreePos = new Vector3(0f, 27f, -15f);
 	private Vector3 _levelTreeRot = Vector3.Zero;
-	private Vector3 _combatPos = new Vector3(0f, 1.815f, 4.9f);
+
+	private Vector3 _combatPos = new Vector3(0.3f, 1.815f, 4.9f);
 	private Vector3 _combatRot = new Vector3(-13.5f, 0, 0);
+
+	private Vector3 _menuPos = new Vector3(0, 27f, -14.055f);
+	private Vector3 _menuRot = new Vector3(0f, 0, 0);
 
 	private bool _inCombat = false;
 	// Boolean set by checking if the player clicked on an object
@@ -54,6 +59,7 @@ public partial class CamGimbal : Node3D
 		_eventBus = EventBus.Instance;
 		_cameraObj = GetViewport().GetCamera3D();
 		_inputHandler = InputHandler.Instance;
+		_camAnimationPlayer = GetNode<AnimationPlayer>("cam_animation_player");
 
 		_eventBus.OnGameStateChanged += HandleGameStateChanged;
 
@@ -156,11 +162,18 @@ public partial class CamGimbal : Node3D
 		{
 			case GameState.LevelTree:
 				SetLevelTreeCam();
+				_camAnimationPlayer.Stop();
 				_inCombat = false;
 				break;
 			case GameState.Combat:
 				SetCombatCam();
+				_camAnimationPlayer.Play("cam_movement");
 				_inCombat = true;
+				break;
+			case GameState.MainMenu:
+				SetMenuCam();
+				_camAnimationPlayer.Stop();
+				_inCombat = false;
 				break;
 		}
 
@@ -178,5 +191,11 @@ public partial class CamGimbal : Node3D
 	{
 		GlobalPosition = _combatPos;
 		//Rotation = _combatRot;
+	}
+
+	private void SetMenuCam()
+	{
+		GlobalPosition = _menuPos;
+		Rotation = _menuRot;
 	}
 }

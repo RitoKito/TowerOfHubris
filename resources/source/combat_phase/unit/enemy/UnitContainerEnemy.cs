@@ -3,16 +3,15 @@ using System;
 
 public partial class UnitContainerEnemy : UnitContainer
 {
-	public override void PopulateContainer()
+	public void PopulateEnemyContainer(int escalation, bool isExtreme)
 	{
 		var rnd = new Random();
 
-		int minEnemyCount = RandomEnemyGenerator.GetMinEnemyCount(LevelTreeManager.Instance.Escalation);
+		int minEnemyCount = RandomEnemyGenerator.GetMinEnemyCount(escalation, isExtreme);
 		for (int i = 0; i < minEnemyCount; i++)
 		{
-			int enemyTier = RandomEnemyGenerator.GetRandomEnemyTier(LevelTreeManager.Instance.Escalation);
+			int enemyTier = RandomEnemyGenerator.GetRandomEnemyTier(escalation, isExtreme);
 			var enemyType = rnd.Next(0, 2);
-			GD.Print(enemyType);
 			PackedScene enemyUnitPrefab = null;
 
 			switch (enemyTier)
@@ -21,10 +20,10 @@ public partial class UnitContainerEnemy : UnitContainer
 					enemyUnitPrefab = GD.Load<PackedScene>(PathConstants.UNITS_ENEMY_T1[enemyType]);
 					break;
 				case 2:
-					enemyUnitPrefab = GD.Load<PackedScene>(PathConstants.UNITS_ENEMY_T1[enemyType]);
+					enemyUnitPrefab = GD.Load<PackedScene>(PathConstants.UNITS_ENEMY_T2[enemyType]);
 					break;
 				case 3:
-					enemyUnitPrefab = GD.Load<PackedScene>(PathConstants.UNITS_ENEMY_T1[enemyType]);
+					enemyUnitPrefab = GD.Load<PackedScene>(PathConstants.UNITS_ENEMY_T3[enemyType]);
 					break;
 			}
 

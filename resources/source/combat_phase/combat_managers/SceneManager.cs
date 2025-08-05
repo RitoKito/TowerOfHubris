@@ -7,6 +7,7 @@ public partial class SceneManager : Node3D
 {
 	private TurnManager _turnManager;
 	private EventBus _eventBus;
+	private LevelTreeManager _levelTreeManager;
 
 	private readonly List<PlayerUnit> _playerUnits = new List<PlayerUnit>();
 	private List<PlayerUnit> _alivePlayerUnits = new List<PlayerUnit>();
@@ -59,6 +60,8 @@ public partial class SceneManager : Node3D
 		_eventBus = EventBus.Instance;
 		_eventBus.OnUnitDeath += HandleUnitDeath;
 
+		_levelTreeManager = LevelTreeManager.Instance;
+
 		InstantiatePlayerUnits();
 		_alivePlayerUnits.AddRange(_playerUnits);
 		_playerUnitsAlive = _playerUnits.Count;
@@ -108,7 +111,7 @@ public partial class SceneManager : Node3D
 		PackedScene enemyContainer = GD.Load<PackedScene>(PathConstants.CONTAINER_UNIT_ENEMY);
 		Node enemyContainerInstance = enemyContainer.Instantiate();
 		var enemyUnitContainer = enemyContainerInstance as UnitContainerEnemy;
-		enemyUnitContainer.PopulateContainer();
+		enemyUnitContainer.PopulateEnemyContainer(_levelTreeManager.Escalation, _levelTreeManager.CurrentLevel.IsExtreme);
 		AddChild(enemyContainerInstance);
 
 		foreach (EnemyUnit enemyUnit in enemyUnitContainer.UnitArray)

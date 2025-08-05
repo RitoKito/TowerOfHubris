@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/AbilityDetails.cs" id="1_jt6p1"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_g0i5w"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_ho0kn"]
 viewport_path = NodePath("SubViewport")
 
 [node name="ability_details_3d" type="Sprite3D"]
@@ -11,12 +11,12 @@ billboard = 1
 no_depth_test = true
 texture_filter = 0
 render_priority = 2
-texture = SubResource("ViewportTexture_g0i5w")
+texture = SubResource("ViewportTexture_ho0kn")
 script = ExtResource("1_jt6p1")
 
 [node name="SubViewport" type="SubViewport" parent="."]
 canvas_item_default_texture_filter = 0
-size = Vector2i(310, 235)
+size = Vector2i(310, 170)
 
 [node name="unit_details" type="Control" parent="SubViewport"]
 layout_mode = 3
@@ -36,7 +36,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="border" type="ColorRect" parent="SubViewport/unit_details/border_container"]
-custom_minimum_size = Vector2(310, 235)
+custom_minimum_size = Vector2(310, 170)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -53,7 +53,7 @@ grow_vertical = 2
 
 [node name="fill_box" type="ColorRect" parent="SubViewport/unit_details/border_container/border/fill_box_container"]
 clip_contents = true
-custom_minimum_size = Vector2(300, 225)
+custom_minimum_size = Vector2(300, 160)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -67,27 +67,26 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container"]
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_horizontal = 0
+size_flags_vertical = 0
 theme_override_constants/separation = 5
 
-[node name="separator" type="Control" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer"]
-layout_mode = 2
-
 [node name="ability_name_label" type="RichTextLabel" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer"]
-custom_minimum_size = Vector2(290, 30)
+custom_minimum_size = Vector2(290, 56.945)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
-text = "AVERAGE ABILTIY NAME "
-fit_content = true
+text = "AVERAGE ABILTIY NAME OR NOT"
 
 [node name="separator3" type="Control" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
@@ -114,6 +113,7 @@ fit_content = true
 scroll_active = false
 
 [node name="ability_status_effects_label" type="RichTextLabel" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(290, 30)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -125,9 +125,11 @@ fit_content = true
 scroll_active = false
 
 [node name="separator2" type="Control" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer"]
+visible = false
 layout_mode = 2
 
 [node name="ability_affinity_label" type="RichTextLabel" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(290, 20)
 layout_mode = 2
 size_flags_horizontal = 4

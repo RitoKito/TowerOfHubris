@@ -13,7 +13,10 @@ public partial class LevelTree : CsgBox3D
 	private LevelNode _rootNode;
 	public Node3D RootNode { get { return _rootNode; } }
 
+	// Generated depth
+	// excluding final node
 	private int _maxDepth = 4;
+	public int MaxDepth {  get { return _maxDepth; } }
 	private const int MAX_NODE_COUNT = 3;
 
 	private float _yOffsetPerDepth = 7f;
@@ -66,8 +69,10 @@ public partial class LevelTree : CsgBox3D
 		Node rootNodeInstance = nodePrefab.Instantiate();
 		LevelNode rootNodeScript = rootNodeInstance as LevelNode;
 		_rootNode = rootNodeScript;
+		_rootNode.Depth = 0;
 
 		AddChild(rootNodeScript);
+		_rootNode.SetFirst();
 
 		rootNodeScript.GlobalPosition = middleNode;
 		LevelNode[] depthZero = new LevelNode[MAX_NODE_COUNT] { null, rootNodeScript, null };
@@ -76,11 +81,11 @@ public partial class LevelTree : CsgBox3D
 		// Instantiates tree nodes
 		for (int depth = 1; depth < _maxDepth + 1; depth++)
 		{
-			GenerateDepthLayer(nodePrefab, depth);
+			GenerateDepthLayer(nodePrefab, depth, rnd);
 		}
 
 		var root = tree[0][1];
-		for(int depthLayer = 0; depthLayer < _maxDepth; depthLayer ++)
+		for(int depthLayer = 0; depthLayer < _maxDepth; depthLayer++)
 		{
 			HashSet<(int parent, int child)> existingConnections = new HashSet<(int parent, int child)>();
 
@@ -92,8 +97,9 @@ public partial class LevelTree : CsgBox3D
 		}
 
 		var finalNode = nodePrefab.Instantiate() as LevelNode;
-		finalNode.Depth = _maxDepth;
+		finalNode.Depth = _maxDepth + 1;
 		AddChild(finalNode);
+		finalNode.SetExtreme();
 		finalNode.GlobalPosition = middleNode + new Vector3(0, _yOffsetPerDepth * (_maxDepth + 1), 0);
 
 		//Temp final depth
@@ -215,7 +221,7 @@ public partial class LevelTree : CsgBox3D
 		}
 	}
 
-	private void GenerateDepthLayer(PackedScene nodePrefab, int depth)
+	private void GenerateDepthLayer(PackedScene nodePrefab, int depth, Random rnd)
 	{
 		var currentDepthNodes = new LevelNode[MAX_NODE_COUNT] { null, null, null };
 		for (int nodeIndex = 0; nodeIndex < MAX_NODE_COUNT; nodeIndex++)
@@ -224,6 +230,11 @@ public partial class LevelTree : CsgBox3D
 			AddChild(node);
 			node.GlobalPosition = nodePosition[nodeIndex] + new Vector3(0, _yOffsetPerDepth * depth, 0);
 			node.Depth = depth;
+			var randomInt = rnd.Next(0, 3);
+
+			if (randomInt >= 2)
+				node.SetExtreme();
+			
 			currentDepthNodes[nodeIndex] = node;
 		}
 		tree.Add(currentDepthNodes);

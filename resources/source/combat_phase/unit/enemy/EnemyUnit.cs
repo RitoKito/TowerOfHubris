@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public partial class EnemyUnit : Unit
 {
@@ -8,6 +9,12 @@ public partial class EnemyUnit : Unit
 	public override void _Ready()
 	{
 		base._Ready();
+	}
+
+	public override void Init(TurnManager turnManager, IEventBus messenger)
+	{
+		base.Init(turnManager, messenger);
+		_eventBus.OnEnemyStatusEffectsApply += HandleOnEnemyStatusEffectsApply;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -23,5 +30,21 @@ public partial class EnemyUnit : Unit
 		//DrawTargetingCurve();
 
 		SetEnemyTarget(target);
+	}
+
+	private async Task HandleOnEnemyStatusEffectsApply(List<StatusEffect> statusEffects)
+	{
+		foreach (StatusEffect effect in statusEffects)
+		{
+			_statusEffectController.AddStatusEffect(effect);
+		}
+
+		await Task.Yield();
+	}
+
+	public override void _ExitTree()
+	{
+		_eventBus.OnEnemyStatusEffectsApply -= HandleOnEnemyStatusEffectsApply;
+		base._ExitTree();
 	}
 }

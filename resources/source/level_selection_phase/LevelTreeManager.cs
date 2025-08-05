@@ -13,6 +13,9 @@ public partial class LevelTreeManager : Node3D
 	private LevelTree _currentTree = null;
 	private IList<LevelNode> _eligibleNextNode = null;
 	private LevelNode _currentLevel = null;
+	public LevelNode CurrentLevel { get { return _currentLevel; } }
+
+	private LevelNode _previousLevel = null;
 
 	private Node _currentCombatScene = null;
 
@@ -20,6 +23,7 @@ public partial class LevelTreeManager : Node3D
 
 
 	private int _escalation = 0;
+	private int _floor = 0;
 	public int Escalation { get { return _escalation; } private set { } }
 
 	// Called when the node enters the scene tree for the first time.
@@ -33,6 +37,8 @@ public partial class LevelTreeManager : Node3D
 		_eventBus = EventBus.Instance;
 		_eventBus.OnMouseLeftClick += HandleMouseLeftClick;
 		_eventBus.OnGameStateChanged += HandleGameStateChanged;
+		_eventBus.OnDefeat += HandleOnRestart;
+		_eventBus.OnRestart += HandleOnRestart;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -60,8 +66,8 @@ public partial class LevelTreeManager : Node3D
 
 	private async void HandleLevelNodeSelected(LevelNode levelNode)
 	{
+		_previousLevel = _currentLevel;
 		_currentLevel = levelNode;
-		_currentLevel.SelectNode();
 		await _eventBus.EmitEnterCombat();
 	}
 
@@ -88,17 +94,20 @@ public partial class LevelTreeManager : Node3D
 		}
 		else if(gameState == GameState.LevelTree)
 		{
-			if(_currentTree == null)
+			if(_currentLevel != null && _currentLevel.Depth == _currentTree.MaxDepth + 1)
 			{
-				_currentTree = InstantiateLevelTree() as LevelTree;
-				_currentLevel = _currentTree.RootNode as LevelNode;
-
-				_currentLevel.ShowEligibleNext();
-				_currentLevel.SelectNode();
-				_eligibleNextNode = _currentLevel.Children;
+				StartNewTree();
+				_escalation = 0;
+				_floor++;
+				await _eventBus.EmitNewFloor(_floor);
 			}
 
-			if(_currentCombatScene != null)
+			if (_currentTree == null)
+			{
+				GenerateNewTree();
+			}
+
+			if (_currentCombatScene != null)
 			{
 				RecycleCombatScene();
 			}
@@ -111,7 +120,7 @@ public partial class LevelTreeManager : Node3D
 				{
 					if (unreachable != _currentLevel)
 					{
-						unreachable.SetInvalidNode();
+						unreachable.SetInvalidNode(_previousLevel, _currentLevel);
 					}
 				}
 			}
@@ -125,6 +134,34 @@ public partial class LevelTreeManager : Node3D
 
 			_escalation += 20;
 		}
+
+		await Task.Yield();
+	}
+
+	private async Task HandleOnRestart()
+	{
+		StartNewTree();
+		await Task.Yield();
+	}
+
+	private void GenerateNewTree()
+	{
+		_previousLevel = null;
+		_currentTree = InstantiateLevelTree() as LevelTree;
+		_currentLevel = _currentTree.RootNode as LevelNode;
+
+		_currentLevel.ShowEligibleNext();
+		_currentLevel.SelectNode();
+		_eligibleNextNode = _currentLevel.Children;
+	}
+
+	private async void StartNewTree()
+	{
+		_currentTree.QueueFree();
+		_currentTree = null;
+		_currentLevel = null;
+		_escalation = 0;
+		_floor = 0;
 
 		await Task.Yield();
 	}
@@ -144,5 +181,12 @@ public partial class LevelTreeManager : Node3D
 		_currentCombatScene = null;
 	}
 
-
+	public override void _ExitTree()
+	{
+		_eventBus.OnMouseLeftClick -= HandleMouseLeftClick;
+		_eventBus.OnGameStateChanged -= HandleGameStateChanged;
+		_eventBus.OnDefeat -= HandleOnRestart;
+		_eventBus.OnRestart -= HandleOnRestart;
+		base._ExitTree();
+	}
 }

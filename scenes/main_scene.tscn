@@ -1,14 +1,25 @@
-[gd_scene load_steps=14 format=3 uid="uid://c6uqidn550wus"]
+[gd_scene load_steps=38 format=3 uid="uid://c6uqidn550wus"]
 
 [ext_resource type="Script" path="res://resources/source/global_managers/GameManager.cs" id="1_2kbew"]
 [ext_resource type="Script" path="res://resources/source/global_managers/UIManager.cs" id="2_xur1g"]
 [ext_resource type="Script" path="res://resources/source/ui/MainMenuUI.cs" id="3_s8dli"]
 [ext_resource type="Script" path="res://resources/source/ui/EnterButton.cs" id="4_a4app"]
 [ext_resource type="PackedScene" uid="uid://4qd4vij7ird5" path="res://resources/prefabs/camera/cam_gimbal.tscn" id="4_e7g0d"]
-[ext_resource type="Script" path="res://scenes/ExitButton.cs" id="5_gtm5u"]
+[ext_resource type="Script" path="res://resources/source/ui/ExitButton.cs" id="5_gtm5u"]
 [ext_resource type="Script" path="res://resources/source/global_managers/GlobalStatusEffectManager.cs" id="5_y5ao7"]
 [ext_resource type="PackedScene" uid="uid://con5l45b7myna" path="res://resources/prefabs/status_effects/global_status_effect_ui.tscn" id="6_84hsa"]
-[ext_resource type="Script" path="res://scenes/RewardGenerator.cs" id="9_l2l5f"]
+[ext_resource type="Script" path="res://resources/source/ui/ESCMenu.cs" id="7_h5qlq"]
+[ext_resource type="Script" path="res://resources/source/ui/RestartButton.cs" id="8_qxpqx"]
+[ext_resource type="Script" path="res://resources/source/ui/FloorCountUI.cs" id="9_30tr6"]
+[ext_resource type="Script" path="res://resources/source/global_managers/RewardGenerator.cs" id="9_l2l5f"]
+[ext_resource type="Script" path="res://resources/source/ui/GameTitle.cs" id="10_0fq26"]
+[ext_resource type="Script" path="res://resources/source/ui/TowerEntranceAnimation.cs" id="10_f8sqh"]
+[ext_resource type="Texture2D" uid="uid://qj347iq2p3ta" path="res://resources/sprites/road.png" id="11_buchc"]
+[ext_resource type="Texture2D" uid="uid://by5x73g3bgy5w" path="res://resources/sprites/stairs.png" id="12_uexox"]
+[ext_resource type="Texture2D" uid="uid://dmbqxrsgrtvpw" path="res://resources/sprites/door_frame.png" id="13_1raur"]
+[ext_resource type="Texture2D" uid="uid://f373utxgmhab" path="res://resources/sprites/door_no_frame.png" id="14_7lgb7"]
+[ext_resource type="AudioStream" uid="uid://281tlv6akedd" path="res://resources/sfx/creaking_door.mp3" id="15_yc45u"]
+[ext_resource type="Script" path="res://resources/source/global_managers/AudioManager.cs" id="19_yudjf"]
 
 [sub_resource type="Animation" id="Animation_r0sda"]
 length = 0.001
@@ -62,6 +73,189 @@ _data = {
 "fade_to_normal": SubResource("Animation_7qbtd")
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rn7ks"]
+bg_color = Color(0.254791, 0.265318, 0.267948, 0.635294)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.31802, 0.31802, 0.31802, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="Animation" id="Animation_c3ba0"]
+resource_name = "title_fade"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ui_manager/title/title_label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_nvjwh"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ui_manager/title/title_label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_f1d4r"]
+_data = {
+"RESET": SubResource("Animation_nvjwh"),
+"title_fade": SubResource("Animation_c3ba0")
+}
+
+[sub_resource type="Environment" id="Environment_xksqw"]
+background_mode = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y8qa0"]
+albedo_texture = ExtResource("11_buchc")
+uv1_scale = Vector3(2.18, 1.06, 1)
+uv1_offset = Vector3(-0.16, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ugu8"]
+albedo_texture = ExtResource("12_uexox")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_us2ri"]
+albedo_texture = ExtResource("12_uexox")
+uv1_scale = Vector3(0.055, 1, 1)
+uv1_offset = Vector3(0.98, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5ffbi"]
+albedo_texture = ExtResource("12_uexox")
+uv1_scale = Vector3(1, -0.01, 1)
+uv1_offset = Vector3(1.015, 0, 0)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_umwte"]
+albedo_texture = ExtResource("12_uexox")
+uv1_scale = Vector3(1, -0.025, 1)
+
+[sub_resource type="Animation" id="Animation_xqj7o"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../cam_gimbal:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 27, -14.055)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../cam_gimbal:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.235619, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("doors/door_rotation_l:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.920033, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("doors/door_rotation_r:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_qhci0"]
+resource_name = "main_menu_start"
+length = 2.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../cam_gimbal:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 27, -14.055), Vector3(0, 33.64, -43.536), Vector3(0, 36.3814, -56.3208)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("../cam_gimbal:rotation")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.235619, 0, 0), Vector3(0, 0, 0), Vector3(0.0255167, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("doors/door_rotation_l:rotation")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -0.998328, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("doors/door_rotation_r:rotation")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 1.02974, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nfn5b"]
+_data = {
+"RESET": SubResource("Animation_xqj7o"),
+"main_menu_start": SubResource("Animation_qhci0")
+}
+
 [node name="Root" type="Node3D"]
 script = ExtResource("1_2kbew")
 
@@ -99,6 +293,7 @@ grow_vertical = 2
 script = ExtResource("3_s8dli")
 
 [node name="background_image" type="Control" parent="ui_manager/main_menu"]
+visible = false
 layout_mode = 2
 mouse_filter = 2
 
@@ -149,6 +344,82 @@ text = "[center]Exit[center]"
 fit_content = true
 script = ExtResource("5_gtm5u")
 
+[node name="esc_menu" type="MarginContainer" parent="ui_manager"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_h5qlq")
+
+[node name="background_image" type="Control" parent="ui_manager/esc_menu"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Panel" type="Panel" parent="ui_manager/esc_menu/background_image"]
+custom_minimum_size = Vector2(100, 250)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_rn7ks")
+
+[node name="menu_buttons_container" type="MarginContainer" parent="ui_manager/esc_menu"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+theme_override_constants/margin_bottom = 280
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ui_manager/esc_menu/menu_buttons_container"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="enter_button" type="RichTextLabel" parent="ui_manager/esc_menu/menu_buttons_container/VBoxContainer"]
+custom_minimum_size = Vector2(110, 30)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[center]Restart[center]"
+fit_content = true
+script = ExtResource("8_qxpqx")
+
+[node name="separator" type="Control" parent="ui_manager/esc_menu/menu_buttons_container/VBoxContainer"]
+custom_minimum_size = Vector2(0, 64.33)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="ui_manager/esc_menu/menu_buttons_container/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = -60
+
+[node name="exit_button" type="RichTextLabel" parent="ui_manager/esc_menu/menu_buttons_container/VBoxContainer/MarginContainer"]
+custom_minimum_size = Vector2(100, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 7
+theme_override_font_sizes/normal_font_size = 25
+bbcode_enabled = true
+text = "[center]Exit[center]"
+fit_content = true
+script = ExtResource("5_gtm5u")
+
 [node name="back_screen_transition" type="Control" parent="ui_manager"]
 layout_mode = 1
 anchors_preset = 15
@@ -168,8 +439,58 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
+[node name="floor_count_ui" type="Control" parent="ui_manager"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("9_30tr6")
+
+[node name="margin_container" type="MarginContainer" parent="ui_manager/floor_count_ui"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 40
+
+[node name="floor_count_label" type="RichTextLabel" parent="ui_manager/floor_count_ui/margin_container"]
+custom_minimum_size = Vector2(163, 50)
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 30
+text = "Floor : 99"
+
+[node name="title" type="MarginContainer" parent="ui_manager"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_top = 105
+script = ExtResource("10_0fq26")
+
+[node name="title_label" type="RichTextLabel" parent="ui_manager/title"]
+custom_minimum_size = Vector2(600, 300)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "[center]Tower of Hubris[center]"
+
+[node name="title_animation_player" type="AnimationPlayer" parent="ui_manager/title"]
+root_node = NodePath("../../..")
+libraries = {
+"": SubResource("AnimationLibrary_f1d4r")
+}
+
 [node name="cam_gimbal" parent="." instance=ExtResource("4_e7g0d")]
-transform = Transform3D(1, 0, 0, 0, 0.97237, 0.233445, 0, -0.233445, 0.97237, 0, 25.715, -14.055)
+transform = Transform3D(1, 0, 0, 0, 0.97237, 0.233445, 0, -0.233445, 0.97237, 0, 27, -14.055)
 
 [node name="status_effect_manager" type="Node3D" parent="."]
 script = ExtResource("5_y5ao7")
@@ -177,7 +498,160 @@ script = ExtResource("5_y5ao7")
 [node name="reward_generator" type="Node3D" parent="."]
 script = ExtResource("9_l2l5f")
 
+[node name="tower_entrance" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.53367, 0, 0)
+script = ExtResource("10_f8sqh")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="tower_entrance"]
+environment = SubResource("Environment_xksqw")
+
+[node name="path" type="CSGBox3D" parent="tower_entrance"]
+transform = Transform3D(14.9036, 0, 0, 0, 5.12862, 0, 0, 0, 5.93654, -1.69452, 20.2422, -39.6307)
+material_override = SubResource("StandardMaterial3D_y8qa0")
+size = Vector3(3, 1, 7.48967)
+
+[node name="tower" type="CSGBox3D" parent="tower_entrance"]
+transform = Transform3D(75.6925, 0, 0, 0, 5.12862, 0, 0, 0, 5.93654, -1.13455, 20.8996, -64.3077)
+material_override = SubResource("StandardMaterial3D_5ugu8")
+size = Vector3(1.68011, 15.3838, 2.16191)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="tower_entrance"]
+transform = Transform3D(0.999349, 0.0360709, -0.000253679, -0.000376953, 0.0174752, 0.999847, 0.0360699, -0.999196, 0.0174775, -5.15662, 31.8949, -27.1244)
+light_size = 86.31
+light_specular = 2.545
+spot_range = 14.391
+
+[node name="SpotLight3D2" type="SpotLight3D" parent="tower_entrance"]
+transform = Transform3D(0.999349, 0.0360709, -0.000253679, -0.000376953, 0.0174752, 0.999847, 0.0360699, -0.999196, 0.0174775, 2.49239, 31.8949, -27.1244)
+light_size = 86.31
+light_specular = 2.545
+spot_range = 14.391
+
+[node name="SpotLight3D3" type="SpotLight3D" parent="tower_entrance"]
+transform = Transform3D(0.999349, 0.0360709, -0.000253679, -0.000376953, 0.0174752, 0.999847, 0.0360699, -0.999196, 0.0174775, -5.15662, 31.8949, -34.8856)
+light_size = 86.31
+light_specular = 2.545
+spot_range = 14.391
+
+[node name="SpotLight3D4" type="SpotLight3D" parent="tower_entrance"]
+transform = Transform3D(0.999349, 0.0360709, -0.000253679, -0.000376953, 0.0174752, 0.999847, 0.0360699, -0.999196, 0.0174775, 2.44066, 31.8949, -34.8856)
+light_size = 86.31
+light_specular = 2.545
+spot_range = 14.391
+
+[node name="SpotLight3D5" type="SpotLight3D" parent="tower_entrance"]
+transform = Transform3D(0.999349, 0.0360709, -0.000253679, -0.000376953, 0.0174752, 0.999847, 0.0360699, -0.999196, 0.0174775, -1.22951, 39.0635, -44.7067)
+light_energy = 4.825
+light_size = 86.31
+light_specular = 2.545
+spot_range = 26.711
+
+[node name="SpotLight3D6" type="SpotLight3D" parent="tower_entrance"]
+transform = Transform3D(0.999542, 0.0288102, -0.00923923, -0.0119128, 0.655467, 0.75513, 0.0278115, -0.754674, 0.65551, -2.07467, 47.4468, -47.6249)
+light_energy = 5.0
+light_size = 86.31
+light_specular = 2.545
+spot_range = 66.27
+
+[node name="stairs" type="Node3D" parent="tower_entrance"]
+transform = Transform3D(10.4004, 0, 0, 0, 1, 0, 0, 0, 1, 14.0983, 0, 0)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="tower_entrance/stairs"]
+transform = Transform3D(5.99885, 0, 0, 0, 1.70681, 0, 0, 0, 5.93654, -1.68636, 18.7073, -56.4572)
+material_override = SubResource("StandardMaterial3D_us2ri")
+size = Vector3(1.68011, 6.65344, 2.16191)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="tower_entrance/stairs"]
+transform = Transform3D(5.99885, 0, 0, 0, 1.70681, 0, 0, 0, 5.93654, -1.68636, 20.2528, -58.1693)
+material_override = SubResource("StandardMaterial3D_5ffbi")
+size = Vector3(1.68011, 6.65344, 2.16191)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="tower_entrance/stairs"]
+transform = Transform3D(5.99885, 0, 0, 0, 1.70681, 0, 0, 0, 5.93654, -1.68636, 22.2358, -59.89)
+material_override = SubResource("StandardMaterial3D_umwte")
+size = Vector3(1.68011, 6.65344, 2.16191)
+
+[node name="doors" type="Node3D" parent="tower_entrance"]
+
+[node name="door_frame_r" type="Sprite3D" parent="tower_entrance/doors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.87381, 36.5754, -57.1682)
+flip_h = true
+modulate = Color(0.733333, 0.733333, 0.733333, 1)
+pixel_size = 0.009
+no_depth_test = true
+texture_filter = 0
+texture = ExtResource("13_1raur")
+
+[node name="door_frame_l" type="Sprite3D" parent="tower_entrance/doors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.83498, 36.5754, -57.1566)
+modulate = Color(0.733005, 0.733005, 0.733005, 1)
+pixel_size = 0.009
+no_depth_test = true
+texture_filter = 0
+texture = ExtResource("13_1raur")
+
+[node name="darkness_l" type="Sprite3D" parent="tower_entrance/doors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.83498, 36.5754, -57.1566)
+modulate = Color(0, 0, 0, 1)
+pixel_size = 0.009
+no_depth_test = true
+texture_filter = 0
+texture = ExtResource("14_7lgb7")
+
+[node name="darkness_r" type="Sprite3D" parent="tower_entrance/doors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.87381, 36.5754, -57.1682)
+flip_h = true
+modulate = Color(0, 0, 0, 1)
+pixel_size = 0.009
+no_depth_test = true
+texture_filter = 0
+texture = ExtResource("14_7lgb7")
+
+[node name="door_rotation_l" type="Node3D" parent="tower_entrance/doors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.09942, 27.9, -57.3846)
+
+[node name="door_l" type="Sprite3D" parent="tower_entrance/doors/door_rotation_l"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.26444, 8.67539, 0.262589)
+modulate = Color(0.733005, 0.733005, 0.733005, 1)
+pixel_size = 0.009
+no_depth_test = true
+texture_filter = 0
+texture = ExtResource("14_7lgb7")
+
+[node name="door_rotation_r" type="Node3D" parent="tower_entrance/doors"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.18725, 27.9, -57.3991)
+
+[node name="door_r" type="Sprite3D" parent="tower_entrance/doors/door_rotation_r"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.31344, 8.67539, 0.250992)
+flip_h = true
+modulate = Color(0.733333, 0.733333, 0.733333, 1)
+pixel_size = 0.009
+no_depth_test = true
+texture_filter = 0
+texture = ExtResource("14_7lgb7")
+
+[node name="animation_player_main_menu" type="AnimationPlayer" parent="tower_entrance"]
+reset_on_save = false
+libraries = {
+"": SubResource("AnimationLibrary_nfn5b")
+}
+
+[node name="audio_stream_player_main_menu" type="AudioStreamPlayer" parent="tower_entrance"]
+stream = ExtResource("15_yc45u")
+volume_db = -10.0
+
+[node name="audio_manager" type="Node3D" parent="."]
+script = ExtResource("19_yudjf")
+
+[node name="music_player_level_tree" type="AudioStreamPlayer" parent="audio_manager"]
+
+[node name="music_player_combat" type="AudioStreamPlayer" parent="audio_manager"]
+
 [connection signal="mouse_entered" from="ui_manager/main_menu/menu_buttons_container/VBoxContainer/enter_button" to="ui_manager/main_menu/menu_buttons_container/VBoxContainer/enter_button" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="ui_manager/main_menu/menu_buttons_container/VBoxContainer/enter_button" to="ui_manager/main_menu/menu_buttons_container/VBoxContainer/enter_button" method="_on_mouse_exited"]
 [connection signal="mouse_entered" from="ui_manager/main_menu/menu_buttons_container/VBoxContainer/exit_button" to="ui_manager/main_menu/menu_buttons_container/VBoxContainer/exit_button" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="ui_manager/main_menu/menu_buttons_container/VBoxContainer/exit_button" to="ui_manager/main_menu/menu_buttons_container/VBoxContainer/exit_button" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="ui_manager/esc_menu/menu_buttons_container/VBoxContainer/enter_button" to="ui_manager/esc_menu/menu_buttons_container/VBoxContainer/enter_button" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="ui_manager/esc_menu/menu_buttons_container/VBoxContainer/enter_button" to="ui_manager/esc_menu/menu_buttons_container/VBoxContainer/enter_button" method="_on_mouse_exited"]
+[connection signal="mouse_entered" from="ui_manager/esc_menu/menu_buttons_container/VBoxContainer/MarginContainer/exit_button" to="ui_manager/esc_menu/menu_buttons_container/VBoxContainer/MarginContainer/exit_button" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="ui_manager/esc_menu/menu_buttons_container/VBoxContainer/MarginContainer/exit_button" to="ui_manager/esc_menu/menu_buttons_container/VBoxContainer/MarginContainer/exit_button" method="_on_mouse_exited"]

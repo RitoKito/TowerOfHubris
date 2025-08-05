@@ -22,7 +22,6 @@ public partial class EnterButton : MenuButton
 			&& mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed)
 		{
 			_eventBus.EmitEnterGame();
-			GD.Print("entering");
 		}
 	}
 }

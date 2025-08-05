@@ -74,6 +74,11 @@ public partial class Ability : Node
 		_abilityDamage += delta;
 	}
 
+	public void ModifyDamagePercent(float delta)
+	{
+		_abilityDamage *= (1 + delta/100);
+	}
+
 	public void ModifyCritChance(float delta) 
 	{
 		_critChance += delta;
@@ -81,7 +86,7 @@ public partial class Ability : Node
 
 	public void ModifyCritMult(float delta)
 	{
-		_abilityCritMult += delta;
+		_abilityCritMult += delta/100;
 	}
 
 	public void ModifyAttackCritMult(float delta)

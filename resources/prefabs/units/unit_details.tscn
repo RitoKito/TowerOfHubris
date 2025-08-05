@@ -22,7 +22,7 @@ custom_minimum_size = Vector2(310, 160)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-color = Color(0.051971, 0.051971, 0.051971, 1)
+color = Color(0.14902, 0.133333, 0.172549, 1)
 
 [node name="fill_box_container" type="MarginContainer" parent="border_container/border"]
 layout_mode = 1
@@ -37,7 +37,7 @@ custom_minimum_size = Vector2(300, 150)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-color = Color(0.0885599, 0.0885599, 0.0885599, 1)
+color = Color(0.180392, 0.192157, 0.25098, 1)
 
 [node name="item_container" type="MarginContainer" parent="border_container/border/fill_box_container/fill_box"]
 layout_mode = 1
@@ -85,8 +85,8 @@ custom_minimum_size = Vector2(290, 34.355)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_font_sizes/normal_font_size = 25
+theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
-text = "AAAAAAAAAAAAAAAAA"
+text = "Dmg Res: 999%"
 fit_content = true
 scroll_active = false

@@ -1,8 +1,9 @@
-[gd_scene load_steps=26 format=3 uid="uid://dpkbteb7pa8te"]
+[gd_scene load_steps=30 format=3 uid="uid://dpkbteb7pa8te"]
 
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/player/PlayerUnit.cs" id="1_800yu"]
 [ext_resource type="Texture2D" uid="uid://cdox0i3svb2le" path="res://resources/sprites/units/player_units/delta/delta.png" id="2_6bgoo"]
 [ext_resource type="Texture2D" uid="uid://bbj8748sll1ei" path="res://resources/sprites/units/player_units/delta/delta_select.png" id="3_qn6ue"]
+[ext_resource type="Texture2D" uid="uid://crg1uh8h2avdr" path="res://resources/sprites/units/player_units/delta/delta_dead.png" id="4_7u8x7"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/UnitColliderBody.cs" id="4_womm4"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/StatusEffectController.cs" id="5_8qtb3"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/unit/unit_ui/UnitUIController.cs" id="5_ggth5"]
@@ -28,33 +29,71 @@ render_priority = -1
 transparency = 1
 cull_mode = 2
 no_depth_test = true
+shading_mode = 0
 albedo_color = Color(0, 0.643137, 0.0901961, 1)
 albedo_texture = ExtResource("10_2wtu2")
 uv1_scale = Vector3(-5.885, -5.885, -5.885)
 texture_filter = 0
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_ro4j2"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_lx516"]
 orientation = 2
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x0u1w"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f0512"]
 cull_mode = 2
 shading_mode = 0
+albedo_color = Color(0.349801, 0.368733, 0.462228, 1)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_3xrok"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_5huws"]
 size = Vector3(1.9807, 1.98279, 0.113495)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_ax0ij"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_s3sd0"]
 viewport_path = NodePath("SubViewport")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_wvf1p"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_0luxs"]
 viewport_path = NodePath("SubViewport")
+
+[sub_resource type="Animation" id="Animation_gefig"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("unit_sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_v5is4"]
+resource_name = "take_damage"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("unit_sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0.137255), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cobgf"]
+_data = {
+"RESET": SubResource("Animation_gefig"),
+"take_damage": SubResource("Animation_v5is4")
+}
 
 [node name="player_delta" type="Node3D" node_paths=PackedStringArray("_abilities") groups=["PlayerUnit"]]
 script = ExtResource("1_800yu")
 _id = 1
 _unitName = "Delta"
 _maxHp = 125.0
-_affinityWeaknesses = [3, 4]
 _abilities = [NodePath("abilities/ability_t1_sword_slash"), NodePath("abilities/ability_t2_flying_strike"), NodePath("abilities/ability_t3_falling_heaven")]
 
 [node name="unit_sprite" type="Sprite3D" parent="."]
@@ -70,6 +109,14 @@ pixel_size = 0.002
 texture_filter = 0
 render_priority = -1
 texture = ExtResource("3_qn6ue")
+
+[node name="unit_dead_spr" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.275339, -0.514462, -0.00128113)
+offset = Vector2(143.725, 566)
+pixel_size = 0.002
+texture_filter = 0
+render_priority = -1
+texture = ExtResource("4_7u8x7")
 
 [node name="unit_col_bdy" type="StaticBody3D" parent="." groups=["PlayerUnit"]]
 script = ExtResource("4_womm4")
@@ -94,6 +141,7 @@ script = ExtResource("5_sfct8")
 
 [node name="debug_target" type="Label3D" parent="unit_ui_controller"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00397038, 3.13366, 0)
+visible = false
 text = "Target: Enemy"
 font_size = 52
 script = ExtResource("6_cmpcu")
@@ -118,7 +166,7 @@ path_joined = false
 material = SubResource("StandardMaterial3D_w567d")
 
 [node name="target_curve" type="Node3D" parent="unit_ui_controller/targeting_ui"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.238168, 2.18043, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.128074, 1.63395, 0)
 
 [node name="arrow_spr" type="Sprite3D" parent="unit_ui_controller/targeting_ui"]
 transform = Transform3D(0.731478, 0, 0, 0, 0.341561, 0, 0, 0, 1, 0, 0, 0)
@@ -128,9 +176,9 @@ texture_filter = 0
 texture = ExtResource("9_iloaq")
 
 [node name="ability_display" type="CSGMesh3D" parent="unit_ui_controller"]
-transform = Transform3D(0.428517, 0, 0, 0, 0.332149, 0, 0, 0, 1, -0.0098182, 2.54458, 0)
-mesh = SubResource("PlaneMesh_ro4j2")
-material = SubResource("StandardMaterial3D_x0u1w")
+transform = Transform3D(0.25711, 0, 0, 0, 0.232504, 0, 0, 0, 0.897656, -0.0917067, 2.49857, 0)
+mesh = SubResource("PlaneMesh_lx516")
+material = SubResource("StandardMaterial3D_f0512")
 script = ExtResource("10_bkeka")
 
 [node name="label" type="Label3D" parent="unit_ui_controller/ability_display"]
@@ -143,16 +191,17 @@ outline_size = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="unit_ui_controller/ability_display/ability_static_body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0087347, -0.0328965, -0.0397097)
-shape = SubResource("BoxShape3D_3xrok")
+shape = SubResource("BoxShape3D_5huws")
 
 [node name="unit_details_3d" parent="unit_ui_controller" instance=ExtResource("13_dogtw")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.00311, 0)
 visible = false
-texture = SubResource("ViewportTexture_ax0ij")
+texture = SubResource("ViewportTexture_s3sd0")
 
 [node name="ability_details_3d" parent="unit_ui_controller" instance=ExtResource("14_8sm8x")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.1, 0)
-texture = SubResource("ViewportTexture_wvf1p")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.114204, 3.92774, 0.0379961)
+visible = false
+texture = SubResource("ViewportTexture_0luxs")
 
 [node name="abilities" type="Node3D" parent="."]
 
@@ -161,6 +210,14 @@ texture = SubResource("ViewportTexture_wvf1p")
 [node name="ability_t2_flying_strike" parent="abilities" instance=ExtResource("11_ht6de")]
 
 [node name="ability_t3_falling_heaven" parent="abilities" instance=ExtResource("12_awwdc")]
+
+[node name="animation_player" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_cobgf")
+}
+
+[node name="audio_player_2d" type="AudioStreamPlayer2D" parent="."]
+pitch_scale = 1.5
 
 [connection signal="mouse_entered" from="unit_col_bdy" to="." method="_on_static_body_3d_mouse_entered"]
 [connection signal="mouse_exited" from="unit_col_bdy" to="." method="_on_static_body_3d_mouse_exited"]

@@ -15,7 +15,7 @@ public partial class PlayerUnit : Unit
 	public override void Init(TurnManager turnManager, IEventBus messenger)
 	{
 		base.Init(turnManager, messenger);
-		_eventBus.OnPlayerStatusEffectsApply += HandlePlayerStatusEffectApply;
+		_eventBus.OnPlayerStatusEffectsApply += HandleOnPlayerStatusEffectApply;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -24,7 +24,7 @@ public partial class PlayerUnit : Unit
 		base._Process(delta);
 	}
 
-	private async Task HandlePlayerStatusEffectApply(List<StatusEffect> statusEffects)
+	private async Task HandleOnPlayerStatusEffectApply(List<StatusEffect> statusEffects)
 	{
 		foreach (StatusEffect effect in statusEffects)
 		{
@@ -36,7 +36,7 @@ public partial class PlayerUnit : Unit
 
 	public override void _ExitTree()
 	{
-		_eventBus.OnPlayerStatusEffectsApply -= HandlePlayerStatusEffectApply;
+		_eventBus.OnPlayerStatusEffectsApply -= HandleOnPlayerStatusEffectApply;
 		base._ExitTree();
 	}
 }

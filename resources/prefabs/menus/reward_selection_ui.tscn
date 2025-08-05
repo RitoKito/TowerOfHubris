@@ -1,7 +1,68 @@
-[gd_scene load_steps=3 format=3 uid="uid://da8axfdvo5q6w"]
+[gd_scene load_steps=6 format=3 uid="uid://da8axfdvo5q6w"]
 
 [ext_resource type="Script" path="res://resources/source/combat_phase/combat_ui/RewardSelectionUI.cs" id="1_343nt"]
 [ext_resource type="PackedScene" uid="uid://cps7mnaxatao0" path="res://resources/prefabs/combat_level/UI/reward_card.tscn" id="2_ymi3v"]
+
+[sub_resource type="Animation" id="Animation_rf737"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("rewards:theme_override_constants/margin_bottom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [125]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("rewards:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_j2rpx"]
+resource_name = "rewards_appear"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("rewards:theme_override_constants/margin_bottom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 2),
+"update": 0,
+"values": [270, 125]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("rewards:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 2),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_h5wa1"]
+_data = {
+"RESET": SubResource("Animation_rf737"),
+"rewards_appear": SubResource("Animation_j2rpx")
+}
 
 [node name="reward_selection_ui" type="Control"]
 layout_mode = 3
@@ -22,12 +83,17 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_constants/margin_bottom = 125
 
 [node name="VBoxContainer" type="VBoxContainer" parent="rewards"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_constants/separation = -75
+theme_override_constants/separation = -125
+
+[node name="Control" type="Control" parent="rewards/VBoxContainer"]
+custom_minimum_size = Vector2(0, 191.64)
+layout_mode = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="rewards/VBoxContainer"]
 custom_minimum_size = Vector2(200, 200)
@@ -35,9 +101,11 @@ layout_mode = 2
 
 [node name="RichTextLabel" type="RichTextLabel" parent="rewards/VBoxContainer/MarginContainer"]
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 7
 theme_override_font_sizes/normal_font_size = 26
 bbcode_enabled = true
-text = "[center]Select One[center]"
+text = "[center]Select A Gift[center]"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="rewards/VBoxContainer"]
 layout_mode = 2
@@ -53,3 +121,8 @@ layout_mode = 2
 
 [node name="reward_card_2" parent="rewards/VBoxContainer/HBoxContainer" instance=ExtResource("2_ymi3v")]
 layout_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_h5wa1")
+}

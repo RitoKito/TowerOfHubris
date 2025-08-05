@@ -17,18 +17,21 @@ public static class RandomEnemyGenerator
 	private static float _t3ProbabilityMax = 0.2f;
 
 
-	public static int GetMinEnemyCount(int escalation)
+	public static int GetMinEnemyCount(int escalation, bool isExtreme)
 	{
+		if (isExtreme)
+			return 4;
+
 		Random rnd = new Random();
 		int minEnemyCount = 1;
 
-		if(escalation < 40)
-		{
-			minEnemyCount = 1 + rnd.Next(0, 4);
-		}
-		else if(escalation < 60)
+		if(escalation <= 20)
 		{
 			minEnemyCount = 2 + rnd.Next(0, 2);
+		}
+		else if(escalation <= 40)
+		{
+			minEnemyCount = 2 + rnd.Next(0, 3);
 		}
 		else
 		{
@@ -38,8 +41,11 @@ public static class RandomEnemyGenerator
 		return minEnemyCount;
 	}
 
-	public static int GetRandomEnemyTier(int escalation)
+	public static int GetRandomEnemyTier(int escalation, bool isExtreme)
 	{
+		if (isExtreme)
+			escalation = 100;
+
 		Random rnd = new Random();
 		//PLACEHOLDER
 		float escalationNormal = escalation / 100f;

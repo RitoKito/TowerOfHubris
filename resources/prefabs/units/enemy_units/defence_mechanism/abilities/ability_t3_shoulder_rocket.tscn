@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://5gu2ow5uxnth"]
+
+[ext_resource type="Script" path="res://resources/source/combat_phase/abilities/Ability.cs" id="1_c0ewq"]
+
+[node name="ability_t3_shoulder_rocket" type="Node3D"]
+script = ExtResource("1_c0ewq")
+_abilityId = 7
+_abilityName = "Shoulder Rocket"
+_abilityTier = 3
+_abilityDamage = 75.0
+_critChance = 50.0
+_abilityCritMult = 1.5
+_description = null
+_affinities = null

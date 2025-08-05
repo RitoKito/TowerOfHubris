@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://ej6wdid0b1u5"]
+
+[ext_resource type="Script" path="res://resources/source/status_effects/StatusEffectHeartyMeal.cs" id="1_a2u6v"]
+
+[node name="hearty_meal" type="Node"]
+script = ExtResource("1_a2u6v")

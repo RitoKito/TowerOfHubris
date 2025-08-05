@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://con5l45b7myna"]
 
-[ext_resource type="Script" path="res://resources/prefabs/status_effects/GlobalStatusEffectUIManager.cs" id="1_y2tpo"]
+[ext_resource type="Script" path="res://resources/source/ui/GlobalStatusEffectUIManager.cs" id="1_y2tpo"]
 
 [node name="global_status_effect_ui" type="MarginContainer"]
 anchors_preset = 15
@@ -26,3 +26,11 @@ theme_override_constants/margin_left = 5
 
 [node name="hbox_container" type="HBoxContainer" parent="status_effect_container/margin_container"]
 layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="positive_effects" type="HBoxContainer" parent="status_effect_container/margin_container/hbox_container"]
+layout_mode = 2
+
+[node name="negative_effects" type="HBoxContainer" parent="status_effect_container/margin_container/hbox_container"]
+layout_mode = 2
+size_flags_horizontal = 0

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 public partial class RewardSelectionUI : Control
 {
 	private EventBus _eventBus = null;
+	private AnimationPlayer _animationPlayer = null;
 
 	private const int MAX_NUM_OF_RWARDS = 3;
 	private RewardCard[] _rewardCards = new RewardCard[MAX_NUM_OF_RWARDS] { null, null, null };
@@ -15,6 +16,8 @@ public partial class RewardSelectionUI : Control
 		_eventBus = EventBus.Instance;
 		_eventBus.OnRewardSelection += HandleOnRewardSelection;
 		_eventBus.OnAssignRewards += HandleAssignRewards;
+
+		_animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
 
 		for(int i=0; i<MAX_NUM_OF_RWARDS; i++)
 		{
@@ -32,6 +35,7 @@ public partial class RewardSelectionUI : Control
 	public async Task HandleOnRewardSelection()
 	{
 		Show();
+		_animationPlayer.Play("rewards_appear");
 		await Task.Yield();
 	}
 

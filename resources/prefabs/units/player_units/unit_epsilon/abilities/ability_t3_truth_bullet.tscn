@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://cwtca21yliscy"]
+
+[ext_resource type="Script" path="res://resources/source/combat_phase/abilities/Ability.cs" id="1_yg6f8"]
+
+[node name="ability_t3_truth_bullet" type="Node3D"]
+script = ExtResource("1_yg6f8")
+_abilityId = 17
+_abilityName = "Truth Bullet"
+_abilityTier = 3
+_abilityDamage = 90.0
+_critChance = 50.0
+_abilityCritMult = 2.0

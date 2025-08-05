@@ -1,8 +1,120 @@
-[gd_scene load_steps=4 format=3 uid="uid://baue8h1kkk2fp"]
+[gd_scene load_steps=11 format=3 uid="uid://baue8h1kkk2fp"]
 
 [ext_resource type="Script" path="res://resources/source/combat_phase/combat_managers/CombatUIManager.cs" id="1_ohalw"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/combat_ui/ResolveTurnButton.cs" id="2_fatkm"]
 [ext_resource type="Script" path="res://resources/source/combat_phase/combat_ui/TurnCounterLabel.cs" id="3_kgjrh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0744u"]
+bg_color = Color(0.207843, 0.207843, 0.207843, 0.717647)
+border_color = Color(0.8, 0.8, 0.8, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cc5wv"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_o1sxn"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_a60g8"]
+resource_name = "theater_bars_show"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VBoxContainer/bar1:custom_minimum_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer/bar2:custom_minimum_size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 0,
+"values": []
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("VBoxContainer/separator:custom_minimum_size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 650), Vector2(0, 440)]
+}
+
+[sub_resource type="Animation" id="Animation_4fag3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VBoxContainer/bar1:custom_minimum_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 100)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer/bar2:custom_minimum_size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 100)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("VBoxContainer/separator:custom_minimum_size")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 650)]
+}
+
+[sub_resource type="Animation" id="Animation_1b0x2"]
+resource_name = "theater_bars_hide"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VBoxContainer/separator:custom_minimum_size")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 440), Vector2(0, 650)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3j77p"]
+_data = {
+"RESET": SubResource("Animation_4fag3"),
+"theater_bars_hide": SubResource("Animation_1b0x2"),
+"theater_bars_show": SubResource("Animation_a60g8")
+}
 
 [node name="combat_ui_manager" type="Control"]
 layout_mode = 3
@@ -40,7 +152,10 @@ size_flags_vertical = 4
 
 [node name="Button" type="Button" parent="resolve_round_btn/VBoxContainer/MarginContainer"]
 layout_mode = 2
-text = "Resolve Round"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+theme_override_styles/disabled = SubResource("StyleBoxFlat_0744u")
+text = " Resolve "
 script = ExtResource("2_fatkm")
 
 [node name="separator" type="Control" parent="resolve_round_btn/VBoxContainer"]
@@ -51,17 +166,56 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -44.0
-offset_right = 44.0
-offset_bottom = 47.0
+offset_left = -54.04
+offset_right = 54.04
+offset_bottom = 87.0
 grow_horizontal = 2
 theme_override_constants/margin_top = 50
 
-[node name="HBoxContainer" type="HBoxContainer" parent="turn_counter"]
+[node name="ColorRect" type="ColorRect" parent="turn_counter"]
+visible = false
+custom_minimum_size = Vector2(108.08, 0)
 layout_mode = 2
+color = Color(0.207843, 0.207843, 0.207843, 0.886275)
 
-[node name="turn_counter_label" type="Label" parent="turn_counter/HBoxContainer"]
+[node name="turn_counter_label" type="Label" parent="turn_counter"]
 layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 7
 theme_override_font_sizes/font_size = 26
 text = "Turn: 0"
 script = ExtResource("3_kgjrh")
+
+[node name="theater_bars" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="theater_bars"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="bar1" type="Panel" parent="theater_bars/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cc5wv")
+
+[node name="separator" type="Control" parent="theater_bars/VBoxContainer"]
+custom_minimum_size = Vector2(0, 650)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="bar2" type="Panel" parent="theater_bars/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_o1sxn")
+
+[node name="tbars_animation_player" type="AnimationPlayer" parent="theater_bars"]
+libraries = {
+"": SubResource("AnimationLibrary_3j77p")
+}

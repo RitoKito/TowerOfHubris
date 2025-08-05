@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0sdd8rwwompr"]
+
+[ext_resource type="Script" path="res://resources/source/combat_phase/abilities/Ability.cs" id="1_pag0p"]
+
+[node name="ability_t1_iron_slap" type="Node3D"]
+script = ExtResource("1_pag0p")
+_abilityId = 5
+_abilityName = "Iron Slap"
+_abilityTier = 1
+_abilityDamage = 40.0
+_critChance = 20.0
+_abilityCritMult = 1.3
+_description = null
+_affinities = null

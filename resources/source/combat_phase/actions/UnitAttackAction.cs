@@ -40,7 +40,7 @@ public partial class UnitAttackAction : GameAction
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public async override void _Process(double delta)
+	public override void _Process(double delta)
 	{
 
 
@@ -61,10 +61,7 @@ public partial class UnitAttackAction : GameAction
 			// Arbitrary wait
 			// To be replaced with animations
 
-			await Task.Delay(100);
-			_creator.UseAbility();
-			await Task.Delay(100);
-			_state = State.MovingHome;
+			ExecuteAttackSequence();
 		}
 
 		if (_state == State.MovingHome)
@@ -86,6 +83,15 @@ public partial class UnitAttackAction : GameAction
 			_state = State.AwaitingDeletion;
 			QueueFree();
 		}
+	}
+
+
+	private async void ExecuteAttackSequence()
+	{
+		await Task.Delay(100);
+		_creator.UseAbility();
+		await Task.Delay(250);
+		_state = State.MovingHome;
 	}
 
 	public override void Execute()

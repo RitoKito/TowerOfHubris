@@ -68,6 +68,7 @@ public partial class TurnManager : Node3D
 		{
 			_turnState = TurnState.SceneComplete;
 			await EmitTurnStateChanged(TurnState);
+			await _eventBus.EmitDefeat();
 		}
 		else
 		{

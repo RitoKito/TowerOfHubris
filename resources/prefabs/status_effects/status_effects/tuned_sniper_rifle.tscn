@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cu0e2hp5fl6ym"]
+
+[ext_resource type="Script" path="res://resources/source/status_effects/StatusEffectTunedSniperRifle.cs" id="1_1od0d"]
+
+[node name="tuned_sniper_rifle" type="Node"]
+script = ExtResource("1_1od0d")

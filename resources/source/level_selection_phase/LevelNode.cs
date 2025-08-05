@@ -15,24 +15,30 @@ public partial class LevelNode : Node3D
 
 	private List<LevelNode> _parents = new List<LevelNode>();
 
-	private CsgBox3D nodeObj = null;
+	private Sprite3D _nodeSprite = null;
 	// A list of curves that draws the connecting line between nodes
-	public NodeLine[] NodeLine = new NodeLine[MAX_CONNECTIONS] {null, null, null};
+	public NodeLine[] NodeLines = new NodeLine[MAX_CONNECTIONS] {null, null, null};
 
-	private Material _birghtRed;
-	private Material _defaultMaterial;
+	private bool _isExtreme = false;
+	public bool IsExtreme { get { return _isExtreme; } set { _isExtreme=value; } }
+
+	private bool _isValid = true;
+
+	private Color _blue = new Color(103/255f, 148/255f, 255/255f);
+	private Color _green = new Color(101/255f, 159/255f, 61/255f);
+	private Color _grey = new Color(69/255f, 65/255f, 67/255f);
+	private Color _yellow = new Color(245/255f, 221/255f, 0/255f);
+	private Color _red = new Color(255/255f, 0/255f, 0/255f);
+	private Color _defaultColor;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		nodeObj = GetNode<CsgBox3D>("node_object");
-
-		_birghtRed = nodeObj.Material;
-		_defaultMaterial = nodeObj.Material;
+		_nodeSprite = GetNode<Sprite3D>("node_sprite");
 
 		for (int i = 0; i < MAX_CONNECTIONS; i++)
 		{
-			NodeLine[i] = GetNode($"node_object/path{i}") as NodeLine;
+			NodeLines[i] = GetNode($"node_sprite/path{i}") as NodeLine;
 		}
 	}
 
@@ -61,36 +67,35 @@ public partial class LevelNode : Node3D
 		int i = 0;
 		foreach (LevelNode childNode in _children)
 		{
-			NodeLine[i].SetPoint(childNode.GlobalPosition);
+			NodeLines[i].SetPoint(childNode.GlobalPosition);
 			i++;
 		}
 	}
 
-	public void ChangeMaterial(Material material)
-	{
-		nodeObj.Material = material;
-	}
-
-	public void SetNewMaterial(Material material)
-	{
-		_defaultMaterial = material;
-		nodeObj.Material = material;
-	}
-
 	public void SelectNode()
 	{
-		StandardMaterial3D mat = new StandardMaterial3D();
-		mat.AlbedoColor = new Color(0, 1, 1);
-		SetNewMaterial(mat);
+		_isValid = false;
+		_nodeSprite.Modulate = _blue;
+		_defaultColor = _blue;
 
-		/*foreach (LevelNode node in _children)
+		// set root lines that do not connect
+		// to grey colour
+		if (_parents.Count > 0 && _parents[0].Depth == 0) 
 		{
-			node.SetNextLevel();
-		}*/
+			for(int i = 0; i < MAX_CONNECTIONS; i++)
+			{
+				if (_parents[0].Children[i] != this)
+				{
+					_parents[0].NodeLines[i].SetLineColour(_grey);
+				}
+			}
+		}
 	}
 
 	public void ShowEligibleNext()
 	{
+
+
 		foreach (LevelNode node in _children)
 		{
 			node.ShowEligiblePath();
@@ -99,49 +104,94 @@ public partial class LevelNode : Node3D
 
 	public void ShowEligiblePath()
 	{
-		StandardMaterial3D mat = new StandardMaterial3D();
-		mat.AlbedoColor = new Color(0, 1, 0);
-		SetNewMaterial(mat);
+		_isValid = true;
+		_nodeSprite.Modulate = _green;
+		_defaultColor = _green;
 
-		foreach (LevelNode childNode in _children)
+		/*foreach (LevelNode childNode in _children)
 		{
 			childNode.SetValidFutureLevel();
+		}*/
+
+		for (int i = 0; i < MAX_CONNECTIONS; i++)
+		{
+
+			if (i < NodeLines.Length)
+				NodeLines[i].SetDefaultLineColour();
+
+			if (i < Children.Count)
+				_children[i].SetValidFutureLevel();
 		}
 	}
 
 	public void SetValidFutureLevel()
 	{
-		SetNewMaterial(_birghtRed);
+		_isValid = true;
+		_nodeSprite.Modulate = _yellow;
+		_defaultColor = _yellow;
 
-		foreach (LevelNode childNode in _children)
+		/*foreach (LevelNode childNode in _children)
 		{
 			childNode.SetValidFutureLevel();
+		}*/
+
+		for (int i = 0; i < MAX_CONNECTIONS; i++)
+		{
+
+			if (i < NodeLines.Length)
+				NodeLines[i].SetDefaultLineColour();
+
+			if (i < Children.Count)
+				_children[i].SetValidFutureLevel();
 		}
 	}
 
-
-	public void SetInvalidNode()
+	public void SetInvalidNode(LevelNode previousNode, LevelNode currentNode)
 	{
-		StandardMaterial3D mat = new StandardMaterial3D();
-		mat.AlbedoColor = new Color(0.5f, 0.5f, 0.5f);
-		_defaultMaterial = mat;
-		nodeObj.Material = mat;
+		_isValid = false;
+		_nodeSprite.Modulate = _grey;
+		_defaultColor = _grey;
 
-		foreach(LevelNode childNode in _children)
+		/*foreach (LevelNode childNode in _children)
 		{
 			childNode.SetInvalidNode();
+		}*/
+
+		for(int i = 0; i < MAX_CONNECTIONS; i++)
+		{
+			if (previousNode != null && i < previousNode.Children.Count)
+			{
+				if (previousNode.Children[i] != currentNode)
+					previousNode.NodeLines[i].SetLineColour(_grey);
+			}
+
+			if (i < NodeLines.Length)
+				NodeLines[i].SetLineColour(_grey);
+
+			if (i < Children.Count)
+				_children[i].SetInvalidNode(this, _children[i]);
 		}
+	}
+
+	public void SetFirst()
+	{
+		_nodeSprite.Texture = GD.Load<Texture2D>(PathConstants.SPRITE_NODE_START);
+	}
+
+	public void SetExtreme()
+	{
+		_isExtreme = true;
+		_nodeSprite.Texture = GD.Load<Texture2D>(PathConstants.SPRITE_NODE_EXTREME);
 	}
 
 	public void _on_node_collider_mouse_entered()
 	{
-		var material = new StandardMaterial3D();
-		material.AlbedoColor = new Color(1, 0, 1f);
-		nodeObj.Material = material;
+		if(_isValid)
+			_nodeSprite.Modulate = _red;
 	}
 
 	public void _on_node_collider_mouse_exited()
 	{
-		nodeObj.Material = _defaultMaterial;
+		_nodeSprite.Modulate = _defaultColor;
 	}
 }

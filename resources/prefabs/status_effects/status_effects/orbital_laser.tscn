@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://di700w43jsnlo"]
+
+[ext_resource type="Script" path="res://resources/source/status_effects/StatusEffectOrbitalLaser.cs" id="1_71t6f"]
+
+[node name="orbital_laser" type="Node"]
+script = ExtResource("1_71t6f")

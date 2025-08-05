@@ -14,6 +14,7 @@ public enum TurnState
 	InProgress,
 	TurnResolved,
 	SceneComplete,
+	Defeat,
 }
 
 public enum CombatOutcome

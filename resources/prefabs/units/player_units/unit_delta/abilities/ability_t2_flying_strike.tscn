@@ -9,4 +9,4 @@ _abilityName = "Flying Strike"
 _abilityTier = 2
 _abilityDamage = 50.0
 _critChance = 25.0
-_abilityCritMult = 2.0
+_abilityCritMult = 1.3

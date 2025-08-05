@@ -28,7 +28,6 @@ public partial class UnitUIController : Node3D
 		_abilityDisplay = GetNode<AbilityDisplay>("ability_display");
 		_abilityDetails = GetNode<AbilityDetails>("ability_details_3d");
 
-		_unitDetails.UpdateWeaknessLabel("_");
 		HideUnitDetails();
 	}
 
@@ -84,15 +83,20 @@ public partial class UnitUIController : Node3D
 		_unitDetails.UpdateHpLabel(currentHp, maxHp);
 	}
 
+	public void UpdateDamageResLabel(float damageRes)
+	{
+		_unitDetails.UpdateDamageResLabel(damageRes);
+	}
+
 	public void UpdateAbilityDetails(Ability currentAbility)
 	{
 		_abilityDetails.UpdateNameLabel(currentAbility.AbilityName);
 		//Placeholder text
 		_abilityDetails.UpdateDescriptionLabel($"Deals {currentAbility.AbilityDamage} damage to the target");
-		_abilityDetails.UpdateCritLabel($"CR: {currentAbility.CritChance} | CD: {currentAbility.AbilityCritMult}");
+		_abilityDetails.UpdateCritLabel($"CR: {(int)currentAbility.CritChance}% | CD: {(int)currentAbility.AbilityCritMult*100}%");
 		//Placeholder
-		_abilityDetails.UpdateStatusEffectLabel("-");
-		_abilityDetails.UpdateAffinityLabel("-");
+		//_abilityDetails.UpdateStatusEffectLabel("-");
+		//_abilityDetails.UpdateAffinityLabel("-");
 	}
 
 	public void ShowUnitDetails()
@@ -103,6 +107,11 @@ public partial class UnitUIController : Node3D
 	public void HideUnitDetails()
 	{
 		_unitDetails.Hide();
+	}
+
+	public void HideHPDetails()
+	{
+		_hpLabel.Hide();
 	}
 
 	private void _on_ability_static_body_mouse_entered()

@@ -73,14 +73,13 @@ theme_override_constants/separation = 5
 layout_mode = 2
 
 [node name="unit_name_label" type="RichTextLabel" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer"]
-custom_minimum_size = Vector2(290, 20)
+custom_minimum_size = Vector2(290, 82.88)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_font_sizes/normal_font_size = 25
 bbcode_enabled = true
-text = "The Mighty Placeholder T1"
-fit_content = true
+text = "The Mighty Placeholder "
 scroll_active = false
 
 [node name="unit_hp_label" type="RichTextLabel" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer"]
@@ -94,17 +93,13 @@ text = "1000/1000HP"
 fit_content = true
 scroll_active = false
 
-[node name="separator2" type="Control" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer"]
-custom_minimum_size = Vector2(0, 5)
-layout_mode = 2
-
 [node name="unit_weakness_label" type="RichTextLabel" parent="SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer"]
 custom_minimum_size = Vector2(290, 34.355)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-theme_override_font_sizes/normal_font_size = 25
+theme_override_font_sizes/normal_font_size = 20
 bbcode_enabled = true
-text = "AAAAAAAAAAAAAAAAA"
+text = "DMG Reduction:"
 fit_content = true
 scroll_active = false

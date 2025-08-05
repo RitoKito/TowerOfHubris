@@ -68,6 +68,7 @@ public partial class CombatDie : Node
 				switch (_entries[i].ability.AbilityTier)
 				{
 					case 1:
+						// Increase probability of other abilities
 						if (_entries.Count > 1)
 						{
 							_entries[i + 1] = (_entries[i + 1].ability, _entries[i].weight + 0.6f);
