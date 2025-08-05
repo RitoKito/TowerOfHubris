@@ -30,7 +30,6 @@ public partial class RewardGenerator : Node3D
 
 		foreach(var statusEffect in library.StatusEffects)
 		{
-			GD.Print("yo");
 			var instance = statusEffect.Instantiate() as StatusEffect;
 			_rewardPool.Add(instance);
 		}
