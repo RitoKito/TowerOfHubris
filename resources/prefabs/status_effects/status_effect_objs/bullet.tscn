@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d1weg51phyxxc"]
+
+[ext_resource type="Script" path="res://resources/source/status_effects/status_effect_obj_scripts/StatusEffectBullet.cs" id="1_aba3o"]
+
+[node name="bullet" type="Node"]
+script = ExtResource("1_aba3o")

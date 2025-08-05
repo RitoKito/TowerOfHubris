@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bscbst8a1edgg"]
+
+[ext_resource type="Script" path="res://resources/source/status_effects/status_effect_obj_scripts/StatusEffectLostArrow.cs" id="1_i383h"]
+
+[node name="lost_arrow" type="Node"]
+script = ExtResource("1_i383h")

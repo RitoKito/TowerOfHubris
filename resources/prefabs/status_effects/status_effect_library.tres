@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="StatusEffectLibrary" load_steps=17 format=3 uid="uid://b6an3du4vvh1c"]
+
+[ext_resource type="PackedScene" uid="uid://bbmsilvfxhpok" path="res://resources/prefabs/status_effects/status_effect_objs/abandoned_ammo_crate.tscn" id="1_7ob6x"]
+[ext_resource type="Script" path="res://resources/source/status_effects/StatusEffectLibrary.cs" id="1_h5c6h"]
+[ext_resource type="PackedScene" uid="uid://d1weg51phyxxc" path="res://resources/prefabs/status_effects/status_effect_objs/bullet.tscn" id="2_6q0jy"]
+[ext_resource type="PackedScene" uid="uid://d11ry325kt8gb" path="res://resources/prefabs/status_effects/status_effect_objs/carrot.tscn" id="3_lmodi"]
+[ext_resource type="PackedScene" uid="uid://ccg6iblt6s11k" path="res://resources/prefabs/status_effects/status_effect_objs/club.tscn" id="4_chxdt"]
+[ext_resource type="PackedScene" uid="uid://clqmav30w0vnb" path="res://resources/prefabs/status_effects/status_effect_objs/delicious_donut.tscn" id="5_nwe8v"]
+[ext_resource type="PackedScene" uid="uid://bxmvfplmpla14" path="res://resources/prefabs/status_effects/status_effect_objs/divine_intervention.tscn" id="6_g4wih"]
+[ext_resource type="PackedScene" uid="uid://bxj05hbt7vdpd" path="res://resources/prefabs/status_effects/status_effect_objs/great_sword.tscn" id="7_syfsl"]
+[ext_resource type="PackedScene" uid="uid://ej6wdid0b1u5" path="res://resources/prefabs/status_effects/status_effect_objs/hearty_meal.tscn" id="8_r6huo"]
+[ext_resource type="PackedScene" uid="uid://bscbst8a1edgg" path="res://resources/prefabs/status_effects/status_effect_objs/lost_arrow.tscn" id="9_rjbac"]
+[ext_resource type="PackedScene" uid="uid://b6kdd0sjwst0u" path="res://resources/prefabs/status_effects/status_effect_objs/nuclear_launch_code.tscn" id="10_ydjoe"]
+[ext_resource type="PackedScene" uid="uid://di700w43jsnlo" path="res://resources/prefabs/status_effects/status_effect_objs/orbital_laser.tscn" id="11_asj1k"]
+[ext_resource type="PackedScene" uid="uid://bxn5u3btkd6bw" path="res://resources/prefabs/status_effects/status_effect_objs/serving_fork.tscn" id="12_05xie"]
+[ext_resource type="PackedScene" uid="uid://dsf1tptyg47qh" path="res://resources/prefabs/status_effects/status_effect_objs/toothpick.tscn" id="13_tdy4j"]
+[ext_resource type="PackedScene" uid="uid://d0rvo4u165qfs" path="res://resources/prefabs/status_effects/status_effect_objs/trident.tscn" id="14_0acu2"]
+[ext_resource type="PackedScene" uid="uid://cu0e2hp5fl6ym" path="res://resources/prefabs/status_effects/status_effect_objs/tuned_sniper_rifle.tscn" id="15_60d1r"]
+
+[resource]
+script = ExtResource("1_h5c6h")
+StatusEffects = [ExtResource("1_7ob6x"), ExtResource("2_6q0jy"), ExtResource("3_lmodi"), ExtResource("4_chxdt"), ExtResource("5_nwe8v"), ExtResource("6_g4wih"), ExtResource("7_syfsl"), ExtResource("8_r6huo"), ExtResource("9_rjbac"), ExtResource("10_ydjoe"), ExtResource("11_asj1k"), ExtResource("12_05xie"), ExtResource("13_tdy4j"), ExtResource("14_0acu2"), ExtResource("15_60d1r")]

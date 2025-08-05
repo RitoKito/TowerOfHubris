@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bxmvfplmpla14"]
-
-[ext_resource type="Script" path="res://resources/source/status_effects/StatusEffectDivineIntervention.cs" id="1_xp5gl"]
-
-[node name="divine_intervention" type="Node"]
-script = ExtResource("1_xp5gl")

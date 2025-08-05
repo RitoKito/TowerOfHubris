@@ -7,7 +7,6 @@ public partial class RewardGenerator : Node3D
 {
 	private EventBus _eventBus = null;
 	private List<StatusEffect> _rewardPool = new List<StatusEffect>();
-	private Random _rnd = new Random();
 
 	private const int REWARD_COUNT = 3;
 
@@ -27,35 +26,14 @@ public partial class RewardGenerator : Node3D
 
 	private void LoadRewardPool()
 	{
-		var dir = DirAccess.Open(PathConstants.STATUS_EFFECT_OBJS);
+		var library = ResourceLoader.Load<StatusEffectLibrary>("res://resources/prefabs/status_effects/status_effect_library.tres");
 
-		if(dir == null)
+		foreach(var statusEffect in library.StatusEffects)
 		{
-			GD.PrintErr("Could not locate Status Effect folder");
-			return;
+			GD.Print("yo");
+			var instance = statusEffect.Instantiate() as StatusEffect;
+			_rewardPool.Add(instance);
 		}
-
-		dir.ListDirBegin();
-		string statusEffectName = dir.GetNext();
-
-		while(!string.IsNullOrEmpty(statusEffectName))
-		{
-			if(!dir.CurrentIsDir() && statusEffectName.EndsWith(".tscn"))
-			{
-				string path = $"{PathConstants.STATUS_EFFECT_OBJS}/{statusEffectName}";
-				PackedScene packedScene = ResourceLoader.Load<PackedScene>(path);
-
-				if(packedScene != null)
-				{
-					StatusEffect statusEffect = packedScene.Instantiate() as StatusEffect;
-					_rewardPool.Add(statusEffect);
-				}
-			}
-
-			statusEffectName = dir.GetNext();
-		}
-
-		dir.ListDirEnd();
 	}
 
 	private async Task HandleGameStateChanged(GameState state)

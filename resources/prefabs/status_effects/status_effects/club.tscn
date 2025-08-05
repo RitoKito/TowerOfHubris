@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://ccg6iblt6s11k"]
-
-[ext_resource type="Script" path="res://resources/source/status_effects/StatusEffectClub.cs" id="1_ea2s2"]
-
-[node name="club" type="Node"]
-script = ExtResource("1_ea2s2")

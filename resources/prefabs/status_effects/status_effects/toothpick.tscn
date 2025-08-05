@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://dsf1tptyg47qh"]
-
-[ext_resource type="Script" path="res://resources/source/status_effects/StatusEffectToothpick.cs" id="1_1lujv"]
-
-[node name="toothpick" type="Node"]
-script = ExtResource("1_1lujv")

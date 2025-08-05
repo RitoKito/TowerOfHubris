@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://d11ry325kt8gb"]
+
+[ext_resource type="Script" path="res://resources/source/status_effects/status_effect_obj_scripts/StatusEffectCarrot.cs" id="1_g0fxd"]
+
+[node name="carrot" type="Node"]
+script = ExtResource("1_g0fxd")

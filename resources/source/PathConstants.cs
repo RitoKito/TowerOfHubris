@@ -37,6 +37,7 @@ public static class PathConstants
 	public const string PLACEHOLDER_LEVEL = "res://resources/prefabs/combat_level/level_placeholder.tscn";
 
 	public const string STATUS_EFFECT_UI_CONTAINER_GLOBAL = "res://resources/prefabs/status_effects/UI/status_effect_ui_container.tscn";
+	public const string STATUS_EFFECT_LIBARARY = "res://resources/prefabs/status_effects/status_effect_library.tscn";
 	public const string STATUS_EFFECT_OBJS = "res://resources/prefabs/status_effects/status_effects/";
 
 	public const string AUDIO_HIT0 = "res://resources/sfx/hit0.mp3";
@@ -46,4 +47,5 @@ public static class PathConstants
 
 	public const string AUDIO_LEVEL_TREE = "res://resources/sfx/evil_is_near.wav";
 	public const string AUDIO_COMBAT = "res://resources/sfx/epic_battle_2.wav";
+
 }
