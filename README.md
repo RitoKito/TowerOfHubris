@@ -94,7 +94,7 @@ You can download the project with the source code and compile it with Godot Engi
 - Normal Nodes (Skull Icon):
   + Standard difficulty. Fewer, lower-tier enemies near the root.
 - Extreme Nodes (Horned Skull Icon):
- +High difficulty. Always contain 4 enemies, often tier 2 or above.
+ Always contains a group of 4 enemies, all enemy units are tier 2 or above.
 <img width="332" height="87" alt="image" src="https://github.com/user-attachments/assets/c0edb752-3a9d-4d44-bab1-4fae06eeb8b1" />
 
 ### Combat
@@ -143,12 +143,12 @@ At the start of each round, every unit is assigned a random ability tier:
 - Combat sequence ends when:
   + All units have acted, or
   + All enemies or player units are defeated.
-- After combat sequence has ended you will be offered 3 random rewards of which you must select 1.
+- After all enemies have been defeated you will be offered 3 random rewards of which you must select 1.
 <img width="920" height="416" alt="image" src="https://github.com/user-attachments/assets/447e1a81-6983-401b-bf82-ea71ca30405c" />
 
 
 #### Power Corrosion
-- After clearing the final node of a floor, you'll ascend to a new one.
+- After clearing the final node of a floor, you'll ascend to a new floor.
 - With each new floor:
   + Player units receive debuffs to attributes and abilities.
   + Enemy units receive buffs, increasing their power.
