@@ -25,7 +25,7 @@ public partial class GlobalStatusEffectManager : Node3D
 	{
 	}
 
-	public async Task AddPlayerStatusEffect(StatusEffect statusEffect)
+	private async Task AddPlayerStatusEffect(StatusEffect statusEffect)
 	{
 		for (int i = 0; i < _playerStatusEffects.Count; i++)
 		{
@@ -44,12 +44,12 @@ public partial class GlobalStatusEffectManager : Node3D
 		await Task.Yield();
 	}
 
-	public void RemovePlayerStatusEffect(StatusEffect statusEffect)
+	private void RemovePlayerStatusEffect(StatusEffect statusEffect)
 	{
 		_playerStatusEffects.Remove(statusEffect);
 	}
 
-	public async Task AddEnemyStatusEffect(StatusEffect statusEffect)
+	private async Task AddEnemyStatusEffect(StatusEffect statusEffect)
 	{
 		for (int i = 0; i < _enemyStatusEffects.Count; i++)
 		{
@@ -68,31 +68,31 @@ public partial class GlobalStatusEffectManager : Node3D
 		await Task.Yield();
 	}
 
-	public void RemoveEnemyStatusEffect(StatusEffect statusEffect)
+	private void RemoveEnemyStatusEffect(StatusEffect statusEffect)
 	{
 		_enemyStatusEffects.Remove(statusEffect);
 	}
-
 
 	public async Task HandleOnCombatSceneLoaded()
 	{
 		await _eventBus.EmitPlayerApplyStatusEffects(_playerStatusEffects);
 		await _eventBus.EmitEnemyApplyStatusEffects(_enemyStatusEffects);
+		await _eventBus.EmitCombatSceneReady();
 		await Task.Yield();
 	}
 
-	public async Task HandleOnRewardSelected(StatusEffect selectedReward)
+	private async Task HandleOnRewardSelected(StatusEffect selectedReward)
 	{
 		await AddPlayerStatusEffect(selectedReward);
 		await Task.Yield();
 	}
 
-	public async Task HandleOnNewFloor(int currentFloor){
+	private async Task HandleOnNewFloor(int currentFloor){
 		await AddPlayerStatusEffect(new StatusEffectCorrosion());
 		await AddEnemyStatusEffect(new StatusEffectAmplifiedDarkness());
 	}
 
-	public async Task HandleOnRestart()
+	private async Task HandleOnRestart()
 	{
 		_playerStatusEffects.Clear();
 		_enemyStatusEffects.Clear();
@@ -101,7 +101,7 @@ public partial class GlobalStatusEffectManager : Node3D
 
 	public override void _ExitTree()
 	{
-		_eventBus.OnCombatSceneLoaded -= HandleOnCombatSceneLoaded;
+		//_eventBus.OnCombatSceneLoaded -= HandleOnCombatSceneLoaded;
 		_eventBus.OnRewardSelected -= HandleOnRewardSelected;
 		_eventBus.OnNewFloor -= HandleOnNewFloor;
 		_eventBus.OnRestart -= HandleOnRestart;

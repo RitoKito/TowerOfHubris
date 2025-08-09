@@ -22,11 +22,12 @@ public partial class TurnManager : Node3D
 	{
 		_eventBus = EventBus.Instance;
 		_eventBus.OnExecuteTurn += HandleOnExecuteTurn;
+		_eventBus.OnGameStateChanged += HandleOnGameStateChanged;
 
 		_sceneManager = GetParent().GetNode<SceneManager>("scene_manager");
 
 		_turnState = TurnState.SceneInitialization;
-		BeginNewTurn();
+		//BeginNewTurn();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -50,6 +51,18 @@ public partial class TurnManager : Node3D
 		_eventBus.EmitTurnInProgress();
 
 		await EmitTurnStateChanged(TurnState);
+	}
+
+	private async Task HandleOnGameStateChanged(GameState state)
+	{
+		switch(state)
+		{
+			case GameState.Combat:
+				BeginNewTurn();
+				break;
+		}
+
+		await Task.Yield();
 	}
 
 	public async void TurnResolved()

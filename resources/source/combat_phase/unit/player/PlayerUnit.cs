@@ -9,7 +9,6 @@ public partial class PlayerUnit : Unit
 	public override void _Ready()
 	{
 		base._Ready();
-		//_eventBus.OnPlayerStatusEffectsApply += HandlePlayerStatusEffectApply;
 	}
 
 	public override void Init(TurnManager turnManager, IEventBus messenger)
@@ -30,8 +29,6 @@ public partial class PlayerUnit : Unit
 		{
 			_statusEffectController.AddStatusEffect(effect);
 		}
-
-		//_uiController.UpdateAbilityDetails(_currentAbility);
 
 		await Task.Yield();
 	}

@@ -5,7 +5,7 @@ using System.Linq;
 
 public partial class CombatDie : Node
 {
-	private List<(Ability ability, float weight)> _entries = new List<(Ability ability, float weight)>();
+	private List<(Ability ability, float weight)> _abilitiesAndWeights = new List<(Ability ability, float weight)>();
 	private RandomNumberGenerator _rng = new RandomNumberGenerator();
 
 	public CombatDie()
@@ -25,16 +25,16 @@ public partial class CombatDie : Node
 
 	public void AddAbility(Ability ability, float weight)
 	{
-		_entries.Add((ability, weight));
+		_abilitiesAndWeights.Add((ability, weight));
 	}
 
 	public void SetWeight(Ability ability, float newWeight)
 	{
-		for(int i = 0; i < _entries.Count; i++)
+		for(int i = 0; i < _abilitiesAndWeights.Count; i++)
 		{
-			if (_entries[i].ability == ability)
+			if (_abilitiesAndWeights[i].ability == ability)
 			{
-				_entries[i] = (ability, newWeight);
+				_abilitiesAndWeights[i] = (ability, newWeight);
 				return;
 			}
 		}
@@ -42,11 +42,11 @@ public partial class CombatDie : Node
 
 	public void ModifyWeight(Ability ability, float delta)
 	{
-		for (int i = 0; i < _entries.Count; i++)
+		for (int i = 0; i < _abilitiesAndWeights.Count; i++)
 		{
-			if (_entries[i].ability == ability)
+			if (_abilitiesAndWeights[i].ability == ability)
 			{
-				float newWeight = _entries[i].weight + delta;
+				float newWeight = _abilitiesAndWeights[i].weight + delta;
 				return;
 			}
 		}
@@ -54,47 +54,53 @@ public partial class CombatDie : Node
 
 	public Ability Roll()
 	{
-		float total = _entries.Sum(entry => entry.weight);
+		float total = _abilitiesAndWeights.Sum(entry => entry.weight);
 		float roll = _rng.RandfRange(0, total);
 		float cumulative = 0;
 
 		// TODO REFACTOR
-		for(int i = 0; i < _entries.Count; i++)
+		for(int i = 0; i < _abilitiesAndWeights.Count; i++)
 		{
-			cumulative += _entries[i].weight;
+			cumulative += _abilitiesAndWeights[i].weight;
 
 			if(roll <= cumulative)
 			{
-				switch (_entries[i].ability.AbilityTier)
+				Ability ability = null;
+				switch (_abilitiesAndWeights[i].ability.AbilityTier)
 				{
 					case 1:
 						// Increase probability of other abilities
-						if (_entries.Count > 1)
+						if (_abilitiesAndWeights.Count > 1)
 						{
-							_entries[i + 1] = (_entries[i + 1].ability, _entries[i].weight + 0.6f);
+							ability = _abilitiesAndWeights[i + 1].ability;
+							_abilitiesAndWeights[i + 1] = (ability, _abilitiesAndWeights[i].weight + ability.AbilityBaseWeightIncrease);
 
-							if(_entries.Count > 2)
+							if(_abilitiesAndWeights.Count > 2)
 							{
-								_entries[i + 2] = (_entries[i + 2].ability, _entries[i].weight + 0.3f);
+								ability = _abilitiesAndWeights[i + 2].ability;
+								_abilitiesAndWeights[i + 2] = (ability, _abilitiesAndWeights[i].weight + ability.AbilityBaseWeightIncrease);
 							}
 						}
 						break;
 					case 2:
-						_entries[i] = (_entries[i].ability, 0.3f);
-						if (_entries.Count > 2)
+						ability = _abilitiesAndWeights[i].ability;
+						_abilitiesAndWeights[i] = (ability, ability.AbilityWeight);
+						if (_abilitiesAndWeights.Count > 2)
 						{
-							_entries[i + 1] = (_entries[i + 1].ability, _entries[i].weight + 0.3f);
+							ability = _abilitiesAndWeights[i + 1].ability;
+							_abilitiesAndWeights[i + 1] = (ability, _abilitiesAndWeights[i + 1].weight + ability.AbilityBaseWeightIncrease);
 						}
 						break;
 					case 3:
-						_entries[i] = (_entries[i].ability, 0.05f);
+						ability = _abilitiesAndWeights[i].ability;
+						_abilitiesAndWeights[i] = (ability, ability.AbilityWeight);
 						break;
 				}
 
-				return _entries[i].ability;
+				return _abilitiesAndWeights[i].ability;
 			}
 		}
 
-		return _entries.First().ability;
+		return _abilitiesAndWeights.First().ability;
 	}
 }

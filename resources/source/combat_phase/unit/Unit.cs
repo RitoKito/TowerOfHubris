@@ -87,7 +87,16 @@ public abstract partial class Unit : Node3D
 		_turnManager = turnManager;
 		_turnManager.OnTurnStateChanged += HandleTurnStateChanged;
 		_turnManager.OnNewTurn += HandleNewTurn;
-	}
+
+        _currentHp = _maxHp;
+        _uiController.UpdateHpLabel((int)_currentHp, (int)_maxHp);
+        _uiController.UpdateUnitDetailsNameLabel(_unitName);
+        _uiController.UpdateDamageResLabel(_damageResistanceMultiplier);
+
+		// To initialize text on ability details box
+		_currentAbility = _abilities[0];
+		_uiController.UpdateAbilityDetails(_currentAbility);
+    }
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -103,11 +112,6 @@ public abstract partial class Unit : Node3D
 
 		_animationPlayer = GetNode<AnimationPlayer>("animation_player");
 		_audioStreamPlayer = GetNode<AudioStreamPlayer2D>("audio_player_2d");
-
-		_currentHp = _maxHp;
-		_uiController.UpdateHpLabel((int)_currentHp, (int)_maxHp);
-		_uiController.UpdateUnitDetailsNameLabel(_unitName);
-		_uiController.UpdateDamageResLabel(_damageResistanceMultiplier);
 
 		ShowSpriteDead(false);
 		ShowSpriteHighlight(false);
@@ -302,7 +306,7 @@ public abstract partial class Unit : Node3D
 		_isDead = true;
 		_uiController.HideHPDetails();
 		_uiController.HideAbilityDisplay();
-		_uiController.SuppressUI = true;
+		_uiController.SuppressUnitUI = true;
 
 		// TODO Make Dead Sprite
 		ShowSpriteDead(true);
@@ -350,10 +354,10 @@ public abstract partial class Unit : Node3D
 			case TurnState.InProgress:
 				_uiController.HideAbilityDisplay();
 				_uiController.HideTargetingUI();
-				_uiController.SuppressUI = true;
+				_uiController.SuppressUnitUI = true;
 				break;
 			case TurnState.PlayerTurn:
-				_uiController.SuppressUI = false;
+				_uiController.SuppressUnitUI = false;
 				break;
 		}
 
@@ -363,7 +367,7 @@ public abstract partial class Unit : Node3D
 	//TODO Implement C# signals
 	protected void _on_static_body_3d_mouse_entered()
 	{
-		if (_uiController.SuppressUI || _isDead)
+		if (_uiController.SuppressUnitUI || _isDead)
 			return;
 
 			ShowSpriteHighlight(true);

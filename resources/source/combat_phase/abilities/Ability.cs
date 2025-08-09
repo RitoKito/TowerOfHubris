@@ -18,6 +18,14 @@ public partial class Ability : Node
 	public int AbilityTier { get { return _abilityTier;  } set { } }
 
 	[Export]
+	private float _abilityWeight;
+	public float AbilityWeight { get { return _abilityWeight; } set { } }
+
+	[Export]
+	private float _abilityBaseWeightGain;
+	public float AbilityBaseWeightIncrease {  get { return _abilityBaseWeightGain; } set { } }
+
+	[Export]
 	private float _abilityDamage;
 	public float AbilityDamage { get { return _abilityDamage; } set { } }
 
@@ -62,6 +70,23 @@ public partial class Ability : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		if (_abilityWeight == 0)
+		{
+			switch (_abilityTier)
+			{
+				case 1:
+					_abilityWeight = GlobalAbilityValues.T1_ABILITY_GLOBAL_WEIGHT;
+					break;
+				case 2:
+					_abilityWeight = GlobalAbilityValues.T2_ABILITY_GLOBAL_WEIGHT;
+					_abilityBaseWeightGain = GlobalAbilityValues.T2_ABILTIY_GLOBAL_WEIGHT_GAIN;
+					break;
+				case 3:
+					_abilityWeight = GlobalAbilityValues.T3_ABILITY_GLOBAL_WEIGHT;
+                    _abilityBaseWeightGain = GlobalAbilityValues.T3_ABILTIY_GLOBAL_WEIGHT_GAIN;
+                    break;
+			}
+		}
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -16,13 +16,15 @@ public partial class CombatUIManager : Control
 		_eventBus = EventBus.Instance;
 		_eventBus.OnNewTurn += HandleOnNewTurn;
 		_eventBus.OnTurnInProgress += HandleOnTurnInProgress;
-		_eventBus.OnCombatSceneLoaded += HandleCombatSceneLoaded;
-		_eventBus.OnRewardSelection += HandleOnRewardSelection;
+		_eventBus.OnGameStateChanged += HandleOnGameStateChanged;
+		//_eventBus.OnRewardSelection += HandleOnRewardSelection;
 		_eventBus.OnDefeat += HandleOnDefeat;
 
 		_turnCounterLabel = GetNode<Label>("turn_counter/turn_counter_label");
 		_resolveButton = GetNode<MarginContainer>("resolve_round_btn");
 		_tBarsAnimationPlayer = GetNode<AnimationPlayer>("theater_bars/tbars_animation_player");
+
+		Hide();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -46,21 +48,9 @@ public partial class CombatUIManager : Control
 		_tBarsAnimationPlayer.Play("theater_bars_show");
 	}
 
-	private async Task HandleCombatSceneLoaded()
-	{
-		Show();
-		await Task.Yield();
-	}
-
 	private void HandleExitCombat(CombatOutcome outcome)
 	{
 		Hide();
-	}
-
-	private async Task HandleOnRewardSelection()
-	{
-		Hide();
-		await Task.Yield();
 	}
 
 	private async Task HandleOnDefeat()
@@ -69,13 +59,27 @@ public partial class CombatUIManager : Control
 		await Task.Yield();
 	}
 
+	private async Task HandleOnGameStateChanged(GameState state)
+	{
+		switch(state)
+		{
+			case GameState.Combat:
+				Show();
+				break;
+			case GameState.CombatRewardSelection:
+				Hide();
+				break;
+		}
+
+		await Task.Yield();
+	}
+
 	public override void _ExitTree()
 	{
 		_eventBus.OnNewTurn -= HandleOnNewTurn;
 		_eventBus.OnTurnInProgress -= HandleOnTurnInProgress;
-		_eventBus.OnCombatSceneLoaded -= HandleCombatSceneLoaded;
-		_eventBus.OnRewardSelection -= HandleOnRewardSelection;
 		_eventBus.OnDefeat -= HandleOnDefeat;
-		base._ExitTree();
+        _eventBus.OnGameStateChanged -= HandleOnGameStateChanged;
+        base._ExitTree();
 	}
 }

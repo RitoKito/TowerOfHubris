@@ -19,6 +19,8 @@ public partial class GameManager : Node3D
 
 		_eventBus.OnEnterGame += HandleOnEnterGame;
 		_eventBus.OnEnterCombat += HandleOnEnterCombat;
+		_eventBus.OnCombatSceneReady += HandleOnCombatSceneReady;
+		_eventBus.OnRewardSelection += HandleOneRewardSelection;
 		_eventBus.OnRewardSelected += HandleOnRewardSelected;
 		_eventBus.OnRestart += HandleOnRestart;
 
@@ -38,30 +40,40 @@ public partial class GameManager : Node3D
 	{
 	}
 
-	private async void SetGameState(GameState state)
+	private async Task SetGameState(GameState state, bool useFade = true)
 	{
 		_gameState = state;
 
-		await _uiManager.PlayFadeToBlack();
+		if(useFade)
+			await _uiManager.PlayFadeToBlack();
 
 		await _eventBus.EmitGameStateChanged(_gameState);
 
-		await _uiManager.PlayFadeToNormal();
+		if(useFade)
+			await _uiManager.PlayFadeToNormal();
+
+		await Task.Yield();
 	}
 
 	private async Task HandleOnRewardSelected(StatusEffect rewardSelected)
 	{
-		SetGameState(GameState.LevelTree);
+		await SetGameState(GameState.LevelTree);
 		await Task.Yield();
 	}
 
 	private async Task HandleOnEnterCombat()
 	{
-		SetGameState(GameState.Combat);
+		await SetGameState(GameState.CombatInit);
 		await Task.Yield();
 	}
 
-	private async Task HandleOnEnterGame()
+	private async Task HandleOnCombatSceneReady()
+	{
+		await SetGameState(GameState.Combat);
+		await Task.Yield();
+	}
+
+    private async Task HandleOnEnterGame()
 	{
 		if(_gameState == GameState.MainMenu && _mainMenuAnimationPlayer != null)
 		{
@@ -70,13 +82,19 @@ public partial class GameManager : Node3D
 			await ToSignal(_mainMenuAnimationPlayer, "animation_finished");
 		}
 
-		SetGameState(GameState.LevelTree);
+        await SetGameState(GameState.LevelTree);
+		await Task.Yield();
+	}
+
+	private async Task HandleOneRewardSelection()
+	{
+		await SetGameState(GameState.CombatRewardSelection, useFade: false);
 		await Task.Yield();
 	}
 
 	private async Task HandleOnRestart()
 	{
-		SetGameState(GameState.LevelTree);
+		await SetGameState(GameState.LevelTree);
 		await Task.Yield();
 	}
 

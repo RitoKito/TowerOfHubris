@@ -3,8 +3,6 @@ using System;
 
 public static class PathConstants
 {
-	//public const string PLAYER_CONTAINER_PATH = "res://resources/prefabs/units/player_units/player_unit_container.tscn";
-	//public const string ENEMY_CONTAINER_PATH = "res://resources/prefabs/units/enemy_units/enemy_unit_container.tscn";
 	public const string CONTAINER_UNIT_PLAYER = "res://resources/prefabs/units/container_unit_player.tscn";
 	public const string CONTAINER_UNIT_ENEMY = "res://resources/prefabs/units/container_unit_enemy.tscn";
 
@@ -40,12 +38,10 @@ public static class PathConstants
 	public const string STATUS_EFFECT_LIBARARY = "res://resources/prefabs/status_effects/status_effect_library.tscn";
 	public const string STATUS_EFFECT_OBJS = "res://resources/prefabs/status_effects/status_effects/";
 
-	public const string AUDIO_HIT0 = "res://resources/sfx/hit0.mp3";
-
 	public const string SPRITE_NODE_EXTREME = "res://resources/sprites/TreeNodeEX.png";
 	public const string SPRITE_NODE_START = "res://resources/sprites/StartingNode.png";
 
-	public const string AUDIO_LEVEL_TREE = "res://resources/sfx/evil_is_near.wav";
+    public const string AUDIO_HIT0 = "res://resources/sfx/hit0.mp3";
+    public const string AUDIO_LEVEL_TREE = "res://resources/sfx/evil_is_near.wav";
 	public const string AUDIO_COMBAT = "res://resources/sfx/epic_battle_2.wav";
-
 }

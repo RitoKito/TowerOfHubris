@@ -17,7 +17,7 @@ public partial class UnitUIController : Node3D
 	public bool DrawTargetArrow { get { return _drawTargetArrow; } set { _drawTargetArrow = value; } }
 
 	private bool _suppressUI = true;
-	public bool SuppressUI { get { return _suppressUI; } set { _suppressUI = value; } }
+	public bool SuppressUnitUI { get { return _suppressUI; } set { _suppressUI = value; } }
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -27,8 +27,6 @@ public partial class UnitUIController : Node3D
 		_unitDetails = GetNode<UnitDetails>("unit_details_3d");
 		_abilityDisplay = GetNode<AbilityDisplay>("ability_display");
 		_abilityDetails = GetNode<AbilityDetails>("ability_details_3d");
-
-		HideUnitDetails();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -91,7 +89,6 @@ public partial class UnitUIController : Node3D
 	public void UpdateAbilityDetails(Ability currentAbility)
 	{
 		_abilityDetails.UpdateNameLabel(currentAbility.AbilityName);
-		//Placeholder text
 		_abilityDetails.UpdateDescriptionLabel($"Deals {Math.Round(currentAbility.AbilityDamage, 1)} damage to the target");
 		_abilityDetails.UpdateCritLabel($"CR: {Math.Round(currentAbility.CritChance, 1)}% | CD: {Math.Round(currentAbility.AbilityCritMult*100, 1)}%");
 		//Placeholder

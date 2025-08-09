@@ -30,6 +30,7 @@ public interface IEventBus
 
 	public event Func<Task> OnEnterCombat;
 	public event Func<Task> OnCombatSceneLoaded;
+	public event Func<Task> OnCombatSceneReady;
 	public event Func<List<StatusEffect>, Task> OnPlayerStatusEffectsApply;
 	public event Func<List<StatusEffect>, Task> OnEnemyStatusEffectsApply;
 	public event Func<Task> OnRewardSelection;
@@ -68,6 +69,7 @@ public interface IEventBus
 
 	public Task EmitEnterCombat();
 	public Task EmitCombatSceneLoaded();
+	public Task EmitCombatSceneReady();
 	public Task EmitPlayerApplyStatusEffects(List<StatusEffect> effects);
 	public Task EmitEnemyApplyStatusEffects(List<StatusEffect> effects);
 	public Task EmitRewardSelection();
