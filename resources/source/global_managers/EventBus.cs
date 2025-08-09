@@ -30,6 +30,7 @@ public partial class EventBus : Node, IEventBus
 
 	public event Func<Task> OnEnterCombat;
 	public event Func<Task> OnCombatSceneLoaded;
+	public event Func<Task> OnCombatSceneReady;
 	public event Func<List<StatusEffect>, Task> OnPlayerStatusEffectsApply;
 	public event Func<List<StatusEffect>, Task> OnEnemyStatusEffectsApply;
 	public event Func<Task> OnRewardSelection;
@@ -177,7 +178,22 @@ public partial class EventBus : Node, IEventBus
 		await Task.WhenAll(tasks);
 	}
 
-	public async Task EmitPlayerApplyStatusEffects(List<StatusEffect> effects)
+    public async Task EmitCombatSceneReady()
+    {
+        if (OnCombatSceneReady == null)
+            return;
+
+        var handlers = OnCombatSceneReady.GetInvocationList();
+
+        List<Task> tasks = new List<Task>();
+
+        foreach (Func<Task> handler in handlers)
+            tasks.Add(handler.Invoke());
+
+        await Task.WhenAll(tasks);
+    }
+
+    public async Task EmitPlayerApplyStatusEffects(List<StatusEffect> effects)
 	{
 		if (OnPlayerStatusEffectsApply == null)
 			return;

@@ -2,8 +2,9 @@ public enum GameState
 {
 	MainMenu,
 	LevelTree,
+	CombatInit,
 	Combat,
-	Rewards,
+	CombatRewardSelection,
 	Defeat,
 }
 

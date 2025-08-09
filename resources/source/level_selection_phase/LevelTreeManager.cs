@@ -26,8 +26,18 @@ public partial class LevelTreeManager : Node3D
 	private int _floor = 0;
 	public int Escalation { get { return _escalation; } private set { } }
 
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        if (Input.IsKeyPressed(Key.R))
+        {
+            _currentTree.QueueFree();
+            _currentLevel = null;
+            GenerateNewTree();
+        }
+    }
+
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
 	{
 		if (Instance == null)
 			Instance = this;
@@ -44,6 +54,7 @@ public partial class LevelTreeManager : Node3D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+
 	}
 
 	private Node InstantiateLevel(string level)
@@ -88,7 +99,7 @@ public partial class LevelTreeManager : Node3D
 
 	private async Task HandleGameStateChanged(GameState gameState)
 	{
-		if(gameState == GameState.Combat)
+		if(gameState == GameState.CombatInit)
 		{
 			LoadCombatScene();
 		}

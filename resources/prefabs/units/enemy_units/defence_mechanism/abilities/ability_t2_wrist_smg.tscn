@@ -10,5 +10,3 @@ _abilityTier = 2
 _abilityDamage = 50.0
 _critChance = 50.0
 _abilityCritMult = 1.1
-_description = null
-_affinities = null

@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://c6uqidn550wus"]
+[gd_scene load_steps=39 format=3 uid="uid://c6uqidn550wus"]
 
 [ext_resource type="Script" path="res://resources/source/global_managers/GameManager.cs" id="1_2kbew"]
 [ext_resource type="Script" path="res://resources/source/global_managers/UIManager.cs" id="2_xur1g"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" path="res://resources/source/ui/GameTitle.cs" id="10_0fq26"]
 [ext_resource type="Script" path="res://resources/source/ui/TowerEntranceAnimation.cs" id="10_f8sqh"]
 [ext_resource type="Texture2D" uid="uid://qj347iq2p3ta" path="res://resources/sprites/road.png" id="11_buchc"]
+[ext_resource type="Script" path="res://scenes/LoadingScreen.cs" id="11_quljr"]
 [ext_resource type="Texture2D" uid="uid://by5x73g3bgy5w" path="res://resources/sprites/stairs.png" id="12_uexox"]
 [ext_resource type="Texture2D" uid="uid://dmbqxrsgrtvpw" path="res://resources/sprites/door_frame.png" id="13_1raur"]
 [ext_resource type="Texture2D" uid="uid://f373utxgmhab" path="res://resources/sprites/door_no_frame.png" id="14_7lgb7"]
@@ -488,6 +489,17 @@ root_node = NodePath("../../..")
 libraries = {
 "": SubResource("AnimationLibrary_f1d4r")
 }
+
+[node name="loading_screen" type="ColorRect" parent="ui_manager"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("11_quljr")
 
 [node name="cam_gimbal" parent="." instance=ExtResource("4_e7g0d")]
 transform = Transform3D(1, 0, 0, 0, 0.97237, 0.233445, 0, -0.233445, 0.97237, 0, 27, -14.055)

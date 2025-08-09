@@ -19,6 +19,8 @@ public partial class SceneManager : Node3D
 
 	private readonly List<Unit> _allUnits = new List<Unit>();
 
+	private UnitContainerEnemy _unitContainerEnemy;
+
 	public void AppendPlayerUnit(PlayerUnit unit)
 	{
 		_playerUnits.Add(unit);
@@ -51,8 +53,18 @@ public partial class SceneManager : Node3D
 		return _alivePlayerUnits[index];
 	}
 
-	// Called when the node enters the scene tree for the first time.
-	public async override void _Ready()
+    public override void _UnhandledInput(InputEvent @event)
+    {
+        if (Input.IsKeyPressed(Key.F))
+        {
+			_unitContainerEnemy.QueueFree();
+			_unitContainerEnemy = null;
+			InstantiateEnemyUnits();
+        }
+    }
+
+    // Called when the node enters the scene tree for the first time.
+    public async override void _Ready()
 	{
 		_turnManager = GetParent().GetNode<TurnManager>("turn_manager");
 		_turnManager.OnNewTurn += HandleNewTurn;
@@ -114,7 +126,9 @@ public partial class SceneManager : Node3D
 		enemyUnitContainer.PopulateEnemyContainer(_levelTreeManager.Escalation, _levelTreeManager.CurrentLevel.IsExtreme);
 		AddChild(enemyContainerInstance);
 
-		foreach (EnemyUnit enemyUnit in enemyUnitContainer.UnitArray)
+		_unitContainerEnemy = enemyUnitContainer;
+
+        foreach (EnemyUnit enemyUnit in enemyUnitContainer.UnitArray)
 		{
 			if (enemyUnit != null)
 			{

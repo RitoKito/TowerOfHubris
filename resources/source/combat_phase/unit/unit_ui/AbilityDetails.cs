@@ -16,8 +16,6 @@ public partial class AbilityDetails : Sprite3D
 		_critLabel = GetNode<RichTextLabel>("SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer/ability_crit_label");
 		//_statusEffectLabel = GetNode<RichTextLabel>("SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer/ability_status_effects_label");
 		//_affinityLabel = GetNode<RichTextLabel>("SubViewport/unit_details/border_container/border/fill_box_container/fill_box/item_container/VBoxContainer/ability_affinity_label");
-
-		Hide();
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
