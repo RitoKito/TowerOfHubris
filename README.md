@@ -158,8 +158,7 @@ At the start of each round, every unit is assigned a random ability tier:
 - Exit: Press ESC → Select Exit, or simply close the game window.
 
 ## Credits
-Programming and Art by Nikita Trukhin <br/>
-Music by Andrey Sitkov<br/>
+
 Sound Effects by [freesound_community](https://pixabay.com/users/freesound_community-46691455/)<br/>
 
 This project is built with Godot Engine<br/>
